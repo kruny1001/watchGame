@@ -1,0 +1,27 @@
+<section data-ng-controller="ProjectViewController">
+    <div class="leftPane">
+        <div class="paneContent">
+            <div class="visualization-control control-button" menuicon-hover ng-repeat="menu in menus" ng-click="goChildView('{{menu.state}}')">
+                <div class="control-dark">
+                    <div class="menuIcon">{{menu.icon}}</div>
+                    <div class="text">{{menu.name}}</div>
+                </div>
+            </div>
+        </div>
+        <?xml version="1.0"?>
+        <svg class="svgBtnLeftPane" viewBox="0 0 120 120" version="1.1"
+             xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="50" fill="#d35400" ng-click="shrinkleftPane()"/>
+        </svg>
+    </div>
+    <div class="rightPane projectTemplate">
+        <div class="meanT-headToolBar" fade-up>
+            <div class="meanT-brandName">
+                <a href="/#!/versioning" target="_blank">
+                    Version: 0.0.2-(안녕하세요! 실험적인 인터페이스 입니다.)
+                </a>
+            </div>
+        </div>
+        <div data-ui-view></div>
+    </div>
+</section>

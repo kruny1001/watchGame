@@ -1,0 +1,32 @@
+<div ng-controller="ProjectviewProjectsController" ng-init="findProjects(2)">
+    <div class="list-group">
+        <a data-ng-repeat="article in resultProjects" class="list-group-item" ng-click="selectProject($index)">
+            <small class="list-group-item-text">
+                Posted on
+                <span data-ng-bind="article.created | date:'mediumDate'"></span>
+                by
+                <span data-ng-bind="article.user.displayName"></span>
+            </small>
+            <h4 class="list-group-item-heading" data-ng-bind="article.title"></h4>
+            <!--
+            <p class="list-group-item-text" data-ng-bind="article.content"></p>
+            -->
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-if="resultProjects.$resolved && !resultProjects.length">
+        No articles yet, why don't you <a href="/#!/articles/create">create one</a>?
+    </div>
+
+    <div class="meanT-dashboard-main">
+
+        <h4 class="list-group-item-heading" data-ng-bind="selectedProject.title"></h4>
+        <small class="list-group-item-text">
+            Posted on
+            <span data-ng-bind="selectedProject.created | date:'mediumDate'"></span>
+            by
+            <span data-ng-bind="selectedProject.user.displayName"></span>
+            <div ng-bind-html="selectedProject.content"></div>
+        </small>
+
+    </div>
+</div>

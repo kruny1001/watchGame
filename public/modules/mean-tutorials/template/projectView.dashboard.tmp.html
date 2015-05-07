@@ -1,0 +1,179 @@
+<div class="meanT-dashboard" ng-controller="ProjectviewdashboardController" ng-init="findEvents()">
+    <div ng-controller="SizeUtil.sizeOfWidthController" class="size-util-sizeOfWidth">{{width}}</div>
+    <div class="meanT-brandName">Dashboard</div>
+
+    <md-button flex flex-order="4"
+               class="md-raised md-primary"
+               noink
+               style="background-color: #009688; margin-right:10px;"
+
+               aria-label="{{authName}}"
+               ng-click="init()">
+        {{authName}}
+    </md-button>
+    <div ng-controller="GapiCtrlController">
+        <md-button ng-click="googleAccess()">Google Access</md-button>
+        <div>{{url}}</div>
+    </div>
+
+    <div ng-controller="gDriveDashCtrl">Check Google Drive
+    <md-button ng-click="listingFolderInfo()">List Forlder</md-button>
+        <div>Owner: {{gDocs.owners[0].displayName}}</div>
+        <div>Owner's Email: {{gDocs.owners[0].emailAddress}}</div>
+        <div>Picture:
+            <img ng-src="{{gDocs.owners[0].picture.url}}"/>
+        </div>
+    </div>
+
+    <div class="meanT-dashboard-main">
+        <div class="meanT-contentTitle"><strong>Event Calendar</strong></div>
+
+        <div class="meanT-headSubTitle">
+            You can check out our current project.
+        </div>
+        <ut-calendar></ut-calendar>
+    </div>
+    <h4>Popup</h4>
+    <div class="row">
+        <div class="col-md-6" >
+            <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="meanT-dashboard-upEvent">
+        <div> Upcoming Events </div>
+        <div ng-repeat="event in meanEvents"> {{event.name}}</div>
+    </div>
+
+    <div class="meanT-dashboard-users">
+        <div>Topics</div>
+    </div>
+
+    <!---- Material Design ------>
+    <div class="bottom-sheet-demo inset" layout="column" layout-sm="row" layout-align="center">
+        <md-button class="md-primary" ng-click="showListBottomSheet($event)">
+            Show as List
+        </md-button>
+
+        <div style="width:50px;"></div>
+
+        <md-button class="md-primary" ng-click="showGridBottomSheet($event)">
+            Show as Grid
+        </md-button>
+
+    </div>
+    <br/>
+    <b layout="row" layout-align="center center" layout-margin>
+        {{alert}}
+    </b>
+
+
+    <!---->
+
+
+
+    <md-toolbar
+        style="
+        border-radius:15px 15px 0px 0px;">
+        <h2 class="md-toolbar-tools" layout="row" layout-margin>
+
+            <span flex flex-order="1" >Toolbar</span>
+            <span flex flex-order="2"></span>
+            <span flex flex-order="3"></span>
+            <md-button flex flex-order="4"
+                        class="md-raised md-primary"
+                       noink
+                       style="background-color: #009688; font-size:medium; margin-right:10px;"
+
+                       aria-label="{{authName}}"
+                       ng-click="init()">
+                {{authName}}
+            </md-button>
+            <md-button flex flex-order="5"
+                    class="md-raised md-primary"
+                       noink
+                       style="background-color: #009688; font-size:medium;"
+                       aria-label="{{authName}}"
+                       ng-click="setupPicker()"
+                       ng-disabled="!isAuth">
+                File Picker
+            </md-button>
+        </h2>
+    </md-toolbar>
+    <md-content class="md-padding" style="border-radius:0px 0px 15px 15px">
+
+        You can upload and select from Google Drive
+        <pre>Your FolderID: {{rootGdriveFolderID}}</pre>
+
+        <p>
+        <div class="well" >
+
+            <img ng-repeat="file in files" style="margin-left:15px; margin-bottom: 15px"  select-img my-slider="file" index={{$index}} on-change-status="onChangeStatus()" class="sellerInterfaceItemImg" ng-src="{{ arrive && permalLink + file.id || ''}}">
+        </div>
+        </p>
+    </md-content>
+
+    <h1>Create Doc</h1>
+    <md-toolbar
+            style="font-size:large;
+        border-radius:15px 15px 0px 0px;">
+        <h2 class="md-toolbar-tools" layout="row" layout-margin>
+
+            <span flex flex-order="1" >Create Doc</span>
+            <span flex flex-order="2"></span>
+            <span flex flex-order="3"></span>
+            <md-button flex flex-order="4"
+                       class="md-raised md-primary"
+                       noink
+                       style="background-color: #009688; font-size:medium; margin-right:10px;"
+
+                       aria-label="{{authName}}"
+                       ng-click="init()">
+                {{authName}}
+            </md-button>
+            <md-button flex flex-order="5"
+                       class="md-raised md-primary"
+                       noink
+                       style="background-color: #009688; font-size:medium;"
+                       aria-label="{{authName}}"
+                       ng-click="setupPicker()"
+                       ng-disabled="!isAuth">
+                File Picker
+            </md-button>
+        </h2>
+    </md-toolbar>
+    <md-content class="md-padding" style="border-radius:0px 0px 15px 15px">
+        You can upload and select from Google Drive
+        <pre>Your FolderID: {{rootGdriveFolderID}}</pre>
+        <p>
+        <div class="well" >
+            <img ng-repeat="file in files" style="margin-left:15px; margin-bottom: 15px"  select-img my-slider="file" index={{$index}} on-change-status="onChangeStatus()" class="sellerInterfaceItemImg" ng-src="{{ arrive && permalLink + file.id || ''}}">
+        </div>
+        </p>
+        <md-button flex flex-order="4"
+                   class="md-raised md-primary"
+                   noink
+                   style="background-color: #009688; font-size:medium; margin-right:10px;"
+
+                   aria-label="{{authName}}"
+                   ng-click="testCreateFolder()">
+            test-create folder
+        </md-button>
+        <md-button flex flex-order="4"
+                   class="md-raised md-primary"
+
+                   style="background-color: #009688; font-size:medium; margin-right:10px;"
+
+                   aria-label="{{authName}}"
+                   ng-click="testGetGoogleDriveInfo()">
+            test-getGoogleDriveInfo
+        </md-button>
+    </md-content>
+
+</div>
+

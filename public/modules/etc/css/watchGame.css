@@ -1,0 +1,293 @@
+.watchGameMain .fill {
+    position: absolute;
+    background-color: #18303d;
+    height: auto;
+    width: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.watchGameMain .clock {
+    position: absolute;
+    opacity: 1;
+    left: 50%;
+    top: 50%;
+}
+
+.watchGameMain .centre {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+}
+
+.watchGameMain .expand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+}
+
+.watchGameMain .anchor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+}
+
+.watchGameMain .element {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.watchGameMain .round {
+    border-radius: 296px;
+}
+
+.watchGameMain .circle-1 {
+    width: 6px;
+    height: 6px;
+    border: 3px solid white;
+}
+
+.watchGameMain .circle-2 {
+    width: 4px;
+    height: 4px;
+    border: 2px solid #FA9F22;
+}
+
+.watchGameMain .second {
+    transform: rotate(180deg);
+}
+
+.watchGameMain .minute {
+    transform: rotate(54deg);
+}
+
+.watchGameMain .second-hand {
+    width: 2px;
+    background: #FA9F22;
+}
+.watchGameMain .second-hand-front {
+    width: 2px;
+    height: 137px;
+    background: #FA9F22;
+    transform: translate(-50%,-100%) translateY(-3px);
+}
+.watchGameMain .second-hand-back {
+    width: 2px;
+    height: 21px;
+    background: #FA9F22;
+    opacity: 1;
+    transform: translate(-50%,-100%) translateY(24px);
+}
+
+.watchGameMain .hour {
+    transform: rotate(304.5deg);
+}
+
+.watchGameMain .thin-hand {
+    width: 4px;
+    height: 50px;
+    background: white;
+    transform: translate(-50%,-100%) translateY(-5px);
+}
+
+.watchGameMain .fat-hand {
+    box-sizing: border-box;
+    width: 22px;
+    height: 65px;
+    border-radius: 11px/50%;
+    background: white;
+    transform: translate(-50%,-100%) translateY(-18px);
+}
+
+.watchGameMain .minute-hand {
+    height: 112px;
+}
+
+
+.watchGameMain .minute-line {
+    background: white;
+    width: 1px;
+    height: 9px;
+    transform: translate(-50%,-100%) translateY(-131px);
+    opacity: 0.34;
+}
+.watchGameMain .major.minute-line {
+    opacity: 0.5;
+}
+.watchGameMain .minute-text {
+    position:absolute;
+    font: 12px Avenir Next, Helvetica;
+    color: white;
+    top: -135px;
+}
+
+.watchGameMain .hour-pill {
+    background: white;
+    width: 6px;
+    height: 35px;
+    border-radius: 10px;
+    transform: translate(-50%,-100%) translateY(-85px);
+    opacity: 0.75;
+}
+.watchGameMain .hour-text {
+    font: 40px Hei, Helvetica;
+    color: white;
+    top: -105px;
+}
+.watchGameMain .hour-10 .content {
+    padding-left: 0.4ex;
+}
+.watchGameMain .hour-11 .content {
+    padding-left: 0.25ex;
+}
+
+/* Now, customizations! */
+
+
+/* Customize: hour */
+.watchGameMain .hour-style-text .hour-pill {
+    opacity: 0;
+}
+.watchGameMain .hour-style-pill .hour-text {
+
+    opacity: 0;
+}
+.watchGameMain .hour-style-text-quarters .hour-1.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-2.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-3.hour-pill,
+.watchGameMain .hour-style-text-quarters .hour-4.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-5.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-6.hour-pill,
+.watchGameMain .hour-style-text-quarters .hour-7.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-8.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-9.hour-pill,
+.watchGameMain .hour-style-text-quarters .hour-10.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-11.hour-text,
+.watchGameMain .hour-style-text-quarters .hour-12.hour-pill {
+    opacity: 0;
+
+}
+
+/* Customize: hour-text */
+.watchGameMain .hour-text-style-small .hour-text {
+    font-size: 24px;
+    top: -113px;
+}
+
+/* Customize: hour-display */
+.watchGameMain .hour-display-style-quarters .hour-1,
+.watchGameMain .hour-display-style-quarters .hour-2,
+.watchGameMain .hour-display-style-quarters .hour-4,
+.watchGameMain .hour-display-style-quarters .hour-5,
+.watchGameMain .hour-display-style-quarters .hour-7,
+.watchGameMain .hour-display-style-quarters .hour-8,
+.watchGameMain .hour-display-style-quarters .hour-10,
+.watchGameMain .hour-display-style-quarters .hour-11 {
+    opacity: 0;
+}
+.watchGameMain .hour-display-style-none .hour-item {
+    opacity: 0;
+}
+
+/* Customize: minute */
+.watchGameMain .minute-style-dot .minute-line {
+    width: 6px;
+    height: 6px;
+    transform: translate(-50%,-100%) translateY(-134px);
+    border-radius: 6px;
+    opacity: 0.75;
+}
+.watchGameMain .minute-style-dot .part.minute-line,
+.watchGameMain .minute-style-dot.hour-style-pill .major.minute-line {
+    opacity: 0;
+}
+.watchGameMain .minute-style-dot .hour-pill {
+    transform: translate(-50%,-100%) translateY(-100px);
+    height: 40px;
+}
+
+/* Customize: minute text */
+.watchGameMain .minute-text-style-inside .major.minute-line {
+    opacity: 0;
+}
+.watchGameMain .minute-text-style-outside .minute-text {
+    top: -152px;
+    font-size: 14px;
+}
+.watchGameMain .minute-text-style-none .minute-text {
+    opacity: 0;
+}
+
+/* Customize: Minute display */
+.watchGameMain .minute-style-line.minute-display-style-fine-2 .whole.minute-line,
+.watchGameMain .minute-style-line.minute-display-style-fine-2 .major.minute-line {
+    height: 13px;
+    transform: translate(-50%,-100%) translateY(-127px);
+}
+.watchGameMain .minute-style-line.minute-display-style-fine-2 .part.minute-line {
+    height: 8px;
+    transform: translate(-50%,-100%) translateY(-132px);
+}
+.watchGameMain .minute-display-style-coarse .part.minute-line {
+    opacity: 0;
+}
+.watchGameMain .minute-display-style-major .part.minute-line,
+.watchGameMain .minute-display-style-major .whole.minute-line {
+    opacity: 0;
+}
+.watchGameMain .minute-display-style-none .part.minute-line,
+.watchGameMain .minute-display-style-none .major.major.minute-line,
+.watchGameMain .minute-display-style-none .whole.minute-line {
+    opacity: 0;
+}
+
+/* Customize: hand */
+.watchGameMain .hand-style-hollow .fat-hand {
+    background: black;
+    border: 2px solid white;
+}
+
+/* Customizer */
+.watchGameMain #chooser {
+    font: 10px Verdana, sans-serif;
+    position: absolute;
+    top: 4px;
+    left: 106px;
+    color: #fff6f2;
+    z-index: 1;
+    opacity: 0.5;
+}
+.watchGameMain #chooser div {
+    cursor: pointer;
+}
+.watchGameMain #chooser div:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#secC, #minC, #hourC{
+    cursor:pointer;
+}
+
+.gameCtrl{
+    background-color:salmon;
+    position: absolute;
+    width:105px;
+    height:100%;
+    left:0;
+}
+
+.bottonCtrl{
+    background-color:salmon;
+    position: absolute;
+    width:100%;
+    height:200px;
+    bottom:0;
+}

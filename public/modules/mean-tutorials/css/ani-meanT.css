@@ -1,0 +1,40 @@
+.mjHomeAni-btn{
+    margin-bottom: 5px;
+}
+
+.ani-title {
+
+}
+
+.ani-techs {
+    opacity: 0;
+    display:inline-flex;
+}
+
+.ani-rightSideDesc {
+    margin-left: 10px;
+    font-size: 2vmin;
+    text-align: left;
+}
+
+.meanT-figure {
+    /*width: 85%;*/
+    *max-width:700px;
+    margin: 8px auto;
+}
+
+div.stretchy-wrapper {
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    position: relative;
+    background: black;
+    overflow:hidden;
+}
+
+div.stretchy-wrapper > div {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}

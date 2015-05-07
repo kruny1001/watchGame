@@ -1,0 +1,62 @@
+<md-dialog aria-label="SignUp Btn">
+    <md-toolbar class="md-primary">
+        <h1 class="md-toolbar-tools">
+            Sign Up
+        </h1>
+    </md-toolbar>
+    <md-content ng-controller="AuthenticationController">
+        <form name="projectForm" data-ng-submit="signup()">
+            <md-input-container>
+                <label for="firstName">First Name</label>
+                <input required id="firstName" name="firstName" ng-model="credentials.firstName">
+                <div ng-messages="projectForm.firstName.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label for="lastName">Last Name</label>
+                <input required id="lastName" name="lastName" ng-model="credentials.lastName">
+                <div ng-messages="projectForm.lastName.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label for="email">Email</label>
+                <input required id="email" name="email" ng-model="credentials.email">
+                <div ng-messages="projectForm.email.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container>
+                <label for="username">Username</label>
+                <input required id="username" name="username" ng-model="credentials.username">
+                <div ng-messages="projectForm.username.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required ng-model="credentials.password">
+                <div ng-messages="projectForm.password.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+
+            <div class="md-actions" layout="row">
+                <md-button ng-click="hide()">
+                    Cancel
+                </md-button>
+                <span flex></span>
+                <md-button type="submit">
+                    Sign Up
+                </md-button>
+            </div>
+
+            <div data-ng-show="error" class="text-center text-danger">
+                <strong class="md-body-2" data-ng-bind="error"></strong>
+            </div>
+        </form>
+    </md-content>
+
+</md-dialog>

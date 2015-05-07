@@ -1,0 +1,18 @@
+<div class="window mac">
+    <div class="title-bar">
+        <div class="close"></div>
+        <div class="minimize" ng-click="minimizeMacWindow($event)"></div>
+        <div class="zoom" ng-click="maximizeMacWindow($event)"></div>
+    </div>
+
+    <div class="page">
+        <div ng-repeat="project in projectInfos">
+            <h2>{{title}}</h2>
+            <div class="contents-mac">
+                <div class="title">{{project.name}}</div>
+                <div class="date">{{project.date}}</div>
+                <div class="body" ng-bind-html="project.body"></div>
+            </div>
+        </div>
+    </div>
+</div>

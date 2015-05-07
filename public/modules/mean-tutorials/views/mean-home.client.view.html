@@ -1,0 +1,196 @@
+<section class="headerEnabled"
+         ng-controller="MeanHomeController"
+         layout="column" layout-fill>
+
+    <!--<style>-->
+        <!--.md-dialog-container {-->
+            <!--z-index:1000;-->
+        <!--}-->
+    <!--</style>-->
+
+    <div ng-hide="true" class="meanT-headToolBar">
+        <div class="meanT-brandName">
+            <a href="/#!/versioning" target="_blank">Version: 0.0.3</a>
+            <span style="margin-left:20px;">{{notice}}</span>
+        </div>
+    </div>
+
+    <md-content layout="column" layout-align="center center">
+        <md-content class="meanT-homeFirstRow">
+            <div class="meanT-headTitle">
+                <strong>{{homeContents.mainTitle}}</strong>
+            </div>
+
+            <div class="meanT-headSubTitle md-body-1" hide-sm>
+                <strong>{{homeContents.mainTitle}}</strong> {{homeContents.subTitleText}}<br/><br/>
+                <div layout="row" layout-margin layout-align="center center">
+                    <md-button class="md-raised md-primary" ng-click="goTo('openboard')" style="margin-bottom: 10px;">Get Started</md-button>
+                    <div flex="5"></div>
+                    <md-button class="md-raised md-primary" ng-click="goTo('open-board-present')" style="margin-bottom: 10px;">Presentation</md-button>
+                </div>
+                <!--<a href="https://docs.google.com/document/d/1Q_CJwJftcL-zabVm0USc1px5HDfbpxu6Klav-XYOzNg/edit?usp=sharing" target="_blank">-->
+                    <!--<img title="Google Doc" class="meanT-googleDocImg" ng-src="modules/mean-tutorials/img/google_docs.png">-->
+                <!--</a>-->
+            </div>
+        </md-content>
+
+        <md-content class="md-padding meanT-homeSecondRow" style="overflow:hidden">
+            <div class="meanT-headSubTitle md-body-1" show-sm hide-gt-sm>
+                <strong>{{homeContents.mainTitle}}</strong> {{homeContents.subTitleText}}<br/><br/>
+                <div layout="row" layout-margin layout-align="center center">
+                    <md-button class="md-raised md-primary" ng-click="goTo('openboard')" style="margin-bottom: 10px;">Get Started</md-button>
+                    <div flex="5"></div>
+                    <md-button class="md-raised md-primary" ng-click="goTo('open-board-present')" style="margin-bottom: 10px;">Presentation</md-button>
+                    <md-button class="md-raised md-primary" ng-click="goTo('watch-game')" style="margin-bottom: 10px;">Watch Game</md-button>
+                </div>
+
+                <!--<a href="https://docs.google.com/document/d/1Q_CJwJftcL-zabVm0USc1px5HDfbpxu6Klav-XYOzNg/edit?usp=sharing" target="_blank">-->
+                    <!--<img title="Google Doc" class="meanT-googleDocImg" ng-src="modules/mean-tutorials/img/google_docs.png">-->
+                <!--</a>-->
+            </div>
+
+            <md-whiteframe class="md-whiteframe-z2 meanT-home-card ob-underbar-base"
+                           layout="column" layout-align="space-around start">
+                <h3 class="docs-title-card-not-Center md-title">Grading is miserable</h3>
+                <div class="md-body-1">
+                    Grading can take days to grade an assignment and grading paper is worse.
+                    Students may submit their own distinct templates which are hard to follow.
+                    Instructor must fill the grades into their Excel file or D2l after grading
+                    and also with matching each student’s name.
+                    <br/><br/>
+                    What if we have a great tool for these most time consuming processes can be
+                    done from a document by one click instead of writing grade on the paper,
+                    updating score on the web and submitting file to the dropbox,
+                    instructor save their time for grading and put more time to focus on the class
+                    for better quality.
+                </div>
+            </md-whiteframe>
+
+            <md-whiteframe class="md-whiteframe-z2 meanT-home-card ob-underbar-green"
+                           layout="column" layout-align="space-around start">
+                <h3 class="docs-title-card-not-Center md-title">Do you love to use D2L?</h3>
+                <p class="md-body-1">
+                    It is HARD to manage lots of contents from a D2l, especially assignment. User must download a file and save a file to access it.
+                </p>
+
+                <ul class="md-body-2">
+                    <li>What if you forget to bring your USB</li>
+                    <li>What if you forget to update a file to your cloud drive such as Google drive, drob box or OneDrive</li>
+                    <li>What if you lost your USB before submitting your assignment</li>
+                </ul>
+            </md-whiteframe>
+
+            <md-whiteframe class="md-whiteframe-z2 meanT-home-card ob-underbar-dark"
+                           layout="column" layout-align="space-around start">
+                <h3 class="docs-title-card-not-Center md-title">Less work & More time</h3>
+                <p class="md-body-1">Open Board makes instructors and students easier to manage education contents</p>
+
+                <h3 class="docs-title-card-not-Center md-title"><b>Open Board can Solve all your Problems</b></h3>
+                <p class="md-body-1">Open Board is e-Learning Contents Management System.
+                    It allows to handling every process of assigning, submitting, grading
+                    and updating score <b>automatically</b> just by one Click</p>
+
+            </md-whiteframe>
+
+            <openboard-ani1></openboard-ani1>
+
+            <md-whiteframe class="md-whiteframe-z2 meanT-home-card ob-underbar-dark"
+                           layout="column" layout-align="space-around start">
+                <h3 class="docs-title-card-not-Center md-title">Upcoming Project</h3>
+
+                <p class="md-body-1"><b>Watch Game e-Learning for kids</b></p>
+                <md-chips>
+                    <md-chip>Web Animation</md-chip>
+                    <md-chip>Touch Control</md-chip>
+                    <md-chip>Responsive Design</md-chip>
+                </md-chips>
+                <p class="md-body-1"><b>e-Commerce</b></p>
+                <md-chips>
+                    <md-chip>Payment Gateway Interaction</md-chip>
+                    <md-chip>Admin & Customer Pages</md-chip>
+                    <md-chip>High Performance Transition</md-chip>
+                    <md-chip>Responsive Design</md-chip>
+                </md-chips>
+                <p class="md-body-1"><b>Scrapped Data Analysis </b></p>
+                <md-chips>
+                    <md-chip>NodeJS Crawler</md-chip>
+                    <md-chip>Virtual browser</md-chip>
+                    <md-chip>Handling Authentication</md-chip>
+                    <md-chip>Visualization</md-chip>
+                </md-chips>
+                <p class="md-body-1"><b>Social Business Platform</b></p>
+                <md-chips>
+                    <md-chip>Social Network API</md-chip>
+                    <md-chip>Order Management</md-chip>
+                    <md-chip>Progress Notification</md-chip>
+                    <md-chip>Geo Logical Analysis</md-chip>
+                </md-chips>
+
+
+            </md-whiteframe>
+            <!--<md-whiteframe class="md-whiteframe-z2 meanT-home-card ob-underbar-yellow"-->
+                           <!--layout="column" layout-align="space-around start">-->
+                <!--<h3 class="docs-title-card-not-Center">Using Google Product Famliy</h3>-->
+                <!--<p class="md-body-2">-->
+                <!--</p>-->
+
+                <!--<h3 class="docs-title-card-not-Center">No Additional Mobile App Needed</h3>-->
+                <!--<p class="md-body-2">If you do not need to bother from creating an new assignment, gathering submitted assignments and updating a score to the sheet after grading</p>-->
+            <!--</md-whiteframe>-->
+
+            <!-- Annimation -->
+            <!--<div class="meanT-contentTitle">-->
+                <!--<strong>How to use Openboard</strong>-->
+            <!--</div>-->
+            <!--<div layout="row" layout-align="center start">-->
+                <!--<mj-home-ani></mj-home-ani>-->
+            <!--</div>-->
+
+            <!--<div class="meanT-contentTitle"><strong>Event Calendar</strong></div>-->
+            <!--<div class="meanT-headSubTitle">-->
+                <!--You can check out our current project.-->
+            <!--</div>-->
+            <!--<ut-calendar></ut-calendar>-->
+            <!--<hr/>-->
+
+            <!--<mac-window info="announcements"></mac-window>-->
+            <!--<hr/><mac-window info="projects"></mac-window>-->
+            <!--<hr/><mac-window info="techs"></mac-window>-->
+
+        </md-content>
+    </md-content>
+
+    <section layout="row">
+        <!--<md-sidenav class="md-sidenav-left md-whiteframe-z2 headerEnabled" md-component-id="left" md-is-locked-open="$media('gt-md')">-->
+
+        <!--
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2 headerEnabled" md-component-id="left"
+                    style="position:fixed; z-index: 999; top:0">
+            <md-toolbar MeanHomeControllerclass="md-theme-indigo">
+                <h1 class="md-toolbar-tools">MENU</h1>
+            </md-toolbar>
+            <md-content class="md-padding" layout="column" layout-align="center start">
+                <H3>Kevin S</H3>
+                <md-button ui-sref="ads1" ng-click="close()" class="md-primary" hide-gt-md>
+                    PORTFOLIO
+                </md-button>
+                <md-button ui-sref="ads1" ng-click="close()" class="md-primary" hide-gt-md>
+                    CV
+                </md-button>
+                <H3>Ongoing Project</H3>
+                </md-button>
+                <md-button ui-sref="the-clean" ng-click="close()" class="md-primary">
+                    The Clean
+                </md-button>
+                <md-button ui-sref="top-hair-home" ng-click="close()" class="md-primary">
+                    Top Hair Wigs
+                </md-button>
+                <md-button ui-sref="ads2" ng-click="close()" class="md-primary">
+                    E-Learning App
+                </md-button>
+            </md-content>
+        </md-sidenav>
+        -->
+    </section>
+
+</section>

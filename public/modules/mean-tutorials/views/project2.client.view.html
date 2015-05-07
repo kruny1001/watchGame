@@ -1,0 +1,61 @@
+<section data-ng-controller="Project2Controller">
+
+    <div class="container" style="margin-left: 10px">
+        <h3>[Plan] Project 2 Dev - Calculator Directive version (AngularJS Only)</h3>
+
+        <h4>Objective: You will learn how to communicate between directives under a parent controller.</h4>
+
+        <h5>Requirements:</h5>
+        <p>
+        create directive element (calculator itself)
+        create directive element (calculator history)
+
+
+        Save Calculation History below User Interface
+        ex. History:
+        History1: 1+2-1+10 = 12
+        History2: 2*2+1=5
+        …
+        </p>
+
+        <h4>[Challenges]</h4>
+        <ul>
+            <li>
+                [Custom Event] If user clicks one of the histories from the cal-history directive,<br/>
+                the selected equation should be placed on the calculator(calculator directive) input field.<br/><br/>
+            </li>
+            <li>
+                [Interaction with Key Stroke] For example, <br/>
+                If you types a number or one of the operators(+ / * -). The input field would be updated.
+                <br/>
+                Resource:
+                http://www.angularjshub.com/examples/eventhandlers/keyboardevents/<br/>
+                https://docs.angularjs.org/api/ng/directive/ngKeypress<br/><br/>
+            </li>
+            <li>
+                [Injection] Inject your calculator module onto Parent Module.<br/>
+                Your Grand Parent Module is MEANJS itself.<br/><br/>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="container">
+        <h3>Calculator</h3>
+    </div>
+
+    <calculator></calculator>
+    <cal-history></cal-history>
+
+
+    <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+
+
+    <div class="container">
+        <h3>Answer</h3>
+
+        Resource: http://toddmotto.com/all-about-angulars-emit-broadcast-on-publish-subscribing/
+    </div>
+	<div disqus="id" style="margin:auto; margin-left: 20px; margin-right:20px;	"></div>
+
+</section>

@@ -1,0 +1,36 @@
+<div style="max-width:650px;">
+<figure class="meanT-figure">
+    <div class="stretchy-wrapper">
+        <div id="ani-title" class="ani-title">Click Play Button</div>
+        <img id='youtubePlayButton'
+             class="meanT-imgCenter"
+             ng-src="modules/mean-tutorials/img/youtubePlay.png"
+             ng-click="clickPlayBtn()" />
+        <div id="ani-techs" class="ani-techs">
+            <img id='meanTotem'
+                 class="meanT-hide"
+                 ng-src="modules/mean-tutorials/img/mean_totem.png"
+                 ng-click="clickPlayBtn()" />
+            <div id="meanTotem-desc" class="meanT-hide ani-rightSideDesc">
+                <div layout="column" layout-margin layout-padding layout-align="start start">
+                    <md-button class="md-raised md-primary mjHomeAni-btn" ng-click="aniTrigger()"><strong>M</strong>ongoDB</md-button>
+                    <md-button class="md-raised md-primary mjHomeAni-btn"><strong>E</strong>xpress</md-button>
+                    <md-button class="md-raised md-primary mjHomeAni-btn"><strong>A</strong>ngularJS</md-button>
+                    <md-button class="md-raised md-primary mjHomeAni-btn"><strong>N</strong>odeJS</md-button>
+
+                    <p>Click Button</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</figure>
+
+<div layout="row" layout-align="center">
+    <md-button class="md-primary" ng-click="clickPlayBtn()">
+        Click Youtube Btn
+    </md-button>
+    <md-button class="md-primary" ng-click="resetPlayBtn()">
+        Reset Youtube Btn
+    </md-button>
+</div>
+</div>

@@ -35,7 +35,6 @@ module.exports = {
 				'public/lib/gsap/src/minified/utils/Draggable.min.js',
 				'public/lib/jquery/dist/jquery.min.js',
 				'public/lib/gsap/src/uncompressed/plugins/throwProps.js'
-
 			]
 		},
 		css: [

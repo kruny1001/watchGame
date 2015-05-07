@@ -1,0 +1,38 @@
+<md-dialog style="z-index:10000" aria-label="SignIn Btn">
+    <md-toolbar class="md-primary">
+        <h1 class="md-toolbar-tools">
+            Sign In
+        </h1>
+    </md-toolbar>
+    <md-content ng-controller="AuthenticationController">
+        <form data-ng-submit="signin()" name="projectForm">
+            <md-input-container>
+                <label for="username">Username</label>
+                <input type="text" id="username" required name="username" data-ng-model="credentials.username">
+                <div ng-messages="projectForm.username.$error">
+                    <div ng-message="required">ID is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label for="password">Password</label>
+                <input type="password" required id="password" name="password" data-ng-model="credentials.password">
+                <div ng-messages="projectForm.password.$error">
+                    <div ng-message="required">Password is required.</div>
+                </div>
+            </md-input-container>
+            <div class="md-actions" layout="row">
+                <md-button ng-click="hide()">
+                    Cancel
+                </md-button>
+                <span flex></span>
+                <md-button type="submit" ng-click="">
+                    Sign In
+                </md-button>
+            </div>
+            <div data-ng-show="error" class="text-center text-danger">
+                <strong class="md-body-2" data-ng-bind="error"></strong>
+            </div>
+        </form>
+    </md-content>
+
+</md-dialog>

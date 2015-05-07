@@ -1,0 +1,31 @@
+{
+  "projects":[
+    { "name": "Project1", "date":"Jan 17th", "body": "Create Calculator"},
+    { "name": "Project2", "date":"Jan 24th", "body": "Create Calculator Directive Version" },
+    { "name": "Project3", "date":"Jan 29th", "body": "Testing - Simple Unit test" },
+    { "name": "Project4", "date":"Feb 1st", "body": "Dev - Learning JSON Object" },
+    { "name": "Project5", "date":"Feb 8st", "body": "Create Simple API Method" },
+    { "name": "TC Project", "date": "Mar 12th", "body":"Second Client Meeting"}
+  ],
+
+  "announcements":[
+    {"name":"Introduction", "date":"Apr 1st", "body":"Submission Date"},
+    {"name":"How to use", "date":"Mar 17th", "body":"App Review"},
+    {"name":"Benefits", "date":"Mar 17th", "body":"MongoDB University에서 DB수업이 있습니다. M202: MongoDB Advanced Deployment and Operations, M102: MongoDB for DBAs, M101JS: MongoDB for Node.js Developers"}
+  ],
+
+  "techs":[
+    {"name":"AngularJS", "body":"Expert Level"},
+    {"name":"MongoDB", "body":"Expert Level"},
+    {"name":"Express", "body":"Intermidate Level"},
+    {"name":"NodeJS", "body":"Intermediate Level"},
+    {"name":"GSAP", "body":"Intermediate Level"},
+    {"name":"SVG", "body":"Intermediate Level"},
+    {"name":"SnapSVG", "body":"Beginner--Stop learning(duplicate with GSAP)"},
+    {"name":"Animation", "body":"Expert Level"},
+    {"name":"D3", "body":"Intermediate Level"},
+    {"name":"CSS3", "body":"Expert Level"},
+    {"name":"SCSS", "body":"Intermediate Level"},
+    {"name":"LESS", "body":"Beginner"}
+  ]
+}
