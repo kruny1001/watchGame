@@ -1,23 +1,32 @@
 <section layout="column" style="height:100%;" class="watchGameMain" data-ng-controller="WatchGameController">
 
+    <style>
+        md-sidenav,
+        md-sidenav.md-locked-open,
+        md-sidenav.md-closed.md-locked-open-add-active {
+            min-width: 100px !important;
+            width: 65vw !important;
+            max-width: 250px !important;
+        }
+    </style>
     <section layout="row" flex="">
         <md-sidenav
-                flex
+                flex=""
                 id="sideNav"
-                class="openboard-sidenav md-sidenav-left md-whiteframe-z2
+                class="md-sidenav-left md-whiteframe-z2
                     ng-isolate-scope md-closed md-locked-open"
                 md-is-locked-open="true"
-                style="width:254px; background-color:#CFCFCF; overflow-x: hidden"
+                style="width:150px; background-color:#CFCFCF; overflow-x: hidden"
                 md-component-id="left" tabindex="-1">
-            <div layout="column" flex ng-controller="CoreHeadController">
-                <md-toolbar>
-                    <div class="md-toolbar-tools">
-                        <md-icon md-svg-src="modules/mean-tutorials/img/arrow-left-c.svg"
-                                 class="svg-logotype ng-isolate-scope md-default-theme"
-                                 style="height: 35px;width: 35px;"></md-icon>
-                        <h4 class="md-title" ><b>메뉴</b></h4>
-                    </div>
-                </md-toolbar>
+            <div flex layout="column" flex ng-controller="CoreHeadController">
+                <!--<md-toolbar>-->
+                    <!--<div class="md-toolbar-tools">-->
+                        <!--<md-icon md-svg-src="modules/mean-tutorials/img/arrow-left-c.svg"-->
+                                 <!--class="svg-logotype ng-isolate-scope md-default-theme"-->
+                                 <!--style="height: 35px;width: 35px;"></md-icon>-->
+                        <!--<h4 class="md-title" ><b>메뉴</b></h4>-->
+                    <!--</div>-->
+                <!--</md-toolbar>-->
                 <md-content class="sideNavTiles" style="overflow-x: hidden">
                     <md-grid-list
                             md-cols-sm="2" md-cols-md="2" md-cols-gt-md="2"
