@@ -57,7 +57,7 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 		$timeout(function() {
 			utilityClock(clock);
 			//autoResize(clock, 295 + 32);
-            autoResize(clock, 500);
+            autoResize(clock, 350);
 			choose(clock, [
 				//['hour', ['text', 'text-quarters', 'pill']],
 				['hour', ['text', 'text-quarters', 'pill']],
@@ -77,8 +77,8 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 			});
 
 
-            TweenLite.to('.fill', 2, {x:100})
-            TweenLite.to('.gameCtrl', 2, {x:300})
+            //TweenLite.to('.fill', 2, {x:250})
+            //TweenLite.to('.gameCtrl', 2, {x:300})
             TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
 			//TweenLite.to('.fill', 0.5, {left:'+100px'});
 		}, 500);

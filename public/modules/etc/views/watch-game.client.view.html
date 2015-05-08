@@ -1,25 +1,106 @@
-<section class="watchGameMain" data-ng-controller="WatchGameController">
+<section layout="column" style="height:100%;" class="watchGameMain" data-ng-controller="WatchGameController">
 
-		<div layout="column" layout="center center" class="gameCtrl">
-			<md-button class="md-parimary md-raised" ng-click="startQuiz()">시간 퀴즈</md-button>
-			<md-button class="md-parimary md-raised" ng-click="submitAnswer()">정답 제출 하기</md-button>
-			<md-button class="md-parimary md-raised" ng-click="startQuiz()">정답 확인 하</md-button>
-			<md-button class="md-parimary md-raised" ng-click="setNow()">지금 시각</md-button>
-			<md-button class="md-parimary md-raised" ng-click="submitAnswer()">hour</md-button>
-			<md-button class="md-parimary md-raised">시: {{hourQ}}</md-button>
-			<md-button class="md-parimary md-raised">분: {{minQ}}</md-button>
-			<md-button class="md-parimary md-raised">{{hour}}</md-button>
-			<md-button class="md-parimary md-raised" ng-click="upHour()">+hour</md-button>
-			<md-button class="md-parimary md-raised" ng-click="downHour()">-hour</md-button>
-			<p class="md-caption">
-				hour: {{hourQ}} min: {{minQ}}
-			</p>
-		</div>
+    <section layout="row" flex="">
+        <md-sidenav
+                flex
+                id="sideNav"
+                class="openboard-sidenav md-sidenav-left md-whiteframe-z2
+                    ng-isolate-scope md-closed md-locked-open"
+                md-is-locked-open="$mdMedia('gt-sm')"
+                style="width:254px; background-color:#CFCFCF; overflow-x: hidden"
+                md-component-id="left" tabindex="-1">
+            <div layout="column" flex ng-controller="CoreHeadController">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <md-icon md-svg-src="modules/mean-tutorials/img/arrow-left-c.svg"
+                                 class="svg-logotype ng-isolate-scope md-default-theme"
+                                 style="height: 35px;width: 35px;"></md-icon>
+                        <h4 class="md-title" ><b>메뉴</b></h4>
+                    </div>
+                </md-toolbar>
+                <md-content class="sideNavTiles" style="overflow-x: hidden">
+                    <md-grid-list
+                            md-cols-sm="2" md-cols-md="2" md-cols-gt-md="2"
+                            md-row-height="1:1">
+                        <md-grid-tile
+                                id="profile"
+                                md-rowspan="1"
+                                md-colspan="2"
+                                class="green"
+                                ng-click="sliderNavEvent('Profile', 'profile')">
+                            <md-icon md-svg-src="modules/d2l/img/flat-svg/settings.svg"></md-icon>
+                            <md-grid-tile-footer><h3> 시간퀴즈</h3></md-grid-tile-footer>
+                        </md-grid-tile>
 
-    <!--<div id="chooser">-->
-    <!--&lt;!&ndash;<md-button style="color:black" class="md-title md-primary md-raised" ng-click="animate()">Start</md-button>&ndash;&gt;-->
-<!--</div>-->
-    <div class="fill">
+                        <md-grid-tile
+                                ng-if="!authentication.user"
+                                id="signIn"
+                                md-rowspan="1"
+                                md-colspan="1"
+                                class="green"
+                                ng-click="sliderNavEvent('Sign In', 'signIn')">
+                            <md-icon md-svg-src="modules/mean-tutorials/img/grid.svg"></md-icon>
+                            <md-grid-tile-footer><h3>시 +</h3></md-grid-tile-footer>
+                        </md-grid-tile>
+
+                        <md-grid-tile
+                                id="tutorial"
+                                md-rowspan="1"
+                                md-colspan="1"
+                                class="blue"
+                                ng-click="sliderNavEvent('Tutorial', 'tutorial')">
+                            <md-icon md-svg-src="modules/mean-tutorials/img/briefcase.svg"></md-icon>
+                            <md-grid-tile-footer><h3>시 -</h3></md-grid-tile-footer>
+                        </md-grid-tile>
+
+                        <md-grid-tile
+                                id="signOut"
+                                md-rowspan="1"
+                                md-colspan="1"
+                                class="darkBlue"
+                                ng-click="sliderNavEvent('Sign Out', 'signOut')">
+                            <md-icon md-svg-icon="avatar:svg-3"></md-icon>
+                            <md-grid-tile-footer><h3>분 +</h3></md-grid-tile-footer>
+                        </md-grid-tile>
+                        <md-grid-tile
+                                id="signOut2"
+                                md-rowspan="1"
+                                md-colspan="1"
+                                class="darkBlue"
+                                ng-click="sliderNavEvent('Sign Out', 'signOut')">
+                            <md-icon md-svg-icon="avatar:svg-3"></md-icon>
+                            <md-grid-tile-footer><h3>분 -</h3></md-grid-tile-footer>
+                        </md-grid-tile>
+
+                    </md-grid-list>
+                </md-content>
+                <!--<div style="  position: inherit;-->
+                <!--margin-top: 20px;-->
+                <!--margin-left: 5px;">Icons are licenced by Web App (http://icons8.com)</div>-->
+            </div>
+        </md-sidenav>
+
+            <!--<div layout="column" layout="center center" class="gameCtrl">-->
+                <!--<md-button class="md-parimary md-raised" ng-click="startQuiz()">시간 퀴즈</md-button>-->
+                <!--<md-button class="md-parimary md-raised" ng-click="submitAnswer()">정답 제출 하기</md-button>-->
+                <!--&lt;!&ndash;<md-button class="md-parimary md-raised" ng-click="startQuiz()">정답 확인 하</md-button>&ndash;&gt;-->
+                <!--<md-button class="md-parimary md-raised" ng-click="setNow()">지금 시각</md-button>-->
+                <!--&lt;!&ndash;<md-button class="md-parimary md-raised" ng-click="submitAnswer()">hour</md-button>&ndash;&gt;-->
+                <!--<md-button class="md-parimary md-raised">시: {{hourQ}}</md-button>-->
+                <!--&lt;!&ndash;<md-button class="md-parimary md-raised">분: {{minQ}}</md-button>&ndash;&gt;-->
+                <!--&lt;!&ndash;<md-button class="md-parimary md-raised">{{hour}}</md-button>&ndash;&gt;-->
+                <!--<md-button class="md-parimary md-raised" ng-click="upHour()">+hour</md-button>-->
+                <!--<md-button class="md-parimary md-raised" ng-click="downHour()">-hour</md-button>-->
+                <!--<p class="md-caption">-->
+                    <!--hour: {{hourQ}} min: {{minQ}}-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--<div id="chooser">-->
+        <!--&lt;!&ndash;<md-button style="color:black" class="md-title md-primary md-raised" ng-click="animate()">Start</md-button>&ndash;&gt;-->
+    <!--</div>-->
+
+        <md-content flex="" layout-padding="">
+            <div class="fill">
         <div class="clock
               hour-style-text
               hour-text-style-large
@@ -50,4 +131,6 @@
             </div>
         </div>
     </div>
+        </md-content>
+    </section>
 </section>
