@@ -781,8 +781,8 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 		var clock = document.querySelector('#utility-clock');
 		$timeout(function() {
 			utilityClock(clock);
-			//autoResize(clock, 295 + 32);
-            autoResize(clock, 350);
+			autoResize(clock, 295 + 32);
+			//autoResize(clock, 350);
 			choose(clock, [
 				//['hour', ['text', 'text-quarters', 'pill']],
 				['hour', ['text', 'text-quarters', 'pill']],
@@ -900,12 +900,15 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 		}
 
 		function autoResize(element, nativeSize) {
+			console.log("update size");
 			var update = function() {
 				var parent = element.offsetParent
 				var scale = Math.min(parent.offsetWidth, parent.offsetHeight) / nativeSize;
 				element.style.transform = element.style.webkitTransform = 'scale(' + scale.toFixed(3) + ')'
+
 			}
 			update();
+
 			window.addEventListener('resize', update)
 		}
 
