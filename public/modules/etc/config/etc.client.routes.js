@@ -6,7 +6,7 @@ angular.module('etc').config(['$stateProvider',
 		// Etc state routing
 		$stateProvider.
 		state('watch-game', {
-			url: '/watch-game',
+			url: '/',
 			templateUrl: 'modules/etc/views/watch-game.client.view.html'
 		}).
 		state('wigs', {

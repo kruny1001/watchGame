@@ -663,7 +663,7 @@ angular.module('etc').config(['$stateProvider',
 		// Etc state routing
 		$stateProvider.
 		state('watch-game', {
-			url: '/watch-game',
+			url: '/',
 			templateUrl: 'modules/etc/views/watch-game.client.view.html'
 		}).
 		state('wigs', {
@@ -1042,7 +1042,7 @@ angular.module('etc').controller('WigsController', ['$scope',
 'use strict';
 
 angular.module('etc').directive('colorPicker', [
-	function() {
+	function() {
 		ColorPickerCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/color-picker.html',
@@ -1138,7 +1138,7 @@ angular.module('etc').directive('colorPicker', [
 'use strict';
 
 angular.module('etc').directive('gallery', [
-	function() {
+	function() {
         galleryCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/gallery.html',
@@ -1183,7 +1183,7 @@ angular.module('etc').directive('gallery', [
 'use strict';
 
 angular.module('etc').directive('productDetail', [
-	function() {
+	function() {
 		ProductDetailCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/product-detail.html',
@@ -1238,7 +1238,7 @@ angular.module('mean-tutorials').config(['$stateProvider',
                 templateUrl: 'modules/mean-tutorials/views/project1.client.view.html'
             }).
             state('mean-home', {
-			        url: '/',
+			        url: '/home',
 			        templateUrl: 'modules/mean-tutorials/views/mean-home.client.view.html'
 			        //views:{
 				       // "":{templateUrl: 'modules/mean-tutorials/views/mean-home.client.view.html'},

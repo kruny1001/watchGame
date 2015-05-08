@@ -36,7 +36,7 @@ angular.module('mean-tutorials').config(['$stateProvider',
                 templateUrl: 'modules/mean-tutorials/views/project1.client.view.html'
             }).
             state('mean-home', {
-			        url: '/',
+			        url: '/home',
 			        templateUrl: 'modules/mean-tutorials/views/mean-home.client.view.html'
 			        //views:{
 				       // "":{templateUrl: 'modules/mean-tutorials/views/mean-home.client.view.html'},
