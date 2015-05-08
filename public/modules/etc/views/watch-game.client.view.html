@@ -1,4 +1,9 @@
-<section layout="column" style="height:100%;" class="watchGameMain" data-ng-controller="WatchGameController">
+<div style="height:100%;" class="watchGameMain" data-ng-controller="WatchGameController">
+
+    <audio>
+        <source src="modules/etc/sound/tick.mp3"></source>
+        Your browser isn't invited for super fun audio time.
+    </audio>
 
     <style>
         md-sidenav,
@@ -9,16 +14,17 @@
             max-width: 250px !important;
         }
     </style>
-    <section layout="row" flex="">
+
+    <section layout="row"  style="height:100%;">
         <md-sidenav
                 flex=""
                 id="sideNav"
                 class="md-sidenav-left md-whiteframe-z2
                     ng-isolate-scope md-closed md-locked-open"
                 md-is-locked-open="true"
-                style="width:150px; background-color:#CFCFCF; overflow-x: hidden"
+                style="background-color:#CFCFCF; overflow-x: hidden"
                 md-component-id="left" tabindex="-1">
-            <div flex layout="column" flex ng-controller="CoreHeadController">
+            <div flex layout="column" flex>
                 <!--<md-toolbar>-->
                     <!--<div class="md-toolbar-tools">-->
                         <!--<md-icon md-svg-src="modules/mean-tutorials/img/arrow-left-c.svg"-->
@@ -36,9 +42,9 @@
                                 md-rowspan="1"
                                 md-colspan="2"
                                 class="green"
-                                ng-click="sliderNavEvent('Profile', 'profile')">
-                            <md-icon md-svg-src="modules/d2l/img/flat-svg/settings.svg"></md-icon>
-                            <md-grid-tile-footer><h3> 시간퀴즈</h3></md-grid-tile-footer>
+                                ng-click="menu('start')">
+                            <h3 class="md-title"><b>{{quiz}}</b></h3>
+                            <md-grid-tile-footer><h3>시간퀴즈</h3></md-grid-tile-footer>
                         </md-grid-tile>
 
                         <md-grid-tile
@@ -47,7 +53,7 @@
                                 md-rowspan="1"
                                 md-colspan="1"
                                 class="green"
-                                ng-click="sliderNavEvent('Sign In', 'signIn')">
+                                ng-click="rotationArm('hh', '+')">
                             <md-icon md-svg-src="modules/mean-tutorials/img/grid.svg"></md-icon>
                             <md-grid-tile-footer><h3>시 +</h3></md-grid-tile-footer>
                         </md-grid-tile>
@@ -57,7 +63,7 @@
                                 md-rowspan="1"
                                 md-colspan="1"
                                 class="blue"
-                                ng-click="sliderNavEvent('Tutorial', 'tutorial')">
+                                ng-click="rotationArm('hh', '-')">
                             <md-icon md-svg-src="modules/mean-tutorials/img/briefcase.svg"></md-icon>
                             <md-grid-tile-footer><h3>시 -</h3></md-grid-tile-footer>
                         </md-grid-tile>
@@ -67,7 +73,7 @@
                                 md-rowspan="1"
                                 md-colspan="1"
                                 class="darkBlue"
-                                ng-click="sliderNavEvent('Sign Out', 'signOut')">
+                                ng-click="rotationArm('mm', '+')">
                             <md-icon md-svg-icon="avatar:svg-3"></md-icon>
                             <md-grid-tile-footer><h3>분 +</h3></md-grid-tile-footer>
                         </md-grid-tile>
@@ -76,7 +82,7 @@
                                 md-rowspan="1"
                                 md-colspan="1"
                                 class="darkBlue"
-                                ng-click="sliderNavEvent('Sign Out', 'signOut')">
+                                ng-click="rotationArm('mm', '-')">
                             <md-icon md-svg-icon="avatar:svg-3"></md-icon>
                             <md-grid-tile-footer><h3>분 -</h3></md-grid-tile-footer>
                         </md-grid-tile>
@@ -105,41 +111,38 @@
                 <!--</p>-->
             <!--</div>-->
         <!--<div id="chooser">-->
-        <!--&lt;!&ndash;<md-button style="color:black" class="md-title md-primary md-raised" ng-click="animate()">Start</md-button>&ndash;&gt;-->
-    <!--</div>-->
+            <!--&lt;!&ndash;<md-button style="color:black" class="md-title md-primary md-raised" ng-click="animate()">Start</md-button>&ndash;&gt;-->
+        <!--</div>-->
 
-        <md-content flex="" layout-padding="">
+        <md-content flex="" >
             <div class="fill">
-        <div class="clock
-              hour-style-text
-              hour-text-style-large
-              hour-display-style-all
-              minute-style-dot
-              minute-display-style-fine-2
-              minute-text-style-outside
-              hand-style-hollow
-              " id="utility-clock">
-            <div class="centre">
-                <div class="dynamic"></div>
-                <div class="expand round circle-1"></div>
+                <div class="clock
+                      hour-style-text
+                      hour-text-style-large
+                      hour-display-style-all
+                      minute-style-dot
+                      minute-display-style-fine-2
+                      minute-text-style-outside
+                      hand-style-hollow
+                      " id="utility-clock">
+                    <div class="centre">
+                        <div class="dynamic"></div>
+                        <div class="expand round circle-1"></div>
 
-                <div id="hourC" class="anchor hour">
-                    <div class="element thin-hand"></div>
-                    <div class="element fat-hand"></div>
-                </div>
+                        <div id="hourC" class="anchor hour">
+                            <div class="element thin-hand"></div>
+                            <div class="element fat-hand"></div>
+                        </div>
 
-                <div id="minC" class="anchor minute">
-                    <div class="element thin-hand"></div>
-                    <div class="element fat-hand minute-hand"></div>
+                        <div id="minC" class="anchor minute">
+                            <div class="element thin-hand"></div>
+                            <div class="element fat-hand minute-hand"></div>
+                        </div>
+
+                        <div class="expand round circle-2"></div>
+                    </div>
                 </div>
-                <!--<div id="secC" class="anchor second">-->
-                <!--<div id="secBarF" class="element second-hand second-hand-front"></div>-->
-                <!--<div id="secBarE" class="element second-hand second-hand-back"></div>-->
-                <!--</div>-->
-                <div class="expand round circle-2"></div>
             </div>
-        </div>
-    </div>
         </md-content>
     </section>
-</section>
+</div>

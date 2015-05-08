@@ -2,17 +2,29 @@
 
 angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog',
 	function($scope, $timeout, $mdDialog) {
-
+        $scope.menu = function(name){
+            if(name="start")
+                $scope.startQuiz();
+        };
 		$scope.hourQ = 0;
 		$scope.minQ = 0;
-
-		$scope.upHour = function(){
-			TweenMax.to('#hourC', 0.5, {rotation: "+=30"});
-		};
-
-		$scope.downHour = function(){
-			TweenMax.to('#hourC', 0.5, {rotation: "-=30"});
-		};
+        $scope.rotationArm = function(target, op){
+            if(target == "hh"){
+                if(op == "+"){
+                    TweenMax.to('#hourC', 0.5, {rotation: "+=30"});
+                }
+                else
+                    TweenMax.to('#hourC', 0.5, {rotation: "-=30"});
+            }
+            else if(target == "mm"){
+                if(op == "+")
+                    TweenMax.to('#minC', 0.5, {rotation: "+=6"});
+                else
+                    TweenMax.to('#minC', 0.5, {rotation: "-=6"});
+            }
+            var audio = document.getElementsByTagName("audio")[0];
+            audio.play();
+        };
 
 		$scope.startQuiz = function(ev){
 				var randHour = Math.floor((Math.random() * 12) + 1);
@@ -20,6 +32,7 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 				$scope.hourQ = randHour;
 				$scope.minQ = randMin;
 			  var quizContent = randHour+'시 '+randMin+'분에 맞춰주세요.';
+              $scope.quiz = randHour+'시 '+randMin+'분';
 				$mdDialog.show(
 					$mdDialog.alert()
 						.parent(angular.element(document.body))
