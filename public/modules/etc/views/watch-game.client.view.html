@@ -1,6 +1,5 @@
-<section class="watchGameMain" style="" data-ng-controller="WatchGameController">
-	<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ThrowPropsPlugin.min.js"></script>
-	<div layout="row" layout-wrap>
+<section class="watchGameMain" data-ng-controller="WatchGameController">
+
 		<div layout="column" layout="center center" class="gameCtrl">
 			<md-button class="md-parimary md-raised" ng-click="startQuiz()">시간 퀴즈</md-button>
 			<md-button class="md-parimary md-raised" ng-click="submitAnswer()">정답 제출 하기</md-button>
@@ -17,12 +16,11 @@
 			</p>
 		</div>
 
-		<div flex="90">
-			<div id="chooser">
-				<!--<md-button style="color:black" class="md-title md-primary md-raised" ng-click="animate()">Start</md-button>-->
-			</div>
-				<div class="fill">
-					<div class="clock
+    <!--<div id="chooser">-->
+    <!--&lt;!&ndash;<md-button style="color:black" class="md-title md-primary md-raised" ng-click="animate()">Start</md-button>&ndash;&gt;-->
+<!--</div>-->
+    <div class="fill">
+        <div class="clock
               hour-style-text
               hour-text-style-large
               hour-display-style-all
@@ -31,29 +29,25 @@
               minute-text-style-outside
               hand-style-hollow
               " id="utility-clock">
-						<div class="centre">
-							<div class="dynamic"></div>
-							<div class="expand round circle-1"></div>
+            <div class="centre">
+                <div class="dynamic"></div>
+                <div class="expand round circle-1"></div>
 
-							<div id="hourC" class="anchor hour">
-								<div class="element thin-hand"></div>
-								<div class="element fat-hand"></div>
-							</div>
+                <div id="hourC" class="anchor hour">
+                    <div class="element thin-hand"></div>
+                    <div class="element fat-hand"></div>
+                </div>
 
-							<div id="minC" class="anchor minute">
-								<div class="element thin-hand"></div>
-								<div class="element fat-hand minute-hand"></div>
-							</div>
-							<!--<div id="secC" class="anchor second">-->
-							<!--<div id="secBarF" class="element second-hand second-hand-front"></div>-->
-							<!--<div id="secBarE" class="element second-hand second-hand-back"></div>-->
-							<!--</div>-->
-							<div class="expand round circle-2"></div>
-						</div>
-					</div>
-				</div>
-
-
-		</div>
-	</div>
+                <div id="minC" class="anchor minute">
+                    <div class="element thin-hand"></div>
+                    <div class="element fat-hand minute-hand"></div>
+                </div>
+                <!--<div id="secC" class="anchor second">-->
+                <!--<div id="secBarF" class="element second-hand second-hand-front"></div>-->
+                <!--<div id="secBarE" class="element second-hand second-hand-back"></div>-->
+                <!--</div>-->
+                <div class="expand round circle-2"></div>
+            </div>
+        </div>
+    </div>
 </section>

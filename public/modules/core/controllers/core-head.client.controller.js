@@ -2,11 +2,8 @@
 
 angular.module('core').controller('CoreHeadController',coreHeadCtrl);
 
-
-
-
-function coreHeadCtrl($scope, $rootScope,$window, $mdSidenav, $location, $state, $timeout) {
-  $scope.title = "Open Board";
+function coreHeadCtrl($scope, $rootScope,$window, $mdSidenav, $location, $state, $timeout, $log) {
+  $scope.title = "시간여행";
   $scope.subTitle = "";
   $scope.link = "";
   $scope.classroom = false;

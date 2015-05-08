@@ -1,102 +1,52 @@
-<section data-ng-controller="EtcController">
-	<div ng-controller="SizeUtil.sizeOfWidthController" class="size-util-sizeOfWidth">{{width}}px<br/> {{screen}}</div>
+<section class="watchGameMain" data-ng-controller="WatchGameController">
 
-	<div layout="column">
-		<div layout="row" layout-sm="column" layout-align="center start">
-			<md-whiteframe
-				flex="75"
-				flex-sm="90"
-				class="md-whiteframe-z2 meanT-home-card ob-underbar-base"
-				layout="column" layout-align="space-around start">
-				<product-detail style="width:100%;"></product-detail>
-			</md-whiteframe>
-			<div layout="column" flex="20">
-				<md-whiteframe
-						hide-sm
-						class="md-whiteframe-z2 meanT-home-card ob-underbar-base"
-						layout="column" layout-align="space-around start">
-					Relating Products
-				</md-whiteframe>
-				<md-whiteframe
-						hide-sm
-						class="md-whiteframe-z2 meanT-home-card ob-underbar-yellow"
-						layout="column" layout-align="space-around start">
-					Relating Products
-				</md-whiteframe>
-				<md-whiteframe
-						hide-sm
-						class="md-whiteframe-z2 meanT-home-card ob-underbar-dark"
-						layout="column" layout-align="space-around start">
-					Relating Products
-				</md-whiteframe>
-				<md-whiteframe
-						hide-sm
-						class="md-whiteframe-z2 meanT-home-card ob-underbar-green"
-						layout="column" layout-align="space-around start">
-					Relating Products
-				</md-whiteframe>
-			</div>
-		</div>
+        <!--<md-button class="md-parimary md-raised" ng-click="startQuiz()">시간 퀴즈</md-button>-->
+        <!--<md-button class="md-parimary md-raised" ng-click="submitAnswer()">정답 제출 하기</md-button>-->
+        <!--<md-button class="md-parimary md-raised" ng-click="startQuiz()">정답 확인 하</md-button>-->
+        <!--<md-button class="md-parimary md-raised" ng-click="setNow()">지금 시각</md-button>-->
+        <!--<md-button class="md-parimary md-raised" ng-click="submitAnswer()">hour</md-button>-->
+        <!--<md-button class="md-parimary md-raised">시: {{hourQ}}</md-button>-->
+        <!--<md-button class="md-parimary md-raised">분: {{minQ}}</md-button>-->
+        <!--<md-button class="md-parimary md-raised">{{hour}}</md-button>-->
+        <!--<md-button class="md-parimary md-raised" ng-click="upHour()">+hour</md-button>-->
+        <!--<md-button class="md-parimary md-raised" ng-click="downHour()">-hour</md-button>-->
+        <!--<p class="md-caption">-->
+            <!--hour: {{hourQ}} min: {{minQ}}-->
+        <!--</p>-->
+    <!--</div>-->
 
-		<md-whiteframe
+    <div id="chooser"></div>
 
-				class="md-whiteframe-z2 meanT-home-card ob-underbar-yellow"
-				layout="column" layout-align="space-around start">
-			<p class="md-body-1">
-				How to use
+    <div class="fill">
 
-				Products List(Demo)
-				<md-button class="md-primary md-raised">
-					<a style="color:white" ui-sref="createEtcProduct">Create New Product</a>
-				</md-button>
+        <div class="clock
+              hour-style-text
+              hour-text-style-large
+              hour-display-style-all
+              minute-style-dot
+              minute-display-style-fine-2
+              minute-text-style-outside
+              hand-style-hollow
+              " id="utility-clock">
+            <div class="centre">
+                <div class="dynamic"></div>
+                <div class="expand round circle-1"></div>
 
-				<md-button class="md-primary md-raised">
-					<a style="color:white" ui-sref="listEtcProducts">List Products</a>
-				</md-button>
-			</p>
+                <div id="hourC" class="anchor hour">
+                    <div class="element thin-hand"></div>
+                    <div class="element fat-hand"></div>
+                </div>
 
-
-		</md-whiteframe>
-		<md-whiteframe
-
-				class="md-whiteframe-z2 meanT-home-card ob-underbar-red"
-				layout="column" layout-align="space-around start">
-			Product Review
-
-			<md-subheader class="md-no-sticky">3 line item</md-subheader>
-			<md-list-item class="md-3-line" ng-repeat="item in todos">
-				<img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" />
-				<div class="md-list-item-text">
-					<h3>{{ item.who }}</h3>
-					<h4>{{ item.what }}</h4>
-					<p>{{ item.notes }}</p>
-				</div>
-			</md-list-item>
-			<md-divider ></md-divider>
-			<md-subheader class="md-no-sticky">3 line item, long paragraph (see on mobile)</md-subheader>
-			<md-list-item class="md-3-line">
-				<img ng-src="{{todos[0].face}}?25" class="md-avatar" alt="{{todos[0].who}}" />
-				<div class="md-list-item-text">
-					<h3>{{ todos[0].who }}</h3>
-					<p>Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.</p>
-				</div>
-			</md-list-item>
-			<md-divider ></md-divider>
-
-		</md-whiteframe>
-		<md-whiteframe
-
-				class="md-whiteframe-z2 meanT-home-card ob-underbar-green"
-				layout="column" layout-align="space-around start">
-			Video review
-		</md-whiteframe>
-
-	</div>
-    <!--<md-whiteframe-->
-
-		<!--class="md-whiteframe-z2 meanT-home-card ob-underbar-base"-->
-        <!--layout="column" layout-align="space-around start">-->
-        <!--<h3>Image List</h3>-->
-        <!--<gallery style="width:100%"></gallery>-->
-    <!--</md-whiteframe>-->
+                <div id="minC" class="anchor minute">
+                    <div class="element thin-hand"></div>
+                    <div class="element fat-hand minute-hand"></div>
+                </div>
+                <!--<div id="secC" class="anchor second">-->
+                <!--<div id="secBarF" class="element second-hand second-hand-front"></div>-->
+                <!--<div id="secBarE" class="element second-hand second-hand-back"></div>-->
+                <!--</div>-->
+                <div class="expand round circle-2"></div>
+            </div>
+        </div>
+    </div>
 </section>

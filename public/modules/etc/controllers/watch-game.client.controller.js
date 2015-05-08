@@ -56,7 +56,8 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 		var clock = document.querySelector('#utility-clock');
 		$timeout(function() {
 			utilityClock(clock);
-			autoResize(clock, 295 + 32);
+			//autoResize(clock, 295 + 32);
+            autoResize(clock, 500);
 			choose(clock, [
 				//['hour', ['text', 'text-quarters', 'pill']],
 				['hour', ['text', 'text-quarters', 'pill']],
@@ -67,41 +68,20 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 				['minute-text', ['inside', 'outside', 'none']],
 				['hand', ['normal', 'hollow']]
 			]);
-			var hourRotationSnap = 30;
-			var minRotationSnap = 18;
 
 			Draggable.create("#minC", {
-				type: "rotation", throwProps: true,
-				snap:function(endValue) {
-					//this function gets called when the mouse/finger is released and it plots where rotation should normally end and we can alter that value and return a new one instead. This gives us an easy way to apply custom snapping behavior with any logic we want. In this case, just make sure the end value snaps to 90-degree increments but only when the "snap" checkbox is selected.
-					return Math.round(endValue / minRotationSnap) * minRotationSnap;
-				}
+				type: "rotation", throwProps: true
 			});
-			//Draggable.create("#hourC", {
-			//	type: "rotation", throwProps: true,
-			//	snap:function(endValue) {
-			//		//this function gets called when the mouse/finger is released and it plots where rotation should normally end and we can alter that value and return a new one instead. This gives us an easy way to apply custom snapping behavior with any logic we want. In this case, just make sure the end value snaps to 90-degree increments but only when the "snap" checkbox is selected.
-			//		return Math.round(endValue / hourRotationSnap) * hourRotationSnap;
-			//	}
-			//});
-
-
 			Draggable.create("#hourC", {
-				type:"rotation",
-				throwProps:true,
-				edgeResistance:0.85,
-				bounds:{minRotation:0, maxRotation:360},
-				//onDragStart:killTweens,
-				//onDrag: onRotateKnob,
-				//onThrowUpdate: onRotateKnob,
-				snap: function(endValue) {
-					var step = 90;
-					return Math.round( endValue / step) * step;
-				}
+				type: "rotation", throwProps: true
 			});
 
-			TweenLite.to('.fill', 0.5, {left:'+100px'});
-		}, 100);
+
+            TweenLite.to('.fill', 2, {x:100})
+            TweenLite.to('.gameCtrl', 2, {x:300})
+            TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
+			//TweenLite.to('.fill', 0.5, {left:'+100px'});
+		}, 500);
 
 		function utilityClock(container) {
 
@@ -189,23 +169,18 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 				rotate(hourElement, $scope.time / 60 / 12)
 				requestAnimationFrame($scope.animate);
 			};
-
-
-
 			for (var i = 1 / 4; i <= 60; i += 1 / 4) minute(i)
 			for (var i = 1; i <= 12; i ++) hour(i)
-
 			$scope.animate();
-
 		}
 
 		function autoResize(element, nativeSize) {
 			var update = function() {
 				var parent = element.offsetParent
-				var scale = Math.min(parent.offsetWidth, parent.offsetHeight) / nativeSize
+				var scale = Math.min(parent.offsetWidth, parent.offsetHeight) / nativeSize;
 				element.style.transform = element.style.webkitTransform = 'scale(' + scale.toFixed(3) + ')'
 			}
-			update()
+			update();
 			window.addEventListener('resize', update)
 		}
 
@@ -216,8 +191,8 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 				var styles = item[1]
 				var element = document.createElement('div')
 				element.addEventListener('click', click, false)
-				update()
-				chooser.appendChild(element)
+				update();
+				//chooser.appendChild(element)
 				function update() {
 					element.innerHTML = name + '-style-<b>' + getValue() + '</b>'
 				}

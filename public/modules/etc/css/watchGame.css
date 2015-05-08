@@ -1,8 +1,8 @@
 .watchGameMain .fill {
     position: absolute;
     background-color: #18303d;
-    height: auto;
-    width: auto;
+    /*height: auto;*/
+    /*width: auto;*/
     top: 0;
     right: 0;
     bottom: 0;
@@ -260,7 +260,7 @@
     font: 10px Verdana, sans-serif;
     position: absolute;
     top: 4px;
-    left: 106px;
+
     color: #fff6f2;
     z-index: 1;
     opacity: 0.5;
@@ -278,7 +278,7 @@
 
 .gameCtrl{
     background-color:salmon;
-    position: absolute;
+    position: fixed;
     width:105px;
     height:100%;
     left:0;
