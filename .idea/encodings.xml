@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/public/modules/core/controllers/core-head.client.controller.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/public/modules/core/views/sideNav.client.view.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/public/modules/etc/views/etc.client.view.html" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/public/modules/etc/views/menu.client.view.html" charset="UTF-8" />
   </component>
 </project>

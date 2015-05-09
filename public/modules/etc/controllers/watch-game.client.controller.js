@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog',
-	function($scope, $timeout, $mdDialog) {
+angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog','$state',
+	function($scope, $timeout, $mdDialog, $state) {
+        $scope.goTo = function(name){
+            $state.go(name);
+        }
         $scope.menu = function(name){
             if(name="start")
                 $scope.startQuiz();
@@ -69,7 +72,7 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 		var clock = document.querySelector('#utility-clock');
 		$timeout(function() {
 			utilityClock(clock);
-			autoResize(clock, 295 + 32);
+			autoResize(clock, 500);
 			//autoResize(clock, 350);
 			choose(clock, [
 				//['hour', ['text', 'text-quarters', 'pill']],
