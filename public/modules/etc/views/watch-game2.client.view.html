@@ -1,0 +1,137 @@
+<div layout="column" layout-fill class="watchGameMain" data-ng-controller="WatchGame2Controller">
+
+    <md-toolbar class="md-accent" style="background-color: rgba(91, 255, 72, 0.59); color:white;">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings">
+                <md-icon md-svg-icon="modules/mean-tutorials/img/menu.svg"></md-icon>
+            </md-button>
+            <h2 class="md-toolbar-tools md-title">
+                <span><b>시침이와 분침이의 인성시계 놀이</b></span>
+            </h2>
+            <div class="class-menu">
+
+                <md-button class="md-fab md-warn " aria-label="Eat cake" ng-click="goTo('menu')">
+                    <md-icon md-svg-src="modules/core/img/svg/navicon-round.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <section layout="row" layout-fill style="height:100%; position: absolute;">
+        <md-sidenav
+                flex
+                id="sideNav"
+                class="md-sidenav-left md-whiteframe-z2
+                    ng-isolate-scope md-closed md-locked-open"
+                md-is-locked-open="true"
+                style="background-color:#CFCFCF; overflow-x: hidden"
+                md-component-id="left" tabindex="-1">
+            <div flex layout="column" flex>
+                <md-grid-list
+                        class="sideNavTiles"
+                        md-cols-sm="2" md-cols-md="2" md-cols-gt-md="2"
+                        md-row-height="1:1">
+                    <md-grid-tile
+                            id="profile"
+                            md-rowspan="1"
+                            md-colspan="2"
+                            class="green"
+                            ng-click="menu('start')">
+                        <p ng-if="quiz == null">시침이와 분침이를<br>
+                            돌려라!!</p>
+                        <h3 class="md-title"><b>{{quiz}}</b></h3>
+                        <md-grid-tile-footer><h3>시침이와 분침이를 돌려라!!</h3></md-grid-tile-footer>
+                    </md-grid-tile>
+
+                    <md-grid-tile
+                            ng-if="!authentication.user"
+                            id="signIn"
+                            md-rowspan="1"
+                            md-colspan="1"
+                            class="green"
+                            ng-click="rotationArm('hh', '+')">
+                        <p>시침이Go!</p>
+                        <!--<md-icon md-svg-src="modules/mean-tutorials/img/grid.svg"></md-icon>-->
+                        <md-grid-tile-footer><h3>시침이Go!</h3></md-grid-tile-footer>
+                    </md-grid-tile>
+
+                    <md-grid-tile
+                            id="tutorial"
+                            md-rowspan="1"
+                            md-colspan="1"
+                            class="blue"
+                            ng-click="rotationArm('hh', '-')">
+                        <p>분침이Go!</p>
+                        <!--<md-icon md-svg-src="modules/mean-tutorials/img/briefcase.svg"></md-icon>-->
+                        <md-grid-tile-footer><h3>시침이Go!</h3></md-grid-tile-footer>
+                    </md-grid-tile>
+
+                    <md-grid-tile
+                            id="signOut"
+                            md-rowspan="1"
+                            md-colspan="1"
+                            class="darkBlue"
+                            ng-click="rotationArm('mm', '+')">
+
+                        <md-grid-tile-footer><h3>분침이 Go!</h3></md-grid-tile-footer>
+                    </md-grid-tile>
+                    <md-grid-tile
+                            id="signOut2"
+                            md-rowspan="1"
+                            md-colspan="1"
+                            class="darkBlue"
+                            ng-click="rotationArm('mm', '-')">
+
+                        <md-grid-tile-footer><h3>분침이 Go!</h3></md-grid-tile-footer>
+                    </md-grid-tile>
+
+                    <md-grid-tile
+                            id="t123"
+                            md-rowspan="1"
+                            md-colspan="2"
+                            class="blue"
+                            ng-click="rotationArm('hh', '-')">
+                        <p>시침이 + 분침이</p>
+                        <!--<md-icon md-svg-src="modules/mean-tutorials/img/briefcase.svg"></md-icon>-->
+                        <md-grid-tile-footer><h3>시 -</h3></md-grid-tile-footer>
+                    </md-grid-tile>
+
+                </md-grid-list>
+                <!--</md-content>-->
+                <!--<div style="  position: inherit;-->
+                <!--margin-top: 20px;-->
+                <!--margin-left: 5px;">Icons are licenced by Web App (http://icons8.com)</div>-->
+            </div>
+        </md-sidenav>
+        <md-content flex="" >
+            <div class="fill svgBack">
+                <div class="clock
+                      hour-style-text
+                      hour-text-style-large
+                      hour-display-style-all
+                      minute-style-dot
+                      minute-display-style-fine-2
+                      minute-text-style-outside
+                      hand-style-hollow
+                      " id="utility-clock">
+                    <div class="centre">
+                        <div class="dynamic"></div>
+                        <div class="expand round circle-1"></div>
+
+                        <div id="hourC" class="anchor hour">
+                            <div class="element thin-hand"></div>
+                            <div class="element fat-hand"></div>
+                        </div>
+
+                        <div id="minC" class="anchor minute">
+                            <div class="element thin-hand"></div>
+                            <div class="element fat-hand minute-hand"></div>
+                        </div>
+
+                        <div class="expand round circle-2"></div>
+                    </div>
+                </div>
+            </div>
+</div>
+</section>
+</div>

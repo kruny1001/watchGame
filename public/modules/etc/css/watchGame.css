@@ -298,8 +298,8 @@
 
 
 .subMenu{
-    text-align: center;
     max-width: 500px;
+    min-width: 300px;
     margin:20px;
     margin-left:auto;
     margin-right:auto;

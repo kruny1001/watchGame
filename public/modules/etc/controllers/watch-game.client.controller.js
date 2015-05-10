@@ -4,6 +4,7 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 	function($scope, $timeout, $mdDialog, $state) {
         $scope.goTo = function(name){
             $state.go(name);
+            console.log(name);
         }
         $scope.menu = function(name){
             if(name="start")
