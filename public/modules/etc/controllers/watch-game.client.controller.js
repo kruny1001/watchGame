@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog','$state',
-	function($scope, $timeout, $mdDialog, $state) {
+angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog','$state','$mdToast',
+	function($scope, $timeout, $mdDialog, $state, $mdToast) {
         $scope.goTo = function(name){
             $state.go(name);
             console.log(name);
@@ -50,24 +50,49 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 
 		$scope.submitAnswer = function(ev){
 
+            $scope.toastPosition = {
+                bottom: true,
+                top: false,
+                left: false,
+                right: true
+            };
+
+
+
+            $scope.getToastPosition = function() {
+                return Object.keys($scope.toastPosition)
+                    .filter(function(pos) { return $scope.toastPosition[pos]; })
+                    .join(' ');
+            };
+
+            $scope.showSimpleToast = function(msg) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content(msg)
+                        .position($scope.getToastPosition())
+                        .hideDelay(3000)
+                );
+            };
+
 			$scope.getCurrentHour();
 			var quizContent = ''
 			if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
-				quizContent = '정답입니다.';
+                quizContent = '정답입니다.';
+
 			}
 			else{
 				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.';
 			}
-
-			$mdDialog.show(
-				$mdDialog.alert()
-					.parent(angular.element(document.body))
-					.title('퀴즈를 시작합니다.')
-					.content(quizContent)
-					.ariaLabel('Alert Dialog Demo')
-					.ok('시작하기')
-					.targetEvent(ev)
-			);
+            $scope.showSimpleToast(quizContent);
+			//$mdDialog.show(
+			//	$mdDialog.alert()
+			//		.parent(angular.element(document.body))
+			//		.title('퀴즈를 시작합니다.')
+			//		.content(quizContent)
+			//		.ariaLabel('Alert Dialog Demo')
+			//		.ok('시작하기')
+			//		.targetEvent(ev)
+			//);
 		}
 
 		var clock = document.querySelector('#utility-clock');

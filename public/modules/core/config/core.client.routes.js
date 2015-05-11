@@ -1,8 +1,12 @@
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$compileProvider',
-	function($stateProvider, $urlRouterProvider, $compileProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$compileProvider','$mdThemingProvider',
+	function($stateProvider, $urlRouterProvider, $compileProvider, $mdThemingProvider) {
+
+        $mdThemingProvider.theme('docs-dark', 'default')
+            .primaryPalette('yellow')
+            .dark();
 
 		// disable dubug data Information
 		$compileProvider.debugInfoEnabled(false);

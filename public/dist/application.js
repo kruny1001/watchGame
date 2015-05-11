@@ -65,8 +65,12 @@ ApplicationConfiguration.registerModule('users');
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$compileProvider',
-	function($stateProvider, $urlRouterProvider, $compileProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$compileProvider','$mdThemingProvider',
+	function($stateProvider, $urlRouterProvider, $compileProvider, $mdThemingProvider) {
+
+        $mdThemingProvider.theme('docs-dark', 'default')
+            .primaryPalette('yellow')
+            .dark();
 
 		// disable dubug data Information
 		$compileProvider.debugInfoEnabled(false);
@@ -743,8 +747,8 @@ angular.module('etc').controller('MenuController', ['$scope','$state',
 ]);
 'use strict';
 
-angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog','$state',
-	function($scope, $timeout, $mdDialog, $state) {
+angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$mdDialog','$state','$mdToast',
+	function($scope, $timeout, $mdDialog, $state, $mdToast) {
         $scope.goTo = function(name){
             $state.go(name);
             console.log(name);
@@ -793,24 +797,49 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 
 		$scope.submitAnswer = function(ev){
 
+            $scope.toastPosition = {
+                bottom: true,
+                top: false,
+                left: false,
+                right: true
+            };
+
+
+
+            $scope.getToastPosition = function() {
+                return Object.keys($scope.toastPosition)
+                    .filter(function(pos) { return $scope.toastPosition[pos]; })
+                    .join(' ');
+            };
+
+            $scope.showSimpleToast = function(msg) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content(msg)
+                        .position($scope.getToastPosition())
+                        .hideDelay(3000)
+                );
+            };
+
 			$scope.getCurrentHour();
 			var quizContent = ''
 			if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
-				quizContent = '정답입니다.';
+                quizContent = '정답입니다.';
+
 			}
 			else{
 				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.';
 			}
-
-			$mdDialog.show(
-				$mdDialog.alert()
-					.parent(angular.element(document.body))
-					.title('퀴즈를 시작합니다.')
-					.content(quizContent)
-					.ariaLabel('Alert Dialog Demo')
-					.ok('시작하기')
-					.targetEvent(ev)
-			);
+            $scope.showSimpleToast(quizContent);
+			//$mdDialog.show(
+			//	$mdDialog.alert()
+			//		.parent(angular.element(document.body))
+			//		.title('퀴즈를 시작합니다.')
+			//		.content(quizContent)
+			//		.ariaLabel('Alert Dialog Demo')
+			//		.ok('시작하기')
+			//		.targetEvent(ev)
+			//);
 		}
 
 		var clock = document.querySelector('#utility-clock');
@@ -1064,8 +1093,14 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 ]);
 'use strict';
 
-angular.module('etc').controller('WatchGame2Controller',  ['$scope','$timeout','$mdDialog','$state',
-    function($scope, $timeout, $mdDialog, $state) {
+angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
+
+    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast) {
+
+        $scope.setTimeQuiz = function(){
+
+        };
+
         $scope.goTo = function(name){
             $state.go(name);
         }
@@ -1094,11 +1129,33 @@ angular.module('etc').controller('WatchGame2Controller',  ['$scope','$timeout','
         };
 
         $scope.startQuiz = function(ev){
+            var clock = document.querySelector('#utility-clock');
+            var hourElement = clock.querySelector('.hour');
+            var minuteElement = clock.querySelector('.minute');
+
+            var rotate = function(element, second) {
+                element.style.transform =
+                    element.style.webkitTransform = 'rotate(' + (second * 6) + 'deg)';
+            }
+
             var randHour = Math.floor((Math.random() * 12) + 1);
             var randMin = Math.floor((Math.random() * 60) + 1);
-            $scope.hourQ = randHour;
-            $scope.minQ = randMin;
-            var quizContent = randHour+'시 '+randMin+'분에 맞춰주세요.';
+
+            $scope.quizAnswer = {hour: randHour, min:randMin};
+
+            var now = new Date()
+            $scope.time = randHour * 3600 + randMin * 60;
+
+            $scope.hourQ = $scope.time / 60;
+            $scope.minQ = $scope.time / 60 / 12;
+            rotate(minuteElement, $scope.time / 60)
+            rotate(hourElement, $scope.time / 60 / 12)
+            requestAnimationFrame($scope.animate);
+
+
+            //$scope.hourQ = randHour;
+            //$scope.minQ = randMin;
+            var quizContent = '시간을 읽어 주세요';
             $scope.quiz = randHour+'시 '+randMin+'분';
             $mdDialog.show(
                 $mdDialog.alert()
@@ -1113,24 +1170,40 @@ angular.module('etc').controller('WatchGame2Controller',  ['$scope','$timeout','
 
         $scope.submitAnswer = function(ev){
 
+            $scope.toastPosition = {
+                bottom: true,
+                top: false,
+                left: false,
+                right: true
+            };
+
+
+
+            $scope.getToastPosition = function() {
+                return Object.keys($scope.toastPosition)
+                    .filter(function(pos) { return $scope.toastPosition[pos]; })
+                    .join(' ');
+            };
+
+            $scope.showSimpleToast = function(msg) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content(msg)
+                        .position($scope.getToastPosition())
+                        .hideDelay(3000)
+                );
+            };
+
             $scope.getCurrentHour();
             var quizContent = ''
-            if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
+            if($scope.inputHour == $scope.quizAnswer.hour && $scope.inputMin == $scope.quizAnswer.min){
                 quizContent = '정답입니다.';
             }
             else{
                 quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.';
             }
-
-            $mdDialog.show(
-                $mdDialog.alert()
-                    .parent(angular.element(document.body))
-                    .title('퀴즈를 시작합니다.')
-                    .content(quizContent)
-                    .ariaLabel('Alert Dialog Demo')
-                    .ok('시작하기')
-                    .targetEvent(ev)
-            );
+            console.log(quizContent);
+            $scope.showSimpleToast(quizContent);
         }
 
         var clock = document.querySelector('#utility-clock');
@@ -1381,7 +1454,8 @@ angular.module('etc').controller('WatchGame2Controller',  ['$scope','$timeout','
             return angle;
         }
     }
-]);
+    WatchGame2Controller.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast"];
+
 'use strict';
 
 angular.module('etc').controller('WigsController', ['$scope',

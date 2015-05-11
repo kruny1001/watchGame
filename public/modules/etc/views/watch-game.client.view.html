@@ -7,7 +7,7 @@
                 <md-icon md-svg-icon="modules/mean-tutorials/img/menu.svg"></md-icon>
             </md-button>
             <h2 class="md-toolbar-tools md-title">
-                <span><b>시침이와 분침이의 인성시계 놀이</b></span>
+                <span><b>시침이와 분침이를 돌려라 !!</b></span>
             </h2>
             <div class="class-menu">
 
@@ -41,9 +41,8 @@
 
                             <md-icon md-svg-src="modules/etc/img/Heart-Watch.svg"></md-icon>
 
-                            <p ng-if="quiz == null">시침이와 분침이를<br>
-                            돌려라!!</p>
-                            <h3 class="md-title"><b>{{quiz}}</b></h3>
+                            <p class="md-body-1" ng-if="quiz == null" style="color:white;"><b>시작하기</b></p>
+                            <p class="md-body-1" style="padding:8px; color:white;"><b>{{quiz}}</b></p>
 
                             <md-grid-tile-footer><h3>시침이와 분침이를 돌려라!!</h3></md-grid-tile-footer>
                         </md-grid-tile>
@@ -56,7 +55,7 @@
                                 class="darkBlue"
                                 ng-click="rotationArm('hh', '+')">
                             <md-icon md-svg-src="modules/etc/img/Woman-9.svg"></md-icon>
-                            <md-grid-tile-footer><h3>시침이Go!</h3></md-grid-tile-footer>
+                            <md-grid-tile-footer><h3>시침이 +</h3></md-grid-tile-footer>
                         </md-grid-tile>
                         <md-grid-tile
                                 id="tutorial"
@@ -65,7 +64,7 @@
                                 class="green"
                                 ng-click="rotationArm('hh', '-')">
                             <md-icon md-svg-src="modules/etc/img/Woman-15.svg"></md-icon>
-                            <md-grid-tile-footer><h3>시침이Go!</h3></md-grid-tile-footer>
+                            <md-grid-tile-footer><h3>시침이 -</h3></md-grid-tile-footer>
                         </md-grid-tile>
                         <md-grid-tile
                                 id="signOut"
@@ -74,7 +73,7 @@
                                 class="purple"
                                 ng-click="rotationArm('mm', '+')">
                             <md-icon md-svg-src="modules/etc/img/Rocker.svg"></md-icon>
-                            <md-grid-tile-footer><h3>분침이 Go!</h3></md-grid-tile-footer>
+                            <md-grid-tile-footer><h3>분침이 +</h3></md-grid-tile-footer>
                         </md-grid-tile>
                         <md-grid-tile
                                 id="signOut2"
@@ -83,17 +82,17 @@
                                 class="pink"
                                 ng-click="rotationArm('mm', '-')">
                             <md-icon md-svg-src="modules/etc/img/Batman.svg"></md-icon>
-                            <md-grid-tile-footer><h3>분침이 Go!</h3></md-grid-tile-footer>
+                            <md-grid-tile-footer><h3>분침이 -</h3></md-grid-tile-footer>
                         </md-grid-tile>
                         <md-grid-tile
                                 id="t123"
                                 md-rowspan="1"
                                 md-colspan="2"
                                 class="yellow"
-                                ng-click="rotationArm('hh', '-')">
-                            <p>시침이 + 분침이</p>
+                                ng-click="submitAnswer()">
+
                             <md-icon md-svg-src="modules/etc/img/Medal-2.svg"></md-icon>
-                            <md-grid-tile-footer><h3>시 -</h3></md-grid-tile-footer>
+                            <md-grid-tile-footer><h3>정답 확인하기</h3></md-grid-tile-footer>
                         </md-grid-tile>
 
                     </md-grid-list>
