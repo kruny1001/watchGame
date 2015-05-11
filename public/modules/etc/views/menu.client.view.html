@@ -1,12 +1,12 @@
 <div layout="column" class="toolbardemoBasicUsage" data-ng-controller="MenuController">
-        <md-toolbar class="md-tall md-accent" style="background-color: rgba(91, 255, 72, 0.59); color:white;">
+        <md-toolbar class="md-tall toolbar-custom">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings">
                     <md-icon md-svg-icon="modules/mean-tutorials/img/menu.svg"></md-icon>
                 </md-button>
-                <h2 class="md-toolbar-tools md-title">
-                    <b>시침이와 분침이의 인성시계 놀이</b>
-                </h2>
+                <div class="md-toolbar-tools md-title">
+                    <span><b>시침이와 분침이의 </b></span><span style="font-size:40px; color:coral; font-weight: 800; margin-left:10px;">인성시계 놀이</span>
+                </div>
             </div>
             <p class="md-toolbar-tools md-toolbar-tools-bottom">
                 <span class="md-flex md-body-2"><b>아래의 메뉴를 선택해 주세요</b></span>
@@ -21,11 +21,6 @@
             <div class="" flex>
                 <md-button class="subMenu md-primary md-raised" ng-click="goTo('watch-game2')">
                     <b>시침이와 분침이 몇 시 몇 분!</b>
-                </md-button>
-            </div>
-            <div class="" flex>
-                <md-button class="subMenu md-primary md-raised" ng-click="goTo('watch-game3')">
-                    <b>칭찬해 주세요</b>
                 </md-button>
             </div>
         </div>
