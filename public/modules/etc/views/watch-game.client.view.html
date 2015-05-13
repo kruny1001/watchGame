@@ -37,45 +37,32 @@
                             </p>
                         </md-grid-tile>
 
-                        <md-grid-tile ng-if="!authentication.user" id="signIn" md-rowspan="1" md-colspan="1" class="pink" ng-click="rotationArm('hh', '+')">
+                        <md-grid-tile ng-if="!authentication.user" id="signIn" md-rowspan="1" md-colspan="1" class="pink" ng-click="startQuiz('hh')">
                             <p class="side-nav-menu">
-                                <span class="big-font">
-                                시침이<br/>Go!
-                                </span>
-                                <br/>
+                                <span class="big-font">시침이<br/>Go!</span><br/>
                                 <span class="small-font">몇 시</span>
                             </p>
                         </md-grid-tile>
-                        <md-grid-tile id="tutorial" md-rowspan="1" md-colspan="1" class="green" ng-click="rotationArm('hh', '-')">
+                        <md-grid-tile id="tutorial" md-rowspan="1" md-colspan="1" class="green" ng-click="startQuiz('mm')">
                             <p class="side-nav-menu">
-                                <span class="big-font">
-                                분침이<br/>Go!
-                                </span>
-                                <br/>
+                                <span class="big-font">분침이<br/>Go!</span><br/>
                                 <span class="small-font">몇 분</span>
                             </p>
                         </md-grid-tile>
                         <md-grid-tile id="signOut" md-rowspan="1" md-colspan="2" class="yellow" ng-click="rotationArm('mm', '+')">
                             <p class="side-nav-menu">
-                                <span class="big-font">
-                                시침이+분침이
-                                </span>
-                                <br/>
+                                <span class="big-font">시침이+분침이</span><br/>
                                 <span class="small-font">몇 시 몇 분</span>
                             </p>
                         </md-grid-tile>
                         <md-grid-tile id="t123" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">
                             <p class="side-nav-menu">
-                                <span class="big-font">
-                                정답 확인 하기
-                                </span>
+                                <span class="big-font">정답 확인 하기</span>
                             </p>
                         </md-grid-tile>
-                        <md-grid-tile id="timer" md-rowspan="1" md-colspan="2" class="lightPurple">
+                        <md-grid-tile id="timer" md-rowspan="1" md-colspan="2" class="yellow" ng-click="submitAnswer()">
                             <p style="color:white;">
-                                <span style="font-size:15px; color:black; font-weight: 900;">
-                                시간
-                                </span>
+                                <span style="font-size:15px; color:black; font-weight: 900;">정답 제출</span>
                             </p>
                             <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
                         </md-grid-tile>
@@ -111,10 +98,14 @@
                         <div class="expand round circle-2"></div>
                     </div>
                 </div>
-                <div style="position: absolute;right: 0;">
+
+                <div layout="row" layout-sm="column" style="position: absolute;right: 0;">
+
+                    <md-button ng-if="quiz!=undefined" class="md-raised"><b>{{quiz}}</b></md-button>
                     <md-button class="md-raised" ng-click="zoom('in')">Zoom In</md-button>
                     <md-button class="md-raised" ng-click="zoom('out')">Zoom Out</md-button>
                 </div>
+
             </div>
         </md-content>
     </section>
