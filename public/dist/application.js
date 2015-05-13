@@ -1144,11 +1144,56 @@ angular.module('etc').controller('WatchGameController', ['$scope','$timeout','$m
 
 angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
-    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast) {
+    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval) {
 
-        $scope.setTimeQuiz = function(){
+        $scope.determinateValue = 0;
+        $interval(function() {
+            $scope.determinateValue += 1;
+            if ($scope.determinateValue > 100) {
+                $scope.determinateValue = 0;
+            }
+        }, 100, 0, true);
 
+        $scope.items = [
+            { name: '문제1', icon: 'hangout' },
+            { name: '문제2', icon: 'mail' },
+            { name: '문제3', icon: 'message' },
+            { name: '문제4', icon: 'copy2' },
+            { name: '문제5', icon: 'facebook' },
+            { name: '문제6', icon: 'twitter' },
+            { name: '문제7', icon: 'copy2' },
+            { name: '문제8', icon: 'facebook' },
+            { name: '문제9', icon: 'twitter' },
+            { name: '문제10', icon: 'twitter' },
+        ];
+        $scope.listItemClick = function($index) {
+            var clickedItem = $scope.items[$index];
+            $mdBottomSheet.hide(clickedItem);
         };
+
+        $scope.showGridBottomSheet = function($event) {
+            $scope.alert = '';
+            $mdBottomSheet.show({
+                templateUrl: 'modules/etc/template/gridBottom.html',
+                controller: 'WatchGame2Controller',
+                targetEvent: $event
+            }).then(function(clickedItem) {
+                $scope.alert = clickedItem.name + ' clicked!';
+            });
+        };
+
+        $scope.zoom = function(op){
+            var cs = $('.centre').children();
+
+            if(op=="in")
+            {
+                TweenLite.to(cs, 1, {scale:'+=.1'});
+            }
+            else
+            {
+                TweenLite.to(cs, 1, {scale:'-=.1'});
+            }
+        }
 
         $scope.goTo = function(name){
             $state.go(name);
@@ -1258,7 +1303,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         var clock = document.querySelector('#utility-clock');
         $timeout(function() {
             utilityClock(clock);
-            autoResize(clock, 500);
+            autoResize(clock, 420);
             //autoResize(clock, 350);
             choose(clock, [
                 //['hour', ['text', 'text-quarters', 'pill']],
@@ -1503,7 +1548,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             return angle;
         }
     }
-    WatchGame2Controller.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast"];
+    WatchGame2Controller.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval"];
 
 'use strict';
 
@@ -1523,7 +1568,7 @@ angular.module('etc').controller('WigsController', ['$scope',
 'use strict';
 
 angular.module('etc').directive('colorPicker', [
-	function() {
+	function() {
 		ColorPickerCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/color-picker.html',
@@ -1619,7 +1664,7 @@ angular.module('etc').directive('colorPicker', [
 'use strict';
 
 angular.module('etc').directive('gallery', [
-	function() {
+	function() {
         galleryCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/gallery.html',
@@ -1664,7 +1709,7 @@ angular.module('etc').directive('gallery', [
 'use strict';
 
 angular.module('etc').directive('productDetail', [
-	function() {
+	function() {
 		ProductDetailCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/product-detail.html',

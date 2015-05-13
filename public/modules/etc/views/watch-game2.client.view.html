@@ -1,80 +1,52 @@
 <div layout="column" layout-fill class="watchGameMain" data-ng-controller="WatchGame2Controller">
-
-    <md-toolbar class="md-accent" style="background-color: rgba(91, 255, 72, 0.59); color:white;">
+    <md-toolbar class="md-accent"
+                style="background-color: #88D7C2; color:white;">
         <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Settings">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="goTo('menu')">
                 <md-icon md-svg-icon="modules/mean-tutorials/img/menu.svg"></md-icon>
             </md-button>
-            <h2 class="md-toolbar-tools md-title">
-                <span><b>시침이와 분침이 몇 시 몇 분! {{inputMin}} {{inputHour}}</b></span>
-            </h2>
-            <div class="class-menu">
-                <md-button class="md-fab md-warn " aria-label="Eat cake" ng-click="goTo('menu')">
-                    <md-icon md-svg-src="modules/core/img/svg/navicon-round.svg"></md-icon>
-                </md-button>
+            <div class="md-toolbar-tools md-title">
+                <span hide-sm><b>시침이와 분침이의 몇 시 몇 분!</b></span><span style="font-size:40px; color:coral; font-weight: 800; margin-left:10px;">인성시계 놀이</span>
             </div>
         </div>
-
     </md-toolbar>
-
     <section layout="row" layout-fill style="height:100%; position: absolute;">
         <md-sidenav
-                flex
-                id="sideNav"
+                flex id="sideNav"
                 class="md-sidenav-left md-whiteframe-z2
-                    ng-isolate-scope md-closed md-locked-open"
+                    ng-isolate-scope md-closed md-locked-open
+                    custom-border"
                 md-is-locked-open="true"
                 style="background-color:#CFCFCF; overflow-x: hidden"
                 md-component-id="left" tabindex="-1">
+
             <div flex layout="column" flex>
-                <md-grid-list
-                        class="sideNavTiles"
-                        md-cols-sm="2" md-cols-md="2" md-cols-gt-md="2"
-                        md-row-height="1:1">
-                    <md-grid-tile
-                            id="profile"
-                            md-rowspan="1"
-                            md-colspan="2"
-                            class="red"
-                            ng-click="menu('start')">
-                        <md-icon md-svg-src="modules/etc/img/Prism-3.svg"></md-icon>
-
-                        <p class="md-body-1" ng-if="quiz == null" style="color:white;">시작하기</p>
-                        <p class="md-body-1" style="padding:8px; color:white;"><b>{{quiz}}</b></p>
-                        <md-grid-tile-footer><h3>시침이와 분침이를 읽어라!!</h3></md-grid-tile-footer>
+                <md-grid-list class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
+                    <md-grid-tile id="profile" md-rowspan="1" md-colspan="2" class="red" ng-click="menu('start')">
+                        <p class="side-nav-menu">
+                                <span style="color: purple; font-size:15px; font-weight: 900;">시침이와 분침이를</span>
+                            <br/>
+                            <span style="font-size:25px; color:#000066; font-weight: 900"> 읽어라!!</span>
+                        </p>
                     </md-grid-tile>
 
-                    <md-grid-tile
-                            ng-if="!authentication.user"
-                            id="signIn"
-                            md-rowspan="1"
-                            md-colspan="1"
-                            class="darkBlue">
+                    <md-grid-tile ng-if="!authentication.user" id="signIn" md-rowspan="1" md-colspan="1" class="darkBlue">
                         <h2>{{inputHour}}시</h2>
-                        <md-grid-tile-footer><h3>시침이는?</h3></md-grid-tile-footer>
                     </md-grid-tile>
 
-                    <md-grid-tile
-                            id="tutorial"
-                            md-rowspan="1"
-                            md-colspan="1"
-                            class="green">
+                    <md-grid-tile id="tutorial" md-rowspan="1" md-colspan="1" class="green">
                         <h2>{{inputMin}}분</h2>
-
-                            <!--<label>몇 분</label>-->
-                            <!--<input ng-model="inputMin">-->
-                        <!--<h2>분</h2>-->
-                        <md-grid-tile-footer><h3>분침이는?</h3></md-grid-tile-footer>
                     </md-grid-tile>
 
-                    <md-grid-tile
-                            id="t123"
-                            md-rowspan="1"
-                            md-colspan="2"
-                            class="purple"
-                            ng-click="submitAnswer()">
-                        <md-icon md-svg-src="modules/etc/img/Medal-2.svg"></md-icon>
-                        <md-grid-tile-footer><h3>정답 확인하기</h3></md-grid-tile-footer>
+                    <md-grid-tile id="t123" md-rowspan="1" md-colspan="2" class="purple" ng-click="showGridBottomSheet($event)">
+                        <p class="side-nav-menu"><span class="big-font">정답 확인 하기</span></p>
+                    </md-grid-tile>
+
+                    <md-grid-tile id="timer" md-rowspan="1" md-colspan="2" class="lightPurple">
+                        <p style="color:white;">
+                            <span style="font-size:15px; color:black; font-weight: 900;">시간</span>
+                        </p>
+                        <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
                     </md-grid-tile>
                 </md-grid-list>
             </div>
@@ -82,24 +54,6 @@
         </md-sidenav>
         <md-content flex="" >
             <div class="fill svgBack">
-                <md-content
-                        class="md-title"
-                        md-theme="docs-dark"
-                        layout-padding layout="row" layout-sm="column" layout-align="center center">
-                    <md-input-container class="md-icon-float" >
-                        <!-- Use floating label instead of placeholder -->
-                        <label>몇 시?</label>
-                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
-                        <input ng-model="inputHour" type="text">
-                    </md-input-container>
-                    <md-input-container class="md-icon-float" >
-                        <!-- Use floating label instead of placeholder -->
-                        <label>몇 분?</label>
-                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
-                        <input ng-model="inputMin" type="text">
-                    </md-input-container>
-                </md-content>
-
                 <div class="clock
                       hour-style-text
                       hour-text-style-large
@@ -126,7 +80,11 @@
                         <div class="expand round circle-2"></div>
                     </div>
                 </div>
+                <div style="position: absolute;right: 0;">
+                    <md-button class="md-raised" ng-click="zoom('in')">Zoom In</md-button>
+                    <md-button class="md-raised" ng-click="zoom('out')">Zoom Out</md-button>
+                </div>
             </div>
-</div>
-</section>
+        </md-content>
+    </section>
 </div>

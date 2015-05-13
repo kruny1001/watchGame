@@ -26,125 +26,60 @@
                 tabindex="-1">
 
             <div flex layout="column" flex>
-                    <md-grid-list
-                            class="sideNavTiles"
-                            md-cols="2"
-                            md-gutter="5px"
-                            md-row-height="3:4">
-                        <md-grid-tile
-                                id="profile"
-                                md-rowspan="1"
-                                md-colspan="2"
-                                class="gray"
-                                >
-                            <!--ng-click="menu('start')"-->
-                            <p style="color:white;">
+                    <md-grid-list class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
+                        <md-grid-tile id="profile" md-rowspan="1" md-colspan="2" class="gray">
+                            <p class="side-nav-menu">
                                 <span style="color: purple; font-size:15px; font-weight: 900;">
                                 시침이와 분침이
                                 </span>
                                 <br/>
                                 <span style="font-size:25px; color:#000066; font-weight: 900">몇 시 몇 분!</span>
                             </p>
-
-
-                            <!--<md-icon style="width:50%; height: 95%;" md-svg-src="modules/etc/img/Heart-Watch.svg"></md-icon>-->
-
-                            <!--<p class="md-body-1" ng-if="quiz == null" style="color:white;"><b>시작하기</b></p>-->
-                            <!--<p class="md-body-1" style="padding:8px; color:white;"><b>{{quiz}}</b></p>-->
-
-                           <!--<md-grid-tile-footer><h4>시작하기</h4></md-grid-tile-footer>-->
                         </md-grid-tile>
 
-                        <md-grid-tile
-                                ng-if="!authentication.user"
-                                id="signIn"
-                                md-rowspan="1"
-                                md-colspan="1"
-
-                                class="pink"
-                                ng-click="rotationArm('hh', '+')">
-
-                            <p style="color:white;">
-                                <span style="font-size:15px; color:black; font-weight: 900;">
-                                시침이Go!
+                        <md-grid-tile ng-if="!authentication.user" id="signIn" md-rowspan="1" md-colspan="1" class="pink" ng-click="rotationArm('hh', '+')">
+                            <p class="side-nav-menu">
+                                <span class="big-font">
+                                시침이<br/>Go!
                                 </span>
                                 <br/>
-                                <span style="font-size:12px; color:black; font-weight: 400; text-align:center;">몇 시</span>
+                                <span class="small-font">몇 시</span>
                             </p>
-
-                            <!--<md-icon  md-svg-src="modules/etc/img/Woman-9.svg"></md-icon>-->
-                            <!--<md-grid-tile-footer><h4>시침이 퀴즈</h4></md-grid-tile-footer>-->
                         </md-grid-tile>
-                        <md-grid-tile
-                                id="tutorial"
-                                md-rowspan="1"
-                                md-colspan="1"
-                                class="green"
-                                ng-click="rotationArm('hh', '-')">
-
-                            <p style="color:white;">
-                                <span style="font-size:15px; color:black; font-weight: 900;">
-                                분침이Go!
+                        <md-grid-tile id="tutorial" md-rowspan="1" md-colspan="1" class="green" ng-click="rotationArm('hh', '-')">
+                            <p class="side-nav-menu">
+                                <span class="big-font">
+                                분침이<br/>Go!
                                 </span>
                                 <br/>
-                                <span style="font-size:12px; color:black; font-weight: 400; text-align:center;">몇 분</span>
+                                <span class="small-font">몇 분</span>
                             </p>
-
-                            <!--<md-icon md-svg-src="modules/etc/img/Woman-15.svg"></md-icon>-->
-                            <!--<md-grid-tile-footer><h4>분침이 퀴즈</h4></md-grid-tile-footer>-->
                         </md-grid-tile>
-                        <md-grid-tile
-                                id="signOut"
-                                md-rowspan="1"
-                                md-colspan="2"
-                                class="yellow"
-                                ng-click="rotationArm('mm', '+')">
-
-                            <p style="color:white;">
-                                <span style="font-size:15px; color:black; font-weight: 900;">
+                        <md-grid-tile id="signOut" md-rowspan="1" md-colspan="2" class="yellow" ng-click="rotationArm('mm', '+')">
+                            <p class="side-nav-menu">
+                                <span class="big-font">
                                 시침이+분침이
                                 </span>
                                 <br/>
-                                <span style="font-size:12px; color:black; font-weight: 400; text-align:center;">몇 시 몇 분</span>
+                                <span class="small-font">몇 시 몇 분</span>
                             </p>
-                            <!--<md-icon md-svg-src="modules/etc/img/Rocker.svg"></md-icon>-->
-                            <!--<md-grid-tile-footer><h4>시침이 분침이 퀴즈</h4></md-grid-tile-footer>-->
                         </md-grid-tile>
-                        <md-grid-tile
-                                id="t123"
-                                md-rowspan="1"
-                                md-colspan="2"
-                                class="lightPurple"
-                                ng-click="showGridBottomSheet($event)">
-                            <p style="color:white;">
-                                <span style="font-size:15px; color:black; font-weight: 900;">
+                        <md-grid-tile id="t123" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">
+                            <p class="side-nav-menu">
+                                <span class="big-font">
                                 정답 확인 하기
                                 </span>
                             </p>
-                            <!--<md-icon md-svg-src="modules/etc/img/Medal-2.svg"></md-icon>-->
-                            <!--<md-grid-tile-footer><h4>정답 확인하기</h4></md-grid-tile-footer>-->
                         </md-grid-tile>
-                        <md-grid-tile
-                                id="timer"
-                                md-rowspan="1"
-                                md-colspan="2"
-                                class="lightPurple">
+                        <md-grid-tile id="timer" md-rowspan="1" md-colspan="2" class="lightPurple">
                             <p style="color:white;">
                                 <span style="font-size:15px; color:black; font-weight: 900;">
                                 시간
                                 </span>
                             </p>
                             <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
-
-                            <!--<md-icon md-svg-src="modules/etc/img/Medal-2.svg"></md-icon>-->
-                            <!--<md-grid-tile-footer><h4>정답 확인하기</h4></md-grid-tile-footer>-->
                         </md-grid-tile>
-
                     </md-grid-list>
-                <!--</md-content>-->
-                <!--<div style="  position: inherit;-->
-                <!--margin-top: 20px;-->
-                <!--margin-left: 5px;">Icons are licenced by Web App (http://icons8.com)</div>-->
             </div>
         </md-sidenav>
 
@@ -182,7 +117,5 @@
                 </div>
             </div>
         </md-content>
-
-
     </section>
 </md-content>
