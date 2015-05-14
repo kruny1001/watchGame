@@ -132,9 +132,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 
 			$scope.crntNumProbMM++;
 			$scope.totalProbb++;
-			var time = randHour * 3600;
-			console.log(randHour, randMin);
-			TweenLite.to('#minC', 1, {rotation:0})
+			var time = randHour * 3600 + randMin * 60;
+			TweenLite.to('#minC', 1, {rotation:0});
 			rotate(hourElement, time / 60 / 12);
 		}
 		else if(quizCase == 'hh'){
@@ -510,10 +509,10 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	};
 
 	$scope.toastPosition = {
-		bottom: true,
-		top: false,
-		left: false,
-		right: true
+		bottom: false,
+		top: true,
+		left: true,
+		right: false
 	};
 
 	$scope.getToastPosition = function() {
