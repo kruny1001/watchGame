@@ -27,6 +27,7 @@ module.exports = {
 				'public/lib/gsap/src/minified/TweenMax.min.js',
 				'public/lib/gsap/src/minified/utils/Draggable.min.js',
 				'public/lib/jquery/dist/jquery.min.js',
+				'public/lib/lodash/lodash.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',

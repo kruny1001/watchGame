@@ -772,48 +772,109 @@ function GridCtrl($scope, $mdBottomSheet, notify){
     console.log($scope.items);
 }
 GridCtrl.$inject = ["$scope", "$mdBottomSheet", "notify"];
-function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval, notify) {
+function WatchGameController($scope, $timeout, $mdDialog, $state,
+                             $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout) {
 
 	var wrong = 'modules/core/img/svg/android-close.svg';
 	var correct = 'modules/core/img/svg/android-radio-button-off.svg';
 	var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
 	var correctStyle = 'correctProblem';
 	var wrongStyle = 'wrongProblem';
-
 	var clock = document.querySelector('#utility-clock');
+	var grid = document.querySelector('md-grid-list');
+	$scope.crntTargetName = ""; //mm, hh, mh
+	$scope.problemSet = [
+		{
+			name:'mm',
+			numTrial: 0,
+			totalProb: 3,
+			isDone: false,
+			problems:[]
+		},
+		{
+			name:'hh',
+			numTrial: 0,
+			totalProb: 3,
+			isDone: false,
+			problems:[]
+		},
+		{
+			name:'mh',
+			numTrial: 0,
+			totalProb: 4,
+			isDone: false,
+			problems:[]
+		}
+	];
+
+
+	$scope.updateProblemBtn = function(targetName, crntNumber, totalTargetProb){
+		if(crntNumber == totalTargetProb){
+			var index = _.findIndex($scope.problemSet, function(chr) {
+				return chr.name == targetName;
+			});
+			$scope.problemSet[index].isDone = true;
+		};
+	};
+
 	$scope.mmWorking = true;
 	$scope.hhWorking = true;
 	$scope.mmhhWorking = true;
 	var crntTry = 3;
-	$scope.crntProbCorrect = false;
 
+	$scope.crntProbWorking = false;
+	$scope.crntProbCorrect = false;
 	$scope.crntNumProbMM = 0;
+	$scope.probMMDone =false;
 	$scope.crntNumProbHH = 0;
 	$scope.crntNumProbMMHH = 0;
 	$scope.totalProbb = 0;
-    $scope.availProbbHH = 3;
-    $scope.availProbbMM = 3;
-    $scope.availProbbMMHH = 4;
+	$scope.availProbbHH = 3;
+  $scope.availProbbMM = 3;
+  $scope.availProbbMMHH = 4;
 	$scope.availProbb = 10;
+
 	$scope.determinateValue = 0;
+
 	$scope.items = [];
+
+	$scope.quizValue={
+		hour: 0,
+		min: 0
+	}
+
 	$scope.hourQ = 0;
 	$scope.minQ = 0;
 
+	$scope.startQuiz = function(quizCase) {
 
-	$scope.startQuiz = function(quizCase){
+		$scope.crntTargetName = quizCase;
+		var problem = {hh:0, mm:0};
+		var index = _.findIndex($scope.problemSet, function(chr) {
+			return chr.name == quizCase;
+		});
+
+		var probProp = $scope.problemSet[index];
+		problem.hh = Math.floor((Math.random() * 12) + 1);
+		problem.mm = Math.floor((Math.random() * 60) + 1);
+		probProp.problems.push(problem);
+
+		console.log(problem);
+		console.log(probProp);
+
 		var randHour = Math.floor((Math.random() * 12) + 1);
 		var randMin = Math.floor((Math.random() * 60) + 1);
 		var clock = document.querySelector('#utility-clock');
 		var hourElement = clock.querySelector('.hour');
 		var minuteElement = clock.querySelector('.minute');
+
 		var rotate = function(element, second) {
 			console.log(second*6);
 			TweenLite.to(element, 2.5, {rotation:second * 6});
 		}
 
 		if(quizCase == 'mm'){
-			$scope.mmWorking = true;
+			$scope.mmWorking = false;
 			$scope.hhWorking = false;
 			$scope.mmhhWorking = false;
 
@@ -826,7 +887,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 		}
 		else if(quizCase == 'hh'){
 			$scope.mmWorking = false;
-			$scope.hhWorking = true;
+			$scope.hhWorking = false;
 			$scope.mmhhWorking = false;
 
 			$scope.crntNumProbHH++;
@@ -837,7 +898,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 		else if(quizCase == 'hm'){
 			$scope.mmWorking = false;
 			$scope.hhWorking = false;
-			$scope.mmhhWorking = true;
+			$scope.mmhhWorking = false;
 
 			$scope.crntNumProbMMHH++;
 			$scope.totalProbb++;
@@ -859,9 +920,13 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 			//$scope.time = randHour * 3600 + randMin * 60;
 			//rotate(hourElement, $scope.time / 60 / 12);
 			startTimer();
+			$scope.removeTiles();
+			$scope.crntProbWorking=true;
 		}, function() {
 			$scope.alert = 'You decided to keep your debt.';
 		});
+
+
 	};
 
 	$scope.submitAnswer = function(ev){
@@ -876,7 +941,9 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 				$scope.mmWorking = true;
 				$scope.hhWorking = true;
 				$scope.mmhhWorking = true;
-                notify.push({ name: '문제', icon: correct, class: correctStyle});
+				notify.push({ name: '문제', icon: correct, class: correctStyle});
+				$scope.crntProbWorking=false;
+				$scope.removeTiles();
 			}
 			else{
 				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.('+crntTry+'기회가 남았습니다.)';
@@ -884,11 +951,14 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 			$scope.showSimpleToast(quizContent);
 		}
 		else{
-            notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
+			$scope.crntProbWorking=false;
+			$scope.removeTiles();
+			notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
 			$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
 			$scope.mmWorking = true;
 			$scope.hhWorking = true;
 			$scope.mmhhWorking = true;
+			crntTry = 3;
 		}
 	};
 
@@ -1209,8 +1279,17 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 		);
 	};
 
+	$scope.tiles=[1];
+	$scope.removeTiles=function(){
+		$scope.tiles.pop();
+		$timeout(function(){
+			$scope.tiles.push(1);
+		}, 100);
+
+	}
+
 }
-WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval", "notify"];
+WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval", "notify", "$mdGridLayout"];
 
 'use strict';
 

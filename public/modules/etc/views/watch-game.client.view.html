@@ -26,7 +26,7 @@
                 tabindex="-1">
 
             <div flex layout="column" flex>
-                    <md-grid-list class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
+                    <md-grid-list ng-repeat="tile in tiles" id="grid" class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
                         <md-grid-tile id="profile" md-rowspan="1" md-colspan="2" class="gray">
                             <p class="side-nav-menu">
                                 <span style="color: purple; font-size:15px; font-weight: 900;">
@@ -34,6 +34,19 @@
                                 </span>
                                 <br/>
                                 <span style="font-size:25px; color:#000066; font-weight: 900">몇 시 몇 분!</span>
+                            </p>
+                        </md-grid-tile>
+
+                        <md-grid-tile ng-if="crntProbWorking" md-rowspan="2" md-colspan="2" class="pink">
+                            <p class="side-nav-menu">
+                                <span style="color: purple; font-size:15px; font-weight: 900;">
+                                {{crntTargetName}}
+                                </span>
+                                <br/>
+                                <span style="font-size:25px; color:#000066; font-weight: 900">{{quiz}}</span><br/>
+                                <span style="color: purple; font-size:15px; font-weight: 900;">
+                                시침, 분침을 돌려 시간을 맞춰주세요.
+                                </span>
                             </p>
                         </md-grid-tile>
 
@@ -58,13 +71,13 @@
                                 <span class="small-font md-caption">({{crntNumProbMMHH}}/{{availProbbMMHH}})</span>
                             </p>
                         </md-grid-tile>
-                        <md-grid-tile id="t123" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">
+                        <md-grid-tile ng-if="!crntProbWorking" id="t123" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">
                             <p class="side-nav-menu">
                                 <span class="big-font">정답 확인 하기</span><br/>
                                 <span class="small-font md-caption">({{totalProbb}}/{{availProbb}})</span>
                             </p>
                         </md-grid-tile>
-                        <md-grid-tile id="timer" md-rowspan="1" md-colspan="2" class="yellow" ng-click="submitAnswer()">
+                        <md-grid-tile ng-if="crntProbWorking" id="timer" md-rowspan="1" md-colspan="2" class="yellow" ng-click="submitAnswer()">
                             <p style="color:white;">
                                 <span style="font-size:15px; color:black; font-weight: 900;">정답 제출</span>
                             </p>
@@ -104,8 +117,6 @@
                 </div>
 
                 <div layout="row" layout-sm="column" style="position: absolute;right: 0;">
-
-                    <md-button ng-if="quiz!=undefined" class="md-raised"><b>{{quiz}}</b></md-button>
                     <md-button class="md-raised" ng-click="zoom('in')">Zoom In</md-button>
                     <md-button class="md-raised" ng-click="zoom('out')">Zoom Out</md-button>
                 </div>
