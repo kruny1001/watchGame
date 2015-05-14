@@ -51,7 +51,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			problems:[]
 		},
 		{
-			name:'mh',
+			name:'hm',
 			numTrial: 0,
 			totalProb: 4,
 			isDone: false,
@@ -147,14 +147,17 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			TweenLite.to('#minC', 1, {rotation:0})
 		}
 		else if(quizCase == 'hm'){
+			var h=10, m=10;
+			var time = h * 3600 + m * 60;
 			$scope.mmWorking = false;
 			$scope.hhWorking = false;
 			$scope.mmhhWorking = false;
 
 			$scope.crntNumProbMMHH++;
 			$scope.totalProbb++;
-			randHour = Math.floor((Math.random() * 12) + 1);
-			randMin = Math.floor((Math.random() * 60) + 1);
+			rotate(hourElement, time / 60 / 12);
+			rotate(minuteElement, time / 60)
+
 		}
 
 		$scope.hourQ = randHour;
