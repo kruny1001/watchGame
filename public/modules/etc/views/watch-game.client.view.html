@@ -41,21 +41,21 @@
                             <p class="side-nav-menu">
                                 <span class="big-font">시침이<br/>Go!</span><br/>
                                 <span class="small-font">몇 시</span><br/>
-                                <span class="small-font md-caption">({{crntNumProbHH}}/{{availProbb}})</span>
+                                <span class="small-font md-caption">({{crntNumProbHH}}/{{availProbbHH}})</span>
                             </p>
                         </md-grid-tile>
                         <md-grid-tile ng-if="mmWorking" id="tutorial" md-rowspan="1" md-colspan="1" class="green" ng-click="startQuiz('mm')">
                             <p class="side-nav-menu">
                                 <span class="big-font">분침이<br/>Go!</span><br/>
                                 <span class="small-font">몇 분</span><br/>
-                                <span class="small-font md-caption">({{crntNumProbMM}}/{{availProbb}})</span>
+                                <span class="small-font md-caption">({{crntNumProbMM}}/{{availProbbMM}})</span>
                             </p>
                         </md-grid-tile>
                         <md-grid-tile ng-if="mmhhWorking" id="signOut" md-rowspan="1" md-colspan="2" class="yellow" ng-click="rotationArm('mm', '+')">
                             <p class="side-nav-menu">
                                 <span class="big-font">시침이+분침이</span><br/>
                                 <span class="small-font">몇 시 몇 분</span><br/>
-                                <span class="small-font md-caption">({{crntNumProbMMHH}}/{{availProbb}})</span>
+                                <span class="small-font md-caption">({{crntNumProbMMHH}}/{{availProbbMMHH}})</span>
                             </p>
                         </md-grid-tile>
                         <md-grid-tile id="t123" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">

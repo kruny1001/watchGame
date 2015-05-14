@@ -747,9 +747,32 @@ angular.module('etc').controller('MenuController', ['$scope','$state',
 ]);
 'use strict';
 
+angular.module('etc').factory('notify', ['$window', function(win) {
+    var inputs = [];
+    return {
+        push: function(msg) {
+            inputs.push(msg);
+        },
+        get: function(){
+            return inputs;
+        }
+    }
+}]);
+
+angular.module('etc').controller('GridCtrl', GridCtrl);
 angular.module('etc').controller('WatchGameController', WatchGameController);
 
-function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval) {
+function GridCtrl($scope, $mdBottomSheet, notify){
+    $scope.items = notify.get();
+    $scope.listItemClick = function($index) {
+        var clickedItem = $scope.items[$index];
+        $mdBottomSheet.hide(clickedItem);
+    };
+
+    console.log($scope.items);
+}
+GridCtrl.$inject = ["$scope", "$mdBottomSheet", "notify"];
+function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval, notify) {
 
 	var wrong = 'modules/core/img/svg/android-close.svg';
 	var correct = 'modules/core/img/svg/android-radio-button-off.svg';
@@ -768,6 +791,9 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 	$scope.crntNumProbHH = 0;
 	$scope.crntNumProbMMHH = 0;
 	$scope.totalProbb = 0;
+    $scope.availProbbHH = 3;
+    $scope.availProbbMM = 3;
+    $scope.availProbbMMHH = 4;
 	$scope.availProbb = 10;
 	$scope.determinateValue = 0;
 	$scope.items = [];
@@ -850,7 +876,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 				$scope.mmWorking = true;
 				$scope.hhWorking = true;
 				$scope.mmhhWorking = true;
-				$scope.items.push({ name: '문제', icon: correct, class: correctStyle});
+                notify.push({ name: '문제', icon: correct, class: correctStyle});
 			}
 			else{
 				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.('+crntTry+'기회가 남았습니다.)';
@@ -858,6 +884,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 			$scope.showSimpleToast(quizContent);
 		}
 		else{
+            notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
 			$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
 			$scope.mmWorking = true;
 			$scope.hhWorking = true;
@@ -1104,16 +1131,13 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 		return angle;
 	}
 
-	$scope.listItemClick = function($index) {
-		var clickedItem = $scope.items[$index];
-		$mdBottomSheet.hide(clickedItem);
-	};
+
 
 	$scope.showGridBottomSheet = function($event) {
 		console.log('d');
 		$mdBottomSheet.show({
 			templateUrl: 'modules/etc/template/gridBottom.html',
-			controller: 'WatchGameController',
+			controller: 'GridCtrl',
 			preserveScope: true,
 			targetEvent: $event
 		}).then(function(clickedItem) {
@@ -1186,7 +1210,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $mdToast, $mdB
 	};
 
 }
-WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval"];
+WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval", "notify"];
 
 'use strict';
 
@@ -1616,7 +1640,7 @@ angular.module('etc').controller('WigsController', ['$scope',
 'use strict';
 
 angular.module('etc').directive('colorPicker', [
-	function() {
+	function() {
 		ColorPickerCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/color-picker.html',
@@ -1712,7 +1736,7 @@ angular.module('etc').directive('colorPicker', [
 'use strict';
 
 angular.module('etc').directive('gallery', [
-	function() {
+	function() {
         galleryCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/gallery.html',
@@ -1757,7 +1781,7 @@ angular.module('etc').directive('gallery', [
 'use strict';
 
 angular.module('etc').directive('productDetail', [
-	function() {
+	function() {
 		ProductDetailCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/product-detail.html',
