@@ -9,7 +9,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$compile
             .dark();
 
 		// disable dubug data Information
-		$compileProvider.debugInfoEnabled(false);
+		$compileProvider.debugInfoEnabled(true);
 
 		// Redirect to home view when route not found
 		$urlRouterProvider.otherwise('/');
