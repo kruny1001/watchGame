@@ -807,7 +807,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		}
 	];
 
-
 	$scope.updateProblemBtn = function(targetName, crntNumber, totalTargetProb){
 		if(crntNumber == totalTargetProb){
 			var index = _.findIndex($scope.problemSet, function(chr) {
@@ -832,6 +831,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	$scope.availProbbHH = 3;
   $scope.availProbbMM = 3;
   $scope.availProbbMMHH = 4;
+
 	$scope.availProbb = 10;
 
 	$scope.determinateValue = 0;
@@ -1297,7 +1297,27 @@ WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$md
 
 angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
-    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval) {
+    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval, notify) {
+        var wrong = 'modules/core/img/svg/android-close.svg';
+        var correct = 'modules/core/img/svg/android-radio-button-off.svg';
+        var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
+        var correctStyle = 'correctProblem';
+        var wrongStyle = 'wrongProblem';
+        var clock = document.querySelector('#utility-clock');
+        var grid = document.querySelector('md-grid-list');
+        $scope.crntTargetName = ""; //mm, hh, mh
+        var crntTry = 3;
+        $scope.mmhhWorking = true;
+        $scope.crntProbWorking = false;
+        $scope.problemSet = [
+            {
+                name:'hm',
+                numTrial: 0,
+                totalProb: 4,
+                isDone: false,
+                problems:[]
+            }
+        ];
 
         $scope.determinateValue = 0;
         $interval(function() {
@@ -1346,15 +1366,27 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             {
                 TweenLite.to(cs, 1, {scale:'-=.1'});
             }
-        }
+        };
 
         $scope.goTo = function(name){
             $state.go(name);
-        }
+        };
+
+        var startTimer = function(){
+            $scope.determinateValue = 0;
+            $interval(function() {
+                $scope.determinateValue += 1;
+                if ($scope.determinateValue >= 100) {
+                    $scope.determinateValue = 100;
+                }
+            }, 300, 0, true);
+        };
+
         $scope.menu = function(name){
             if(name="start")
                 $scope.startQuiz();
         };
+
         $scope.hourQ = 0;
         $scope.minQ = 0;
         $scope.rotationArm = function(target, op){
@@ -1375,83 +1407,100 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             audio.play();
         };
 
-        $scope.startQuiz = function(ev){
+        $scope.startQuiz = function(quizCase) {
+
+            $scope.crntTargetName = quizCase;
+            var problem = {hh:0, mm:0};
+            var index = _.findIndex($scope.problemSet, function(chr) {
+                return chr.name == quizCase;
+            });
+
+            var probProp = $scope.problemSet[index];
+            problem.hh = Math.floor((Math.random() * 12) + 1);
+            problem.mm = Math.floor((Math.random() * 60) + 1);
+            probProp.problems.push(problem);
+
+            console.log(problem);
+            console.log(probProp);
+
+            var randHour = Math.floor((Math.random() * 12) + 1);
+            var randMin = Math.floor((Math.random() * 60) + 1);
             var clock = document.querySelector('#utility-clock');
             var hourElement = clock.querySelector('.hour');
             var minuteElement = clock.querySelector('.minute');
 
             var rotate = function(element, second) {
-                element.style.transform =
-                    element.style.webkitTransform = 'rotate(' + (second * 6) + 'deg)';
+                console.log(second*6);
+                TweenLite.to(element, 2.5, {rotation:second * 6});
             }
 
-            var randHour = Math.floor((Math.random() * 12) + 1);
-            var randMin = Math.floor((Math.random() * 60) + 1);
+            if(quizCase == 'hm'){
+                var time = randHour * 3600 + randMin * 60;
+                $scope.mmWorking = false;
+                $scope.hhWorking = false;
+                $scope.mmhhWorking = false;
 
-            $scope.quizAnswer = {hour: randHour, min:randMin};
+                $scope.crntNumProbMMHH++;
+                $scope.totalProbb++;
+                rotate(hourElement, time / 60 / 12);
+                rotate(minuteElement, time / 60)
+            }
 
-            var now = new Date()
-            $scope.time = randHour * 3600 + randMin * 60;
-
-            $scope.hourQ = $scope.time / 60;
-            $scope.minQ = $scope.time / 60 / 12;
-            rotate(minuteElement, $scope.time / 60)
-            rotate(hourElement, $scope.time / 60 / 12)
-            requestAnimationFrame($scope.animate);
-
-
-            //$scope.hourQ = randHour;
-            //$scope.minQ = randMin;
-            var quizContent = '시간을 읽어 주세요';
+            $scope.hourQ = randHour;
+            $scope.minQ = randMin;
+            var quizContent = randHour+'시 '+randMin+'분에 맞춰주세요.';
             $scope.quiz = randHour+'시 '+randMin+'분';
-            $mdDialog.show(
-                $mdDialog.alert()
-                    .parent(angular.element(document.body))
-                    .title('퀴즈를 시작합니다.')
-                    .content(quizContent)
-                    .ariaLabel('Alert Dialog Demo')
-                    .ok('시작하기')
-                    .targetEvent(ev)
-            );
+
+            var confirm = $mdDialog.confirm()
+              .title('퀴즈를 시작합니다.')
+              .content(quizContent)
+              .ok('시작하기')
+
+            $mdDialog.show(confirm).then(function() {
+                //$scope.time = randHour * 3600 + randMin * 60;
+                //rotate(hourElement, $scope.time / 60 / 12);
+                startTimer();
+                $scope.removeTiles();
+                $scope.crntProbWorking=true;
+            }, function() {
+                $scope.alert = 'You decided to keep your debt.';
+            });
+
+
         };
 
         $scope.submitAnswer = function(ev){
-
-            $scope.toastPosition = {
-                bottom: true,
-                top: false,
-                left: false,
-                right: true
-            };
-
-
-
-            $scope.getToastPosition = function() {
-                return Object.keys($scope.toastPosition)
-                    .filter(function(pos) { return $scope.toastPosition[pos]; })
-                    .join(' ');
-            };
-
-            $scope.showSimpleToast = function(msg) {
-                $mdToast.show(
-                    $mdToast.simple()
-                        .content(msg)
-                        .position($scope.getToastPosition())
-                        .hideDelay(3000)
-                );
-            };
-
             $scope.getCurrentHour();
-            var quizContent = ''
-            if($scope.inputHour == $scope.quizAnswer.hour && $scope.inputMin == $scope.quizAnswer.min){
-                quizContent = '정답입니다.';
+            if(crntTry > 1){
+                crntTry--;
+                var quizContent = ''
+                if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
+                    quizContent = '정답입니다.';
+                    crntTry = 3;
+                    $scope.crntProbCorrect = true;
+                    $scope.mmWorking = true;
+                    $scope.hhWorking = true;
+                    $scope.mmhhWorking = true;
+                    notify.push({ name: '문제', icon: correct, class: correctStyle});
+                    $scope.crntProbWorking=false;
+                    $scope.removeTiles();
+                }
+                else{
+                    quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.('+crntTry+'기회가 남았습니다.)';
+                }
+                $scope.showSimpleToast(quizContent);
             }
             else{
-                quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.';
+                $scope.crntProbWorking=false;
+                $scope.removeTiles();
+                notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
+                $scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
+                $scope.mmWorking = true;
+                $scope.hhWorking = true;
+                $scope.mmhhWorking = true;
+                crntTry = 3;
             }
-            console.log(quizContent);
-            $scope.showSimpleToast(quizContent);
-        }
+        };
 
         var clock = document.querySelector('#utility-clock');
         $timeout(function() {
@@ -1676,12 +1725,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 st.getPropertyValue("transform") ||
                 "FAIL";
 
-            // With rotate(30deg)...
-            // matrix(0.866025, 0.5, -0.5, 0.866025, 0px, 0px)
-            //		console.log('Matrix: ' + tr);
-
-            // rotation matrix - http://en.wikipedia.org/wiki/Rotation_matrix
-
             var values = tr.split('(')[1].split(')')[0].split(',');
             var a = values[0];
             var b = values[1];
@@ -1689,19 +1732,44 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             var d = values[3];
 
             var scale = Math.sqrt(a*a + b*b);
-
-//			console.log('Scale: ' + scale);
-
-            // arc sin, convert from radians to degrees, round
             var sin = b/scale;
-            // next line works for 30deg but not 130deg (returns 50);
-            // var angle = Math.round(Math.asin(sin) * (180/Math.PI));
             var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
 
             return angle;
-        }
+        };
+
+        $scope.tiles=[1];
+        $scope.removeTiles=function(){
+            $scope.tiles.pop();
+            $timeout(function(){
+                $scope.tiles.push(1);
+            }, 100);
+
+        };
+
+        $scope.toastPosition = {
+            bottom: false,
+            top: true,
+            left: true,
+            right: false
+        };
+
+        $scope.getToastPosition = function() {
+            return Object.keys($scope.toastPosition)
+              .filter(function(pos) { return $scope.toastPosition[pos]; })
+              .join(' ');
+        };
+
+        $scope.showSimpleToast = function(msg) {
+            $mdToast.show(
+              $mdToast.simple()
+                .content(msg)
+                .position($scope.getToastPosition())
+                .hideDelay(3000)
+            );
+        };
     }
-    WatchGame2Controller.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval"];
+    WatchGame2Controller.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval", "notify"];
 
 'use strict';
 

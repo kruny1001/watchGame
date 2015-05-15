@@ -59,7 +59,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		}
 	];
 
-
 	$scope.updateProblemBtn = function(targetName, crntNumber, totalTargetProb){
 		if(crntNumber == totalTargetProb){
 			var index = _.findIndex($scope.problemSet, function(chr) {
@@ -84,6 +83,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	$scope.availProbbHH = 3;
   $scope.availProbbMM = 3;
   $scope.availProbbMMHH = 4;
+
 	$scope.availProbb = 10;
 
 	$scope.determinateValue = 0;

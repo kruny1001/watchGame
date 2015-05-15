@@ -19,9 +19,8 @@
                 md-is-locked-open="true"
                 style="background-color:#CFCFCF; overflow-x: hidden"
                 md-component-id="left" tabindex="-1">
-
             <div flex layout="column" flex>
-                <md-grid-list class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
+                <md-grid-list ng-repeat="tile in tiles" class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
                     <md-grid-tile id="profile" md-rowspan="1" md-colspan="2" class="red" ng-click="menu('start')">
                         <p class="side-nav-menu">
                                 <span style="color: purple; font-size:15px; font-weight: 900;">시침이와 분침이를</span>
@@ -30,27 +29,40 @@
                         </p>
                     </md-grid-tile>
 
-                    <md-grid-tile ng-if="!authentication.user" id="signIn" md-rowspan="1" md-colspan="1" class="darkBlue">
-                        <h2>{{inputHour}}시</h2>
+                    <md-grid-tile ng-if="crntProbWorking" id="quizPanel" md-rowspan="2" md-colspan="2" class="yellow">
+                        <p class="side-nav-menu">
+                                <span style="color: purple; font-size:15px; font-weight: 900;">
+                                {{crntTargetName}}
+                                </span>
+                            <br/>
+                            <span style="font-size:25px; color:#000066; font-weight: 900">{{quiz}}</span><br/>
+                                <span style="color: purple; font-size:15px; font-weight: 900;">
+                                   시침, 분침을 읽고 적어 주세요
+                                </span>
+                        </p>
                     </md-grid-tile>
 
-                    <md-grid-tile id="tutorial" md-rowspan="1" md-colspan="1" class="green">
-                        <h2>{{inputMin}}분</h2>
+                    <md-grid-tile ng-if="mmhhWorking" md-rowspan="1" md-colspan="2" class="darkBlue" ng-click="startQuiz('hm')">
+                        <p class="side-nav-menu">
+                            <span class="big-font">시침이+분침이</span><br/>
+                            <span class="small-font">몇 시 몇 분</span><br/>
+                            <span class="small-font md-caption">({{crntNumProbMMHH}}/{{availProbbMMHH}})</span>
+                        </p>
                     </md-grid-tile>
 
-                    <md-grid-tile id="t123" md-rowspan="1" md-colspan="2" class="purple" ng-click="showGridBottomSheet($event)">
+
+                    <md-grid-tile ng-if="!crntProbWorking" md-rowspan="1" md-colspan="2" class="purple" ng-click="showGridBottomSheet($event)">
                         <p class="side-nav-menu"><span class="big-font">정답 확인 하기</span></p>
                     </md-grid-tile>
 
-                    <md-grid-tile id="timer" md-rowspan="1" md-colspan="2" class="lightPurple">
+                    <md-grid-tile ng-if="crntProbWorking" id="timer" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="submitAnswer()">
                         <p style="color:white;">
-                            <span style="font-size:15px; color:black; font-weight: 900;">시간</span>
+                            <span style="font-size:15px; color:black; font-weight: 900;">정답 제출</span>
                         </p>
                         <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
                     </md-grid-tile>
                 </md-grid-list>
             </div>
-
         </md-sidenav>
         <md-content flex="" >
             <div class="fill svgBack">
@@ -80,10 +92,18 @@
                         <div class="expand round circle-2"></div>
                     </div>
                 </div>
-                <div style="position: absolute;right: 0;">
+
+
+                <div ng-if="crntProbWorking" layout="row" layout-align="center center" style="margin-top:10px;">
+                    <input type="number" style="border:5px solid #ec971f; border-radius:25%; outline: 0; font-size:25pt; background-color: rgba(255, 228, 196, 0.69); padding:5px;" maxlength="2" max="12" min="1"> <span style="font-size:25pt; font-weight: 800;">시</span>
+                    <input type="number" style="border:5px solid #ec971f; border-radius:25%; outline: 0; font-size:25pt; background-color: rgba(255, 228, 196, 0.69); padding:5px;" maxlength="2" max="59" min="00"> <span style="font-size:25pt; font-weight: 800;">분</span>
+                </div>
+
+                <div style="position: absolute; right:0">
                     <md-button class="md-raised" ng-click="zoom('in')">Zoom In</md-button>
                     <md-button class="md-raised" ng-click="zoom('out')">Zoom Out</md-button>
                 </div>
+
             </div>
         </md-content>
     </section>
