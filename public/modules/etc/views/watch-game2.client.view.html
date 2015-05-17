@@ -1,23 +1,19 @@
 <div layout="column" layout-fill class="watchGameMain" data-ng-controller="WatchGame2Controller">
-    <md-toolbar class="md-accent"
-                style="background-color: #88D7C2; color:white;">
+    <md-toolbar class="timeGameTitle">
         <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings" ng-click="goTo('menu')">
                 <md-icon md-svg-icon="modules/mean-tutorials/img/menu.svg"></md-icon>
             </md-button>
             <div class="md-toolbar-tools md-title">
-                <span hide-sm><b>시침이와 분침이의 몇 시 몇 분!</b></span><span style="font-size:40px; color:coral; font-weight: 800; margin-left:10px;">인성시계 놀이</span>
+                <span hide-sm><b>시침이와 분침이의 몇 시 몇 분!</b></span><span class="gameTitleFont">인성시계 놀이</span>
             </div>
         </div>
     </md-toolbar>
-    <section layout="row" layout-fill style="height:100%; position: absolute;">
+    <section layout="row" layout-fill class="gameUi">
         <md-sidenav
                 flex id="sideNav"
-                class="md-sidenav-left md-whiteframe-z2
-                    ng-isolate-scope md-closed md-locked-open
-                    custom-border"
+                class="md-sidenav-left md-whiteframe-z2 ng-isolate-scope md-closed md-locked-open custom-border sideNavBackground"
                 md-is-locked-open="true"
-                style="background-color:#CFCFCF; overflow-x: hidden"
                 md-component-id="left" tabindex="-1">
             <div flex layout="column" flex>
                 <md-grid-list ng-repeat="tile in tiles" class="sideNavTiles" md-cols="2" md-gutter="5px" md-row-height="3:4">
@@ -46,7 +42,7 @@
                         <p class="side-nav-menu">
                             <span class="big-font">시침이+분침이</span><br/>
                             <span class="small-font">몇 시 몇 분</span><br/>
-                            <span class="small-font md-caption">({{crntNumProbMMHH}}/{{availProbbMMHH}})</span>
+                            <span class="small-font md-caption">({{crntNumProb}}/{{availProbb}})</span>
                         </p>
                     </md-grid-tile>
 
@@ -57,11 +53,13 @@
 
                     <md-grid-tile ng-if="crntProbWorking" id="timer" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="submitAnswer()">
                         <p style="color:white;">
-                            <span style="font-size:15px; color:black; font-weight: 900;">정답 제출</span>
+                            <span class="submit-answer">정답 제출</span>
                         </p>
                         <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
                     </md-grid-tile>
                 </md-grid-list>
+                {{mm}}
+                {{hh}}
             </div>
         </md-sidenav>
         <md-content flex="" >
@@ -95,8 +93,11 @@
 
 
                 <div ng-if="crntProbWorking" layout="row" layout-align="center center" style="margin-top:10px;">
-                    <input type="number" style="border:5px solid #ec971f; border-radius:25%; outline: 0; font-size:25pt; background-color: rgba(255, 228, 196, 0.69); padding:5px;" maxlength="2" max="12" min="1"> <span style="font-size:25pt; font-weight: 800;">시</span>
-                    <input type="number" style="border:5px solid #ec971f; border-radius:25%; outline: 0; font-size:25pt; background-color: rgba(255, 228, 196, 0.69); padding:5px;" maxlength="2" max="59" min="00"> <span style="font-size:25pt; font-weight: 800;">분</span>
+                    <input type="number" ng-model="$parent.hh" class="time-input" ng-maxlength="2" max="12" min="1">
+                    <span style="font-size:25pt; font-weight: 800;">시</span>
+
+                    <input type="number" ng-model="$parent.mm" class="time-input" ng-maxlength="2" max="59" min="00">
+                    <span style="font-size:25pt; font-weight: 800;">분</span>
                 </div>
 
                 <div style="position: absolute; right:0">

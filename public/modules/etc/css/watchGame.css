@@ -1,3 +1,15 @@
+.timeGameTitle{
+    background-color: #88D7C2; color:white;
+}
+
+.gameTitleFont{
+    font-size:40px; color:coral; font-weight: 800; margin-left:10px;
+}
+
+.gameUi{
+    height:100%; position: absolute;
+}
+
 .watchGameMain .fill {
     position: absolute;
     background-color: #18303d;

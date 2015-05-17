@@ -8,7 +8,11 @@ angular.module('etc').factory('notify', ['$window', function(win) {
         },
         get: function(){
             return inputs;
-        }
+        },
+	      reset: function(){
+		      inputs = [];
+	      }
+
     }
 }]);
 
@@ -24,9 +28,11 @@ function GridCtrl($scope, $mdBottomSheet, notify){
 
     console.log($scope.items);
 }
+
 function WatchGameController($scope, $timeout, $mdDialog, $state,
                              $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout) {
 
+	notify.reset();
 	var wrong = 'modules/core/img/svg/android-close.svg';
 	var correct = 'modules/core/img/svg/android-radio-button-off.svg';
 	var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
@@ -34,6 +40,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	var wrongStyle = 'wrongProblem';
 	var clock = document.querySelector('#utility-clock');
 	var grid = document.querySelector('md-grid-list');
+	var hourArmDrag;
+	var minArmDrag;
 	$scope.crntTargetName = ""; //mm, hh, mh
 	$scope.problemSet = [
 		{
@@ -99,7 +107,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	$scope.minQ = 0;
 
 	$scope.startQuiz = function(quizCase) {
-
+		minArmDrag[0].enable();
+		hourArmDrag[0].enable();
 		$scope.crntTargetName = quizCase;
 		var problem = {hh:0, mm:0};
 		var index = _.findIndex($scope.problemSet, function(chr) {
@@ -179,11 +188,11 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		}, function() {
 			$scope.alert = 'You decided to keep your debt.';
 		});
-
-
 	};
 
 	$scope.submitAnswer = function(ev){
+		minArmDrag[0].disable();
+		hourArmDrag[0].disable();
 		$scope.getCurrentHour();
 		if(crntTry > 1){
 			crntTry--;
@@ -231,12 +240,14 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			['hand', ['normal', 'hollow']]
 		]);
 
-		Draggable.create("#minC", {
+		minArmDrag = Draggable.create("#minC", {
 			type: "rotation", throwProps: true
 		});
-		Draggable.create("#hourC", {
+		hourArmDrag = Draggable.create("#hourC", {
 			type: "rotation", throwProps: true
 		});
+		minArmDrag[0].disable();
+		hourArmDrag[0].disable();
 		TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
 	}, 500);
 

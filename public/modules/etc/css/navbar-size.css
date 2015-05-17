@@ -15,3 +15,7 @@ md-grid-list md-grid-tile md-grid-tile-footer h3, md-grid-list md-grid-tile md-g
 
 .side-nav-menu .big-font{font-size:15px; color: #3b3b3b; font-weight: 900;}
 .side-nav-menu .small-font{font-size:12px; color: rgba(116, 116, 116, 0.66); font-weight: 900;}
+
+.sideNavBackground{
+    background-color:#CFCFCF; overflow-x: hidden
+}

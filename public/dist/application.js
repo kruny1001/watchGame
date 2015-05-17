@@ -755,7 +755,11 @@ angular.module('etc').factory('notify', ['$window', function(win) {
         },
         get: function(){
             return inputs;
-        }
+        },
+	      reset: function(){
+		      inputs = [];
+	      }
+
     }
 }]);
 
@@ -772,9 +776,11 @@ function GridCtrl($scope, $mdBottomSheet, notify){
     console.log($scope.items);
 }
 GridCtrl.$inject = ["$scope", "$mdBottomSheet", "notify"];
+
 function WatchGameController($scope, $timeout, $mdDialog, $state,
                              $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout) {
 
+	notify.reset();
 	var wrong = 'modules/core/img/svg/android-close.svg';
 	var correct = 'modules/core/img/svg/android-radio-button-off.svg';
 	var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
@@ -782,6 +788,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	var wrongStyle = 'wrongProblem';
 	var clock = document.querySelector('#utility-clock');
 	var grid = document.querySelector('md-grid-list');
+	var hourArmDrag;
+	var minArmDrag;
 	$scope.crntTargetName = ""; //mm, hh, mh
 	$scope.problemSet = [
 		{
@@ -847,7 +855,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	$scope.minQ = 0;
 
 	$scope.startQuiz = function(quizCase) {
-
+		minArmDrag[0].enable();
+		hourArmDrag[0].enable();
 		$scope.crntTargetName = quizCase;
 		var problem = {hh:0, mm:0};
 		var index = _.findIndex($scope.problemSet, function(chr) {
@@ -927,11 +936,11 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		}, function() {
 			$scope.alert = 'You decided to keep your debt.';
 		});
-
-
 	};
 
 	$scope.submitAnswer = function(ev){
+		minArmDrag[0].disable();
+		hourArmDrag[0].disable();
 		$scope.getCurrentHour();
 		if(crntTry > 1){
 			crntTry--;
@@ -979,12 +988,14 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			['hand', ['normal', 'hollow']]
 		]);
 
-		Draggable.create("#minC", {
+		minArmDrag = Draggable.create("#minC", {
 			type: "rotation", throwProps: true
 		});
-		Draggable.create("#hourC", {
+		hourArmDrag = Draggable.create("#hourC", {
 			type: "rotation", throwProps: true
 		});
+		minArmDrag[0].disable();
+		hourArmDrag[0].disable();
 		TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
 	}, 500);
 
@@ -1298,6 +1309,7 @@ WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$md
 angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
     function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval, notify) {
+        notify.reset();
         var wrong = 'modules/core/img/svg/android-close.svg';
         var correct = 'modules/core/img/svg/android-radio-button-off.svg';
         var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
@@ -1309,6 +1321,12 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         var crntTry = 3;
         $scope.mmhhWorking = true;
         $scope.crntProbWorking = false;
+
+        $scope.crntNumProb = 0;
+        $scope.totalProbb = 0;
+        $scope.availProbb = 10;
+        $scope.mm=0;
+        $scope.hh=1;
         $scope.problemSet = [
             {
                 name:'hm',
@@ -1327,31 +1345,21 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             }
         }, 100, 0, true);
 
-        $scope.items = [
-            { name: '문제1', icon: 'hangout' },
-            { name: '문제2', icon: 'mail' },
-            { name: '문제3', icon: 'message' },
-            { name: '문제4', icon: 'copy2' },
-            { name: '문제5', icon: 'facebook' },
-            { name: '문제6', icon: 'twitter' },
-            { name: '문제7', icon: 'copy2' },
-            { name: '문제8', icon: 'facebook' },
-            { name: '문제9', icon: 'twitter' },
-            { name: '문제10', icon: 'twitter' },
-        ];
+        $scope.items = [];
+
         $scope.listItemClick = function($index) {
             var clickedItem = $scope.items[$index];
             $mdBottomSheet.hide(clickedItem);
         };
 
         $scope.showGridBottomSheet = function($event) {
-            $scope.alert = '';
+            console.log('d');
             $mdBottomSheet.show({
                 templateUrl: 'modules/etc/template/gridBottom.html',
-                controller: 'WatchGame2Controller',
+                controller: 'GridCtrl',
+                preserveScope: true,
                 targetEvent: $event
             }).then(function(clickedItem) {
-                $scope.alert = clickedItem.name + ' clicked!';
             });
         };
 
@@ -1436,11 +1444,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             if(quizCase == 'hm'){
                 var time = randHour * 3600 + randMin * 60;
-                $scope.mmWorking = false;
-                $scope.hhWorking = false;
-                $scope.mmhhWorking = false;
-
-                $scope.crntNumProbMMHH++;
+                $scope.crntNumProb++;
                 $scope.totalProbb++;
                 rotate(hourElement, time / 60 / 12);
                 rotate(minuteElement, time / 60)
@@ -1457,30 +1461,28 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
               .ok('시작하기')
 
             $mdDialog.show(confirm).then(function() {
-                //$scope.time = randHour * 3600 + randMin * 60;
-                //rotate(hourElement, $scope.time / 60 / 12);
                 startTimer();
                 $scope.removeTiles();
                 $scope.crntProbWorking=true;
             }, function() {
                 $scope.alert = 'You decided to keep your debt.';
             });
-
-
         };
 
         $scope.submitAnswer = function(ev){
-            $scope.getCurrentHour();
+            //$scope.getCurrentHour();
             if(crntTry > 1){
                 crntTry--;
                 var quizContent = ''
-                if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
+                console.log('dd');
+                console.log($scope.hh, $scope.mm, $scope.hourQ, $scope.minQ);
+                if($scope.hh === $scope.hourQ && $scope.mm === $scope.minQ){
                     quizContent = '정답입니다.';
                     crntTry = 3;
                     $scope.crntProbCorrect = true;
-                    $scope.mmWorking = true;
-                    $scope.hhWorking = true;
-                    $scope.mmhhWorking = true;
+                    //$scope.mmWorking = true;
+                    //$scope.hhWorking = true;
+                    //$scope.mmhhWorking = true;
                     notify.push({ name: '문제', icon: correct, class: correctStyle});
                     $scope.crntProbWorking=false;
                     $scope.removeTiles();
@@ -1495,9 +1497,9 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 $scope.removeTiles();
                 notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
                 $scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
-                $scope.mmWorking = true;
-                $scope.hhWorking = true;
-                $scope.mmhhWorking = true;
+                //$scope.mmWorking = true;
+                //$scope.hhWorking = true;
+                //$scope.mmhhWorking = true;
                 crntTry = 3;
             }
         };
@@ -1506,7 +1508,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         $timeout(function() {
             utilityClock(clock);
             autoResize(clock, 420);
-            //autoResize(clock, 350);
             choose(clock, [
                 //['hour', ['text', 'text-quarters', 'pill']],
                 ['hour', ['text', 'text-quarters', 'pill']],
@@ -1518,22 +1519,16 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 ['hand', ['normal', 'hollow']]
             ]);
 
-            Draggable.create("#minC", {
-                type: "rotation", throwProps: true
-            });
-            Draggable.create("#hourC", {
-                type: "rotation", throwProps: true
-            });
-
-
-            //TweenLite.to('.fill', 2, {x:250})
-            //TweenLite.to('.gameCtrl', 2, {x:300})
+            //Draggable.create("#minC", {
+            //    type: "rotation", throwProps: true
+            //});
+            //Draggable.create("#hourC", {
+            //    type: "rotation", throwProps: true
+            //});
             TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
-            //TweenLite.to('.fill', 0.5, {left:'+100px'});
         }, 500);
 
         function utilityClock(container) {
-
             var dynamic = container.querySelector('.dynamic')
             var hourElement = container.querySelector('.hour')
             var minuteElement = container.querySelector('.minute')

@@ -1,25 +1,25 @@
 
 <md-content style="position: absolute; overflow-y: hidden;" layout="column" layout-fill class="watchGameMain" data-ng-controller="WatchGameController">
 
-    <md-toolbar class="md-accent"
-                style="background-color: #88D7C2; color:white;">
+    <md-toolbar class="timeGameTitle">
         <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings" ng-click="goTo('menu')">
                 <md-icon md-svg-icon="modules/mean-tutorials/img/menu.svg"></md-icon>
             </md-button>
             <div class="md-toolbar-tools md-title">
-                <span hide-sm><b>시침이와 분침이의 </b></span><span style="font-size:40px; color:coral; font-weight: 800; margin-left:10px;">인성시계 놀이</span>
+                <span hide-sm><b>시침이와 분침이의 </b></span><span class="gameTitleFont">인성시계 놀이</span>
             </div>
         </div>
     </md-toolbar>
 
-    <section layout="row" layout-fill style="height:100%; position: absolute;">
+    <section layout="row" layout-fill class="gameUi">
         <md-sidenav
                 flex
                 id="sideNav"
                 class="md-sidenav-left md-whiteframe-z2
                     ng-isolate-scope md-closed md-locked-open
-                    custom-border"
+                    custom-border
+                    sideNavBackground"
                 md-is-locked-open="true"
                 style="background-color:#CFCFCF; overflow-x: hidden"
                 md-component-id="left"

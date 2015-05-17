@@ -1,0 +1,8 @@
+.time-input{
+    border:5px solid #ec971f; border-radius:25%; outline: 0; font-size:25pt;
+    background-color: rgba(255, 228, 196, 0.69); padding:5px;
+}
+
+.submit-answer{
+    font-size:15px; color:black; font-weight: 900;
+}
