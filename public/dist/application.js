@@ -1523,9 +1523,9 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             });
 
             var probProp = $scope.problemSet[index];
-            problem.hh = Math.floor((Math.random() * 12) + 1);
-            problem.mm = Math.floor((Math.random() * 60) + 1);
-            probProp.problems.push(problem);
+            //problem.hh = Math.floor((Math.random() * 12) + 1);
+            //problem.mm = Math.floor((Math.random() * 60) + 1);
+            //probProp.problems.push(problem);
 
             //console.log(problem);
             //console.log(probProp);
