@@ -2,9 +2,9 @@
 
 module.exports = {
 	app: {
-		title: 'clockGame',
-		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
-		keywords: 'MongoDB, Express, AngularJS, Node.js'
+		title: '인성시계놀이',
+		description: '시계개임',
+		keywords: '시계 조작 개임'
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',

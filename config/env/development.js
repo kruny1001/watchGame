@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/clockgame-dev',
 	app: {
-		title: 'clockGame - Development Environment'
+		title: '인성시계놀이 - Development Environment'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

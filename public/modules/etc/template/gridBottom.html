@@ -1,8 +1,18 @@
+
 <md-bottom-sheet class="md-grid">
-    <h3 class="md-title"><b>정답 확인 하기 {{items.length}}</b></h3>
+    <h3 class="md-title"><b>시침이와 분침이를 읽어라 결과 ({{items.length}})문제</b></h3>
     <md-list>
-        <md-list-item ng-repeat="item in items">
-            <md-button class="md-grid-item-content" ng-click="listItemClick($index)">
+        <md-list-item class="list-item-width" ng-repeat="item in items">
+            <md-button class="md-grid-item-content" ng-click="listItemClick($index, 1)">
+                <md-icon  ng-class="item.class" md-svg-src="{{item.icon}}"></md-icon>
+                <div class="md-grid-text"> {{ item.name }} </div>
+            </md-button>
+        </md-list-item>
+    </md-list>
+    <h3 class="md-title"><b>몇 시 몇 분! 결과 ({{items2.length}})문제</b></h3>
+    <md-list>
+        <md-list-item class="list-item-width" ng-repeat="item in items2">
+            <md-button class="md-grid-item-content" ng-click="listItemClick($index, 2)">
                 <md-icon  ng-class="item.class" md-svg-src="{{item.icon}}"></md-icon>
                 <div class="md-grid-text"> {{ item.name }} </div>
             </md-button>
