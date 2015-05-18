@@ -135,10 +135,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		}
 
 		if(quizCase == 'mm'){
-			$scope.mmWorking = false;
-			$scope.hhWorking = false;
-			$scope.mmhhWorking = false;
-
 			$scope.crntNumProbMM++;
 			$scope.totalProbb++;
 			var time = randHour * 3600 + randMin * 60;
@@ -146,10 +142,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			rotate(hourElement, time / 60 / 12);
 		}
 		else if(quizCase == 'hh'){
-			$scope.mmWorking = false;
-			$scope.hhWorking = false;
-			$scope.mmhhWorking = false;
-
 			$scope.crntNumProbHH++;
 			$scope.totalProbb++;
 			randMin = 0;
@@ -158,10 +150,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		else if(quizCase == 'hm'){
 			var h=10, m=10;
 			var time = h * 3600 + m * 60;
-			$scope.mmWorking = false;
-			$scope.hhWorking = false;
-			$scope.mmhhWorking = false;
-
 			$scope.crntNumProbMMHH++;
 			$scope.totalProbb++;
 			rotate(hourElement, time / 60 / 12);
@@ -182,6 +170,20 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		$mdDialog.show(confirm).then(function() {
 			//$scope.time = randHour * 3600 + randMin * 60;
 			//rotate(hourElement, $scope.time / 60 / 12);
+			if(quizCase == 'mm'){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;}
+			else if(quizCase == 'hh'){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;}
+			else if(quizCase == 'hm'){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;
+			}
+
 			startTimer();
 			$scope.removeTiles();
 			$scope.crntProbWorking=true;
@@ -191,13 +193,14 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	};
 
 	$scope.submitAnswer = function(ev){
-		minArmDrag[0].disable();
-		hourArmDrag[0].disable();
+
 		$scope.getCurrentHour();
 		if(crntTry > 1){
 			crntTry--;
 			var quizContent = ''
 			if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
+				minArmDrag[0].disable();
+				hourArmDrag[0].disable();
 				quizContent = '정답입니다.';
 				crntTry = 3;
 				$scope.crntProbCorrect = true;
@@ -214,6 +217,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			$scope.showSimpleToast(quizContent);
 		}
 		else{
+			minArmDrag[0].disable();
+			hourArmDrag[0].disable();
 			$scope.crntProbWorking=false;
 			$scope.removeTiles();
 			notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});

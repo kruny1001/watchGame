@@ -32,13 +32,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         ];
 
         $scope.determinateValue = 0;
-        $interval(function() {
-            $scope.determinateValue += 1;
-            if ($scope.determinateValue > 100) {
-                $scope.determinateValue = 0;
-            }
-        }, 100, 0, true);
-
         $scope.items = [];
 
         $scope.listItemClick = function($index) {
@@ -110,7 +103,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         };
 
         $scope.startQuiz = function(quizCase) {
-
             $scope.crntTargetName = quizCase;
             var problem = {hh:0, mm:0};
             var index = _.findIndex($scope.problemSet, function(chr) {
@@ -151,13 +143,14 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             var confirm = $mdDialog.confirm()
               .title('퀴즈를 시작합니다.')
-              .content(quizContent)
+              .content("시침 분침을 읽고 현재 가르키는 시간을 맞춰 주세요.")
               .ok('시작하기')
 
             $mdDialog.show(confirm).then(function() {
                 startTimer();
                 $scope.removeTiles();
                 $scope.crntProbWorking=true;
+                $scope.mmhhWorking = false;
             }, function() {
                 $scope.alert = 'You decided to keep your debt.';
             });
@@ -176,7 +169,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                     $scope.crntProbCorrect = true;
                     //$scope.mmWorking = true;
                     //$scope.hhWorking = true;
-                    //$scope.mmhhWorking = true;
+                    $scope.mmhhWorking = true;
                     notify.push({ name: '문제', icon: correct, class: correctStyle});
                     $scope.crntProbWorking=false;
                     $scope.removeTiles();
@@ -193,7 +186,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 $scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
                 //$scope.mmWorking = true;
                 //$scope.hhWorking = true;
-                //$scope.mmhhWorking = true;
+                $scope.mmhhWorking = true;
                 crntTry = 3;
             }
         };
