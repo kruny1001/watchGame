@@ -13,15 +13,21 @@
             </p>
         </md-toolbar>
         <div flex layout="column" layout-fill layout-align="center center">
-            <div class="" flex>
-                <md-button class="subMenu md-primary md-raised" ng-click="goTo('watch-game')">
-                    <b>시침이와 분침이를 돌려라!</b>
-                </md-button>
+
+            <div layout="column" layout-align="center center" class="subMenu " flex ng-click="goTo('watch-game')">
+                <div>
+                    <h3 class="md-title">시침이와 분침이를 돌려라!</h3>
+                </div>
             </div>
-            <div class="" flex>
-                <md-button class="subMenu md-primary md-raised" ng-click="goTo('watch-game2')">
-                    <b>시침이와 분침이 몇 시 몇 분!</b>
-                </md-button>
+            <div layout="column" layout-align="center center" class="subMenu " flex ng-click="goTo('watch-game2')">
+                <div>
+                    <h3 class="md-title" style="margin:auto;">시침이와 분침이 몇 시 몇 분!</h3>
+                </div>
+            </div>
+            <div layout="column" layout-align="center center" ng-if="!isDone" class="subMenu " flex ng-click="reset()">
+                <div>
+                    <h3 class="md-title">새로 시작하기</h3>
+                </div>
             </div>
         </div>
 </div>

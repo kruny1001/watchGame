@@ -665,12 +665,17 @@ angular.module('etc').config(['$stateProvider',
 	function($stateProvider) {
 		// Etc state routing
 		$stateProvider.
-			state('watch-game', {
+			state('menu', {
 				url: '/',
+				templateUrl: 'modules/etc/views/menu.client.view.html',
+				controller:'MenuController'
+			}).
+			state('watch-game', {
+				url: '/watch-game',
 				templateUrl: 'modules/etc/views/watch-game.client.view.html',
 				controller:'WatchGameController'
-			}).
-			state('watch-game2', {
+			})
+			.state('watch-game2', {
 				url: '/watch-game2',
 				templateUrl: 'modules/etc/views/watch-game2.client.view.html',
 				controller:'WatchGame2Controller'
@@ -685,22 +690,32 @@ angular.module('etc').config(['$stateProvider',
 				url: '/:problemId',
 				templateUrl: 'modules/etc/views/watch-game.client.view.html',
 				controller:'WatchGameController'
-			}).
-			state('menu', {
-				url: '/menu',
-				templateUrl: 'modules/etc/views/menu.client.view.html',
-				controller:'MenuController'
-			})
+			});
+
 	}
 ]);
 'use strict';
 
-angular.module('etc').controller('MenuController', ['$scope','$state',
-	function($scope, $state) {
+angular.module('etc').controller('MenuController', ['$scope','$state','gameStatus','notify', 'notify2',
+	function($scope, $state, gameStatus, notify, notify2) {
 
+    $scope.isDone = false;
         $scope.goTo = function(name){
             $state.go(name)
         }
+
+    $scope.init = function(){
+      if(gameStatus.getGamesNotDone().length !== 0)
+        $scope.isDone = true;
+    }
+    $scope.init();
+
+    $scope.reset = function(){
+      notify.reset();
+      notify2.reset();
+      gameStatus.reset();
+      $scope.goTo('watch-game');
+    }
 	}
 ]);
 'use strict';
@@ -729,6 +744,19 @@ angular.module('etc').factory('gameStatus', function(){
 		},
 		getGamesNotDone: function(){
 			return _.filter(games, function(item){return item.isDone === false})
+		},
+		reset: function(){
+			games = [
+				{
+					type:'game1',
+					isDone: false
+
+				},
+				{
+					type:'game2',
+					isDone: false
+				}
+			];
 		}
 	}
 });
@@ -809,14 +837,18 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 		    console.log($scope.items[$index]);
 		    var clickedItem = $scope.items[$index];
 		    $mdBottomSheet.hide(clickedItem);
-		    $state.go('watch-game-re',{problemId:$index});
+		    if(clickedItem.class !== 'correctProblem'){
+			    $state.go('watch-game-re',{problemId:$index});
+		    }
+
 	    }else{
 		    console.log(2);
 		    console.log($scope.items2[$index]);
 		    var clickedItem = $scope.items2[$index];
 		    $mdBottomSheet.hide(clickedItem);
-		    $state.go('watch-game2-re',{problemId:$index});
-
+		    if(clickedItem.class !== 'correctProblem') {
+			    $state.go('watch-game2-re', {problemId: $index});
+		    }
 	    }
     };
 
@@ -1054,9 +1086,19 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				$scope.mmWorking = true;
 				$scope.hhWorking = true;
 				$scope.mmhhWorking = true;
+				var name = '';
+				if($scope.crntTargetName == 'hh'){
+					name=' 시침';
+				}
+				else if($scope.crntTargetName == 'mm'){
+					name=' 분침';
+				}
+				else if($scope.crntTargetName == 'hm'){
+					name=' 시침분침';
+				}
 
 				if(!$scope.reTrial){
-					notify.push({ name: '문제'+$scope.totalProbb, icon: correct, class: correctStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+					notify.push({ name: name, icon: correct, class: correctStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 					updateNumProblems();
 				}
 				else{
@@ -1090,8 +1132,18 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			hourArmDrag[0].disable();
 			$scope.crntProbWorking=false;
 			$scope.removeTiles();
+			var name = '';
+			if($scope.crntTargetName == 'hh'){
+				name=' 시침';
+			}
+			else if($scope.crntTargetName == 'mm'){
+				name=' 분침';
+			}
+			else if($scope.crntTargetName == 'hm'){
+				name=' 시침분침';
+			}
 			if(!$scope.reTrial){
-				notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+				notify.push({ name: name, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 				updateNumProblems();
 
 			}
@@ -1386,8 +1438,19 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 					$scope.crntProbWorking=false;
 					$scope.removeTiles();
 
+					var name = '';
+					if($scope.crntTargetName == 'hh'){
+						name=' 시침';
+					}
+					else if($scope.crntTargetName == 'mm'){
+						name=' 분침';
+					}
+					else if($scope.crntTargetName == 'hm'){
+						name=' 시침분침';
+					}
+
 					if(!$scope.reTrial){
-						notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+						notify.push({ name: name, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 						updateNumProblems();
 					}
 					else{
@@ -1501,11 +1564,15 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				$scope.mmhhWorking = false;
 			}
 		}
-		else{ // all done
+		else{ // game1 done
 			$scope.mmWorking = false;
 			$scope.hhWorking = false;
 			$scope.mmhhWorking = false;
-			$scope.goNextGame();
+			$scope.isDone = true;
+			$scope.removeTiles();
+
+			if(gameStatus.getGamesNotDone().length !== 0)
+				$scope.goNextGame();
 		}
 	}
 }
@@ -1549,7 +1616,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         $scope.totalProbb = 0;
         $scope.availProbb = numTotalGame;
         $scope.mm=0;
-        $scope.hh=1;
+        $scope.hh=0;
         $scope.problemSet = [
             {
                 name:'hm',
@@ -1600,6 +1667,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             $scope.determinateValue = 0;
             stop = $interval(function() {
                 $scope.determinateValue += 5;
+
                 if ($scope.determinateValue >= 100) {
                     if($scope.crntTry > 1){
                         $scope.crntTry--;
@@ -1610,7 +1678,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                         $scope.crntTry=3;
                         if(!$scope.reTrial) {
                             notify2.push({
-                                name: '문제' + $scope.totalProbb,
+                                name: '몇분몇시' + $scope.totalProbb,
                                 icon: wrong,
                                 class: wrongStyle,
                                 problem: {
@@ -1698,7 +1766,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
         $scope.startQuiz = function(quizCase, problemRe) {
             $scope.mm=0;
-            $scope.hh=1;
+            $scope.hh=0;
             $scope.determinateValue = 100;
             $scope.crntTargetName = quizCase;
             var problem = {hh:0, mm:0};
@@ -1764,7 +1832,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                     $scope.mmhhWorking = true;
 
                     if(!$scope.reTrial) {
-                        notify2.push({ name: '문제' + $scope.totalProbb, icon: correct, class: correctStyle,
+                        notify2.push({ name: '몇분몇시', icon: correct, class: correctStyle,
                             problem: {
                                 game: $scope.crntTargetName,
                                 num: $scope.totalProbb,
@@ -1807,7 +1875,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
                 if(!$scope.reTrial) {
                     notify2.push({
-                        name: '문제' + $scope.totalProbb,
+                        name: '몇분몇시',
                         icon: wrong,
                         class: wrongStyle,
                         problem: {
@@ -1843,7 +1911,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 }
             }
 
-            $scope.hh=1;
+            $scope.hh=0;
             $scope.mm=0;
         };
 
@@ -2038,9 +2106,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 min = minDeg/6;
             }
 
-            //console.log("hourDeg: "+ hourDeg + " minDeg: "+minDeg);
-            //console.log("hour: "+ hour + " min: "+min);
-
             $scope.hh = parseInt(hour);
             $scope.mm = parseInt(min);
         }
@@ -2125,6 +2190,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             }else
             {
+                $scope.isDone = true;
                 $scope.goNextGame();
             }
         }
@@ -2149,16 +2215,18 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
               .content(quizResult)
               .ok(btnName);
 
-            $mdDialog.show(confirm).then(function() {
-                if(game1Total > game1Length){
-                    $state.go('watch-game');
-                }else if(numTotalGame === game2Length && game1Total === game1Length){
-                    $scope.showGridBottomSheet();
-                }
+            if(gameStatus.getGamesNotDone().length !== 0)
+                $mdDialog.show(confirm).then(function() {
+                    if(game1Total > game1Length){
+                        if(gameStatus.getGamesNotDone().length !== 0)
+                            $state.go('watch-game');
+                    }else if(numTotalGame === game2Length && game1Total === game1Length){
+                        $scope.showGridBottomSheet();
+                    }
 
-            }, function() {
-                $scope.alert = 'You decided to keep your debt.';
-            });
+                }, function() {
+                    $scope.alert = 'You decided to keep your debt.';
+                });
         };
 
     }

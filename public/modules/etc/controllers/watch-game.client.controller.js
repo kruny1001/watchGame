@@ -24,6 +24,19 @@ angular.module('etc').factory('gameStatus', function(){
 		},
 		getGamesNotDone: function(){
 			return _.filter(games, function(item){return item.isDone === false})
+		},
+		reset: function(){
+			games = [
+				{
+					type:'game1',
+					isDone: false
+
+				},
+				{
+					type:'game2',
+					isDone: false
+				}
+			];
 		}
 	}
 });
@@ -104,14 +117,18 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 		    console.log($scope.items[$index]);
 		    var clickedItem = $scope.items[$index];
 		    $mdBottomSheet.hide(clickedItem);
-		    $state.go('watch-game-re',{problemId:$index});
+		    if(clickedItem.class !== 'correctProblem'){
+			    $state.go('watch-game-re',{problemId:$index});
+		    }
+
 	    }else{
 		    console.log(2);
 		    console.log($scope.items2[$index]);
 		    var clickedItem = $scope.items2[$index];
 		    $mdBottomSheet.hide(clickedItem);
-		    $state.go('watch-game2-re',{problemId:$index});
-
+		    if(clickedItem.class !== 'correctProblem') {
+			    $state.go('watch-game2-re', {problemId: $index});
+		    }
 	    }
     };
 
@@ -349,9 +366,19 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				$scope.mmWorking = true;
 				$scope.hhWorking = true;
 				$scope.mmhhWorking = true;
+				var name = '';
+				if($scope.crntTargetName == 'hh'){
+					name=' 시침';
+				}
+				else if($scope.crntTargetName == 'mm'){
+					name=' 분침';
+				}
+				else if($scope.crntTargetName == 'hm'){
+					name=' 시침분침';
+				}
 
 				if(!$scope.reTrial){
-					notify.push({ name: '문제'+$scope.totalProbb, icon: correct, class: correctStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+					notify.push({ name: name, icon: correct, class: correctStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 					updateNumProblems();
 				}
 				else{
@@ -385,8 +412,18 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			hourArmDrag[0].disable();
 			$scope.crntProbWorking=false;
 			$scope.removeTiles();
+			var name = '';
+			if($scope.crntTargetName == 'hh'){
+				name=' 시침';
+			}
+			else if($scope.crntTargetName == 'mm'){
+				name=' 분침';
+			}
+			else if($scope.crntTargetName == 'hm'){
+				name=' 시침분침';
+			}
 			if(!$scope.reTrial){
-				notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+				notify.push({ name: name, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 				updateNumProblems();
 
 			}
@@ -681,8 +718,19 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 					$scope.crntProbWorking=false;
 					$scope.removeTiles();
 
+					var name = '';
+					if($scope.crntTargetName == 'hh'){
+						name=' 시침';
+					}
+					else if($scope.crntTargetName == 'mm'){
+						name=' 분침';
+					}
+					else if($scope.crntTargetName == 'hm'){
+						name=' 시침분침';
+					}
+
 					if(!$scope.reTrial){
-						notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+						notify.push({ name: name, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 						updateNumProblems();
 					}
 					else{

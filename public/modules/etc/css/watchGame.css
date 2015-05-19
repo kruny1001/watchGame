@@ -309,9 +309,12 @@
     color: white; }
 
 .subMenu{
-    min-height: 200px;
+    color: #ffffcc;
+    font-weight: bold;
+    outline: 0;
+    min-height: 100px;
     max-width: 600px;
-    min-width:200px;
+    min-width:250px;
     margin:20px;
     padding: 5px;
     margin-left:auto;

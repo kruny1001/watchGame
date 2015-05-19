@@ -37,7 +37,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         $scope.totalProbb = 0;
         $scope.availProbb = numTotalGame;
         $scope.mm=0;
-        $scope.hh=1;
+        $scope.hh=0;
         $scope.problemSet = [
             {
                 name:'hm',
@@ -88,6 +88,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             $scope.determinateValue = 0;
             stop = $interval(function() {
                 $scope.determinateValue += 5;
+
                 if ($scope.determinateValue >= 100) {
                     if($scope.crntTry > 1){
                         $scope.crntTry--;
@@ -98,7 +99,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                         $scope.crntTry=3;
                         if(!$scope.reTrial) {
                             notify2.push({
-                                name: '문제' + $scope.totalProbb,
+                                name: '몇분몇시' + $scope.totalProbb,
                                 icon: wrong,
                                 class: wrongStyle,
                                 problem: {
@@ -186,7 +187,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
         $scope.startQuiz = function(quizCase, problemRe) {
             $scope.mm=0;
-            $scope.hh=1;
+            $scope.hh=0;
             $scope.determinateValue = 100;
             $scope.crntTargetName = quizCase;
             var problem = {hh:0, mm:0};
@@ -252,7 +253,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                     $scope.mmhhWorking = true;
 
                     if(!$scope.reTrial) {
-                        notify2.push({ name: '문제' + $scope.totalProbb, icon: correct, class: correctStyle,
+                        notify2.push({ name: '몇분몇시', icon: correct, class: correctStyle,
                             problem: {
                                 game: $scope.crntTargetName,
                                 num: $scope.totalProbb,
@@ -295,7 +296,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
                 if(!$scope.reTrial) {
                     notify2.push({
-                        name: '문제' + $scope.totalProbb,
+                        name: '몇분몇시',
                         icon: wrong,
                         class: wrongStyle,
                         problem: {
@@ -331,7 +332,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 }
             }
 
-            $scope.hh=1;
+            $scope.hh=0;
             $scope.mm=0;
         };
 
@@ -525,9 +526,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             }else{
                 min = minDeg/6;
             }
-
-            //console.log("hourDeg: "+ hourDeg + " minDeg: "+minDeg);
-            //console.log("hour: "+ hour + " min: "+min);
 
             $scope.hh = parseInt(hour);
             $scope.mm = parseInt(min);

@@ -5,12 +5,17 @@ angular.module('etc').config(['$stateProvider',
 	function($stateProvider) {
 		// Etc state routing
 		$stateProvider.
-			state('watch-game', {
+			state('menu', {
 				url: '/',
+				templateUrl: 'modules/etc/views/menu.client.view.html',
+				controller:'MenuController'
+			}).
+			state('watch-game', {
+				url: '/watch-game',
 				templateUrl: 'modules/etc/views/watch-game.client.view.html',
 				controller:'WatchGameController'
-			}).
-			state('watch-game2', {
+			})
+			.state('watch-game2', {
 				url: '/watch-game2',
 				templateUrl: 'modules/etc/views/watch-game2.client.view.html',
 				controller:'WatchGame2Controller'
@@ -25,11 +30,7 @@ angular.module('etc').config(['$stateProvider',
 				url: '/:problemId',
 				templateUrl: 'modules/etc/views/watch-game.client.view.html',
 				controller:'WatchGameController'
-			}).
-			state('menu', {
-				url: '/menu',
-				templateUrl: 'modules/etc/views/menu.client.view.html',
-				controller:'MenuController'
-			})
+			});
+
 	}
 ]);
