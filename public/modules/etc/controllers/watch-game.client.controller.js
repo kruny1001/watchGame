@@ -112,13 +112,11 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 
     $scope.listItemClick = function($index, game) {
 	    if(game === 1){
-
 		    var clickedItem = $scope.items[$index];
 		    $mdBottomSheet.hide(clickedItem);
 		    if(clickedItem.class !== 'correctProblem'){
 			    $state.go('watch-game-re',{problemId:$index});
 		    }
-
 	    }else{
 		    var clickedItem = $scope.items2[$index];
 		    $mdBottomSheet.hide(clickedItem);
@@ -128,6 +126,7 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 	    }
     };
 }
+
 function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
                              $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout, gameStatus) {
 
@@ -136,17 +135,17 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 	$scope.hhWorking = true;
 	$scope.mmhhWorking = true;
 	$scope.crntTry = 3;
-	var status = gameStatus.getInfo('game1');
 
+	var status = gameStatus.getInfo('game1');
 	if(status.isDone === true){
+		//console.log('isDone')
 		$scope.mmWorking = false;
 		$scope.hhWorking = false;
 		$scope.mmhhWorking = false;
 	}
 
-	//notify.reset();
 	var stop;
-	var numTotalGame = 4;
+	$scope.numTotalGame = 10;
 
 	var wrong = 'modules/core/img/svg/android-close.svg';
 	var correct = 'modules/core/img/svg/android-radio-button-off.svg';
@@ -160,38 +159,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 	var hourArmDrag;
 	var minArmDrag;
 	$scope.crntTargetName = ""; //mm, hh, mh
-	$scope.problemSet = [
-		{
-			name:'mm',
-			numTrial: 0,
-			totalProb: 3,
-			isDone: false,
-			problems:[]
-		},
-		{
-			name:'hh',
-			numTrial: 0,
-			totalProb: 3,
-			isDone: false,
-			problems:[]
-		},
-		{
-			name:'hm',
-			numTrial: 0,
-			totalProb: 4,
-			isDone: false,
-			problems:[]
-		}
-	];
-	$scope.updateProblemBtn = function(targetName, crntNumber, totalTargetProb){
-		if(crntNumber == totalTargetProb){
-			var index = _.findIndex($scope.problemSet, function(chr) {
-				return chr.name == targetName;
-			});
-			$scope.problemSet[index].isDone = true;
-		};
-	};
-
 
 	$scope.crntNumProbMM = 0;
 	$scope.crntNumProbHH = 0;
@@ -201,25 +168,21 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 	$scope.crntProbWorking = false;
 	$scope.crntProbCorrect = false;
-
 	$scope.probMMDone =false;
 
 
 
-	$scope.availProbbHH = 3;
+	//$scope.availProbbHH = 1;
+	//$scope.availProbbMM = 1;
+	//$scope.availProbbMMHH = 1;
+
+  $scope.availProbbHH = 3;
   $scope.availProbbMM = 3;
   $scope.availProbbMMHH = 4;
 
-	$scope.availProbb = 10;
 
 	$scope.determinateValue = 0;
 
-	$scope.items = [];
-
-	$scope.quizValue={
-		hour: 0,
-		min: 0
-	}
 	$scope.hourQ = 0;
 	$scope.minQ = 0;
 
@@ -247,6 +210,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		minArmDrag[0].disable();
 		hourArmDrag[0].disable();
 		TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"});
+		$scope.zoom('in');
 		updateNumProblems();
 		reSolve();
 
@@ -256,29 +220,23 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		minArmDrag[0].enable();
 		hourArmDrag[0].enable();
 		$scope.crntTargetName = quizCase;
-		var problem = {hh:0, mm:0};
-		var index = _.findIndex($scope.problemSet, function(chr) {
-			return chr.name == quizCase;
-		});
 
-		var probProp = $scope.problemSet[index];
-		problem.hh = Math.floor((Math.random() * 12) + 1);
-		problem.mm = Math.floor((Math.random() * 60) + 1);
-		probProp.problems.push(problem);
 		var randHour = 1;
 		var randMin = 0;
-		if(problemRe !== undefined){
+
+		if(problemRe !== undefined){ //case of retrail
 			$scope.reTrial = true;
 			randHour = problemRe.problem.hh;
 			randMin = problemRe.problem.mm;
 			quizCase = problemRe.problem.game;
 		}
-		else{
+		else{ // case of new problem
 			randHour = Math.floor((Math.random() * 12) + 1);
 			randMin = Math.floor((Math.random() * 60) + 1);
 			if(randMin === 60)
 				randMin=0;
 		}
+
 
 		var clock = document.querySelector('#utility-clock');
 		var hourElement = clock.querySelector('.hour');
@@ -306,6 +264,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 		$scope.hourQ = randHour;
 		$scope.minQ = randMin;
+
 		var quizContent = randHour+'시 '+randMin+'분에 맞춰주세요.';
 		$scope.quiz = randHour+'시 '+randMin+'분';
 
@@ -315,21 +274,11 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			.ok('시작하기')
 
 		$mdDialog.show(confirm).then(function() {
-			if(quizCase == 'mm'){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;}
-			else if(quizCase == 'hh'){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;}
-			else if(quizCase == 'hm'){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;
-			}
-			startTimer();
+			$scope.mmWorking = false;
+			$scope.hhWorking = false;
+			$scope.mmhhWorking = false;
 			$scope.removeTiles();
+			startTimer();
 			$scope.crntProbWorking=true;
 		}, function() {
 			$scope.alert = 'You decided to keep your debt.';
@@ -337,8 +286,13 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 	};
 
 
-	$scope.submitAnswer = function(ev){
+	$scope.$on('$destroy', function() {
+		// Make sure that the interval is destroyed too
+		$scope.submitAnswer();
+	});
 
+	$scope.submitAnswer = function(ev){
+		//console.log('submit');
 		$scope.getCurrentHour();
 		if($scope.crntTry > 1){
 			$scope.crntTry--;
@@ -373,17 +327,9 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				}
 
 				$scope.crntProbWorking=false;
-				$scope.removeTiles();
+//				$scope.removeTiles();
 				$interval.cancel(stop);
 				stop = undefined;
-				// End Game 1
-				if($scope.totalProbb==numTotalGame){
-					$scope.mmWorking = false;
-					$scope.hhWorking = false;
-					$scope.mmhhWorking = false;
-					gameStatus.changeStatus('game1');
-					var remainGame = gameStatus.getGamesNotDone();
-				}
 			}
 			else{
 				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.('+$scope.crntTry+'기회가 남았습니다.)';
@@ -394,7 +340,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			minArmDrag[0].disable();
 			hourArmDrag[0].disable();
 			$scope.crntProbWorking=false;
-			$scope.removeTiles();
+			//$scope.removeTiles();
 			var name = '';
 			if($scope.crntTargetName == 'hh'){
 				name=' 시침';
@@ -408,26 +354,15 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			if(!$scope.reTrial){
 				notify.push({ name: name, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 				updateNumProblems();
-
 			}
 			else{
 				$state.go('watch-game');
 			}
-			$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
-			//$scope.mmWorking = true;
-			//$scope.hhWorking = true;
-			//$scope.mmhhWorking = true;
+			//$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
 			$scope.crntTry = 3;
-			// End Game 1
+
 			$interval.cancel(stop);
 			stop = undefined;
-			if($scope.totalProbb==numTotalGame){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;
-				gameStatus.changeStatus('game1');
-				var remainGame = gameStatus.getGamesNotDone();
-			}
 		}
 	};
 
@@ -518,9 +453,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				now.getMinutes() * 60 +
 				now.getSeconds() * 1 +
 				now.getMilliseconds() / 1000;
-			//rotate(secondElement, time)
-			//rotate(minuteElement, time / 60)
-			//rotate(hourElement, time / 60 / 12)
 			requestAnimationFrame($scope.animate);
 		};
 
@@ -537,7 +469,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		for (var i = 1; i <= 12; i ++) hour(i)
 		$scope.animate();
 	}
-
 	function autoResize(element, nativeSize) {
 		var update = function() {
 			var parent = $('.fill');
@@ -549,7 +480,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 		window.addEventListener('resize', update)
 	}
-
 	function choose(clock, items) {
 		var chooser = document.querySelector('#chooser')
 		items.forEach(function(item) {
@@ -583,7 +513,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			}
 		})
 	}
-
 	$scope.setNow = function(){
 		var now = new Date()
 		var time = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() * 1 + now.getMilliseconds() / 1000;
@@ -594,7 +523,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		TweenLite.to("#hourC", 5, {rotation:hourDeg})
 		TweenLite.to("#minC", 5, {rotation:minDeg})
 	}
-
 	$scope.getCurrentHour = function(){
 		var hourDeg = getDegreeCrnt('hourC');
 		var minDeg = getDegreeCrnt('minC');
@@ -619,7 +547,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		$scope.hh = parseInt(hour);
 		$scope.mm = parseInt(min);
 	}
-
 	function getDegreeCrnt(id) {
 
 		var el = document.getElementById(id);
@@ -643,9 +570,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 		return angle;
 	}
-
-
-
 	$scope.showGridBottomSheet = function($event) {
 		$mdBottomSheet.show({
 			templateUrl: 'modules/etc/template/gridBottom.html',
@@ -660,11 +584,9 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		if(op=="in") {TweenLite.to(cs, 1, {scale:'+=.1'});}
 		else {TweenLite.to(cs, 1, {scale:'-=.1'});}
 	}
-
 	$scope.goTo = function(name){
 		$state.go(name);
 	}
-
 	$scope.menu = function(name){
 		if(name="start")
 			$scope.startQuiz();
@@ -672,8 +594,10 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 	var startTimer = function(){
 		$scope.determinateValue = 0;
+
 		stop = $interval(function() {
 			$scope.determinateValue += 1;
+
 			if ($scope.determinateValue >= 100) {
 
 				if($scope.crntTry > 1){
@@ -681,14 +605,14 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 					var quizContent = '시간초과 입니다.('+$scope.crntTry+'기회가 남았습니다.)';
 					$scope.showSimpleToast(quizContent);
 					$scope.determinateValue = 0;
-
 				}else{
+					// wrong all trials
 					$scope.crntTry=3;
 					$scope.determinateValue = 100;
 					minArmDrag[0].disable();
 					hourArmDrag[0].disable();
 					$scope.crntProbWorking=false;
-					$scope.removeTiles();
+					//$scope.removeTiles();
 
 					var name = '';
 					if($scope.crntTargetName == 'hh'){
@@ -701,6 +625,11 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 						name=' 시침분침';
 					}
 
+					//reset Nav Menu
+					$scope.mmWorking = true;
+					$scope.hhWorking = true;
+					$scope.mmhhWorking = true;
+
 					if(!$scope.reTrial){
 						notify.push({ name: name, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
 						updateNumProblems();
@@ -709,23 +638,14 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 						$state.go('watch-game');
 					}
 
-					$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
-					$scope.mmWorking = true;
-					$scope.hhWorking = true;
-					$scope.mmhhWorking = true;
 
-					if($scope.totalProbb==numTotalGame){
-						$scope.mmWorking = false;
-						$scope.hhWorking = false;
-						$scope.mmhhWorking = false;
-						gameStatus.changeStatus('game1');
-						var remainGame = gameStatus.getGamesNotDone();
-					}
+					//$scope.removeTiles();
+					//Stop Interval for timer
 					$interval.cancel(stop);
 					stop = undefined;
 				}
 			}
-		}, 300);
+		}, 20);
 	};
 
 	$scope.rotationArm = function(target, op){
@@ -764,13 +684,13 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				.hideDelay(3000)
 		);
 	};
+
 	$scope.tiles=[1];
 	$scope.removeTiles=function(){
 		$scope.tiles.pop();
 		$timeout(function(){
 			$scope.tiles.push(1);
-		}, 100);
-
+		}, 300);
 	}
 	var reSolve = function(){
 		var currentState = $state.current.name;
@@ -783,40 +703,43 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 			$scope.startQuiz(targetProblem.problem.game,targetProblem);
 		};
 	}
+
 	var updateNumProblems = function(){
+		//console.log('updateNumProblems');
 		var numProblems = notify.getProblemsNum();
 		$scope.crntNumProbMM = numProblems.mm;
 		$scope.crntNumProbHH = numProblems.hh;
 		$scope.crntNumProbMMHH = numProblems.hm;
 		$scope.totalProbb = numProblems.mm + numProblems.hh + numProblems.hm;
 
-		$scope.availProbbHH = 3;
-		$scope.availProbbMM = 3;
-		$scope.availProbbMMHH = 4;
-
-		if($scope.totalProbb < numTotalGame){
-			$scope.mmWorking = true;
-			$scope.hhWorking = true;
-			$scope.mmhhWorking = true;
-			if($scope.crntNumProbHH === $scope.availProbbMM){
+		if($scope.totalProbb < $scope.numTotalGame){
+			if($scope.crntNumProbHH === $scope.availProbbHH){
 				$scope.hhWorking = false;
+			}else{
+				$scope.hhWorking = true;
 			}
-			else if($scope.crntNumProbMM === $scope.availProbbMM){
+			if($scope.crntNumProbMM === $scope.availProbbMM){
 				$scope.mmWorking = false;
+			}else{
+				$scope.mmWorking = true;
 			}
-			else if($scope.crntNumProbMMHH === $scope.availProbbMM){
+
+			if($scope.crntNumProbMMHH === $scope.availProbbMMHH){
 				$scope.mmhhWorking = false;
+			}else{
+				$scope.mmhhWorking = true;
 			}
 		}
 		else{ // game1 done
+			//console.log('game1 is done');
 			$scope.mmWorking = false;
 			$scope.hhWorking = false;
 			$scope.mmhhWorking = false;
 			$scope.isDone = true;
-			$scope.removeTiles();
-
+			gameStatus.changeStatus('game1');
 			if(gameStatus.getGamesNotDone().length !== 0)
 				$scope.goNextGame();
 		}
+		$scope.removeTiles();
 	}
 }

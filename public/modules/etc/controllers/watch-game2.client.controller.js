@@ -4,21 +4,17 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
     function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $stateParams, $mdToast, $mdBottomSheet, $interval, notify2, notify, gameStatus) {
 
-        var game1Total = 4;
-
-
-
+        var game1Total = 10;
 
         $scope.reTrial = false;
-
         $scope.mmhhWorking = true;
         var status = gameStatus.getInfo('game2');
-        console.log(status);
+        //console.log(status);
         if(status.isDone === true){
             $scope.mmhhWorking = false;
         }
 
-        var numTotalGame = 3;
+        var numTotalGame = 10;
         var wrong = 'modules/core/img/svg/android-close.svg';
         var correct = 'modules/core/img/svg/android-radio-button-off.svg';
         var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
@@ -119,12 +115,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                             gameStatus.changeStatus('game2');
                             $scope.mmhhWorking = false;
                             var remainGame = gameStatus.getGamesNotDone();
-                            if(remainGame.length > 0){
-                                console.log(remainGame);
-                            }
-                            else{
-                                console.log('done');
-                            }
+
 
                         }
 
@@ -270,12 +261,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                         gameStatus.changeStatus('game2');
                         $scope.mmhhWorking = false;
                         var remainGame = gameStatus.getGamesNotDone();
-                        if(remainGame.length > 0)
-                            console.log(remainGame);
-                        else{
-                            console.log('done');
-                        }
-                        //$scope.goNextGame();
+
                     }
                 }
                 else{
@@ -316,12 +302,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                     $scope.mmhhWorking = false;
                     gameStatus.changeStatus('game2');
                     var remainGame = gameStatus.getGamesNotDone();
-                    if(remainGame.length > 0){
-                        console.log(remainGame);
-                    }
-                    else{
-                        console.log('done');
-                    }
+
                 }
             }
 
@@ -583,8 +564,8 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             var currentState = $state.current.name;
             if(currentState === 'watch-game2-re'){
                 var problemReIndex = $stateParams.problemId;
-                console.log('!!!!!!!');
-                console.log(problemReIndex);
+                //console.log('!!!!!!!');
+                //console.log(problemReIndex);
                 var targetProblem = notify2.getProblem(problemReIndex);
                 $scope.reProblemIndex = problemReIndex;
                 $scope.reProblem = targetProblem;
