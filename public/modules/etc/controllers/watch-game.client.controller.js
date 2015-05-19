@@ -63,7 +63,6 @@ angular.module('etc').factory('notify', [function() {
 		      return inputs[index] = item;
 	      },
 	      getProblemsNum: function(){
-		      console.log('getProblemNum is executed');
 		      return{
 			      'hh': _.filter(inputs, function(item){ return item.problem.game === 'hh'}).length,
 			      'mm': _.filter(inputs, function(item){ return item.problem.game === 'mm'}).length,
@@ -96,7 +95,6 @@ angular.module('etc').factory('notify2', [ function() {
 			return inputs[index] = item;
 		},
 		getProblemsNum: function () {
-			console.log('getProblemNum is executed');
 			return {
 				'hm': _.filter(inputs, function (item) {
 					return item.problem.game === 'hm2'
@@ -114,7 +112,7 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 
     $scope.listItemClick = function($index, game) {
 	    if(game === 1){
-		    console.log($scope.items[$index]);
+
 		    var clickedItem = $scope.items[$index];
 		    $mdBottomSheet.hide(clickedItem);
 		    if(clickedItem.class !== 'correctProblem'){
@@ -122,8 +120,6 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 		    }
 
 	    }else{
-		    console.log(2);
-		    console.log($scope.items2[$index]);
 		    var clickedItem = $scope.items2[$index];
 		    $mdBottomSheet.hide(clickedItem);
 		    if(clickedItem.class !== 'correctProblem') {
@@ -131,8 +127,6 @@ function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
 		    }
 	    }
     };
-
-    //console.log($scope.items);
 }
 function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
                              $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout, gameStatus) {
@@ -143,7 +137,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 	$scope.mmhhWorking = true;
 	$scope.crntTry = 3;
 	var status = gameStatus.getInfo('game1');
-	console.log(status);
 
 	if(status.isDone === true){
 		$scope.mmWorking = false;
@@ -272,19 +265,19 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		problem.hh = Math.floor((Math.random() * 12) + 1);
 		problem.mm = Math.floor((Math.random() * 60) + 1);
 		probProp.problems.push(problem);
-
-		//console.log(problem);
-		//console.log(probProp);
-
+		var randHour = 1;
+		var randMin = 0;
 		if(problemRe !== undefined){
 			$scope.reTrial = true;
-			var randHour = problemRe.problem.hh;
-			var randMin = problemRe.problem.hh;
+			randHour = problemRe.problem.hh;
+			randMin = problemRe.problem.mm;
 			quizCase = problemRe.problem.game;
 		}
 		else{
-			var randHour = Math.floor((Math.random() * 12) + 1);
-			var randMin = Math.floor((Math.random() * 60) + 1);
+			randHour = Math.floor((Math.random() * 12) + 1);
+			randMin = Math.floor((Math.random() * 60) + 1);
+			if(randMin === 60)
+				randMin=0;
 		}
 
 		var clock = document.querySelector('#utility-clock');
@@ -292,28 +285,21 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		var minuteElement = clock.querySelector('.minute');
 
 		var rotate = function(element, second) {
-			//console.log(second*6);
 			TweenLite.to(element, 2.5, {rotation:second * 6});
 		}
 
 		if(quizCase == 'mm'){
-			//$scope.crntNumProbMM++;
-			//$scope.totalProbb++;
 			var time = randHour * 3600 + randMin * 60;
 			TweenLite.to('#minC', 1, {rotation:0});
 			rotate(hourElement, time / 60 / 12);
 		}
 		else if(quizCase == 'hh'){
-			//$scope.crntNumProbHH++;
-			//$scope.totalProbb++;
 			randMin = 0;
 			TweenLite.to('#minC', 1, {rotation:0})
 		}
 		else if(quizCase == 'hm'){
 			var h=10, m=10;
 			var time = h * 3600 + m * 60;
-			//$scope.crntNumProbMMHH++;
-			//$scope.totalProbb++;
 			rotate(hourElement, time / 60 / 12);
 			rotate(minuteElement, time / 60)
 		}
@@ -397,9 +383,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 					$scope.mmhhWorking = false;
 					gameStatus.changeStatus('game1');
 					var remainGame = gameStatus.getGamesNotDone();
-					if(remainGame.length > 0)
-						console.log(remainGame);
-						//$scope.goNextGame();
 				}
 			}
 			else{
@@ -444,9 +427,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				$scope.mmhhWorking = false;
 				gameStatus.changeStatus('game1');
 				var remainGame = gameStatus.getGamesNotDone();
-				if(remainGame.length > 0)
-					console.log(remainGame);
-					//$scope.goNextGame();
 			}
 		}
 	};
@@ -559,7 +539,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 	}
 
 	function autoResize(element, nativeSize) {
-		//console.log("update size");
 		var update = function() {
 			var parent = $('.fill');
 			var scale = Math.min(parent.outerWidth(), parent.outerHeight()) / nativeSize;
@@ -612,7 +591,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		var hour = time / 60 / 12;
 		var hourDeg = hour * 6;
 		var minDeg = min * 6;
-		//console.log('hour: '+ hourDeg + 'min: '+minDeg)
 		TweenLite.to("#hourC", 5, {rotation:hourDeg})
 		TweenLite.to("#minC", 5, {rotation:minDeg})
 	}
@@ -622,7 +600,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		var minDeg = getDegreeCrnt('minC');
 		var hour = 0;
 		var min= 0;
-		//console.log('time');
 		if(hourDeg < 0){
 			hour = (360 + hourDeg) /30;
 			if(hour<1)
@@ -638,9 +615,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		}else{
 			min = minDeg/6;
 		}
-
-		//console.log("hourDeg: "+ hourDeg + " minDeg: "+minDeg);
-		//console.log("hour: "+ hour + " min: "+min);
 
 		$scope.hh = parseInt(hour);
 		$scope.mm = parseInt(min);
@@ -673,7 +647,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 
 	$scope.showGridBottomSheet = function($event) {
-		//console.log('d');
 		$mdBottomSheet.show({
 			templateUrl: 'modules/etc/template/gridBottom.html',
 			controller: 'GridCtrl',
@@ -690,7 +663,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 
 	$scope.goTo = function(name){
 		$state.go(name);
-		//console.log(name);
 	}
 
 	$scope.menu = function(name){
@@ -748,12 +720,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 						$scope.mmhhWorking = false;
 						gameStatus.changeStatus('game1');
 						var remainGame = gameStatus.getGamesNotDone();
-						if(remainGame.length > 0){
-							console.log(remainGame);
-						}
-						else{
-							console.log('done');
-						}
 					}
 					$interval.cancel(stop);
 					stop = undefined;
@@ -810,8 +776,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 		var currentState = $state.current.name;
 		if(currentState === 'watch-game-re'){
 			var problemReIndex = $stateParams.problemId;
-			console.log('!!!!!!!');
-			console.log(problemReIndex);
 			var targetProblem = notify.getProblem(problemReIndex);
 			$scope.reProblemIndex = problemReIndex;
 			$scope.reProblem = targetProblem;

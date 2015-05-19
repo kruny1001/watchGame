@@ -18,8 +18,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             $scope.mmhhWorking = false;
         }
 
-
-        //notify.reset();
         var numTotalGame = 3;
         var wrong = 'modules/core/img/svg/android-close.svg';
         var correct = 'modules/core/img/svg/android-radio-button-off.svg';
@@ -50,11 +48,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
         $scope.determinateValue = 0;
         $scope.items = [];
-
-        //$scope.listItemClick = function($index) {
-        //    var clickedItem = $scope.items[$index];
-        //    $mdBottomSheet.hide(clickedItem);
-        //};
 
         $scope.showGridBottomSheet = function($event) {
             $mdBottomSheet.show({
