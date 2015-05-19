@@ -336,7 +336,6 @@ function coreHeadCtrl($scope, $rootScope,$window, $mdSidenav, $location, $state,
   }
 
 }
-coreHeadCtrl.$inject = ["$scope", "$rootScope", "$window", "$mdSidenav", "$location", "$state", "$timeout", "$log"];
 
 'use strict';
 
@@ -666,73 +665,32 @@ angular.module('etc').config(['$stateProvider',
 	function($stateProvider) {
 		// Etc state routing
 		$stateProvider.
-		state('watch-game2', {
-			url: '/watch-game2',
-			templateUrl: 'modules/etc/views/watch-game2.client.view.html'
-		}).
-		state('menu', {
-			url: '/menu',
-			templateUrl: 'modules/etc/views/menu.client.view.html'
-		}).
-		state('watch-game', {
-			url: '/',
-			templateUrl: 'modules/etc/views/watch-game.client.view.html'
-		}).
-		state('wigs', {
-			url: '/wigs',
-			templateUrl: 'modules/etc/views/wigs.client.view.html'
-		}).
-		state('etc', {
-			url: '/etc',
-			templateUrl: 'modules/etc/views/etc.client.view.html'
-		});
-	}
-]);
-'use strict';
+			state('watch-game', {
+				url: '/',
+				templateUrl: 'modules/etc/views/watch-game.client.view.html',
+				controller:'WatchGameController'
+			}).
+			state('watch-game2', {
+				url: '/watch-game2',
+				templateUrl: 'modules/etc/views/watch-game2.client.view.html',
+				controller:'WatchGame2Controller'
+			}).
+			state('watch-game2-re', {
+				url: '/watch-game2/:problemId',
+				templateUrl: 'modules/etc/views/watch-game2.client.view.html',
+				controller:'WatchGame2Controller'
 
-angular.module('etc').controller('EtcController', ['$scope',
-	function($scope) {
-		// Etc controller logic
-		// ...
-
-		$scope.todos = [
-			{
-				face : '/modules/etc-products/img/icon1.png',
-				what: 'Brunch this weekend?',
-				who: 'Min Li Chan',
-				when: '3:08PM',
-				notes: " I'll be in your neighborhood doing errands"
-			},
-			{
-
-				face : '/modules/etc-products/img/icon1.png',
-				what: 'Brunch this weekend?',
-				who: 'Min Li Chan',
-				when: '3:08PM',
-				notes: " I'll be in your neighborhood doing errands"
-			},
-			{
-				face : '/modules/etc-products/img/icon1.png',
-				what: 'Brunch this weekend?',
-				who: 'Min Li Chan',
-				when: '3:08PM',
-				notes: " I'll be in your neighborhood doing errands"
-			},
-			{
-				face : '/modules/etc-products/img/icon1.png',
-				what: 'Brunch this weekend?',
-				who: 'Min Li Chan',
-				when: '3:08PM',
-				notes: " I'll be in your neighborhood doing errands"
-			},
-			{
-				face : '/modules/etc-products/img/icon1.png',
-				what: 'Brunch this weekend?',
-				who: 'Min Li Chan',
-				when: '3:08PM',
-				notes: " I'll be in your neighborhood doing errands"
-			},
-		];
+			}).
+			state('watch-game-re', {
+				url: '/:problemId',
+				templateUrl: 'modules/etc/views/watch-game.client.view.html',
+				controller:'WatchGameController'
+			}).
+			state('menu', {
+				url: '/menu',
+				templateUrl: 'modules/etc/views/menu.client.view.html',
+				controller:'MenuController'
+			})
 	}
 ]);
 'use strict';
@@ -747,6 +705,33 @@ angular.module('etc').controller('MenuController', ['$scope','$state',
 ]);
 'use strict';
 
+angular.module('etc').factory('gameStatus', function(){
+	var games = [
+		{
+			type:'game1',
+			isDone: false
+
+		},
+		{
+			type:'game2',
+			isDone: false
+		}
+	];
+
+	return {
+		changeStatus: function(target){
+			var index = _.findIndex(games, {'type':target});
+			games[index].isDone = true;
+		},
+		getInfo: function(target){
+			var index = _.findIndex(games, {'type':target});
+			return games[index];
+		},
+		getGamesNotDone: function(){
+			return _.filter(games, function(item){return item.isDone === false})
+		}
+	}
+});
 angular.module('etc').factory('notify', [function() {
     var inputs = [];
     return {
@@ -758,6 +743,24 @@ angular.module('etc').factory('notify', [function() {
         },
 	      reset: function(){
 		      inputs = [];
+	      },
+	      getProblem: function(index){
+		      return inputs[index];
+	      },
+	      updateProblem: function(item, index){
+		      //problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}}
+		      //{ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}}
+		      item.icon = "modules/etc/img/triangle.svg";
+		      item.class = 'reCorrectProblem';
+		      return inputs[index] = item;
+	      },
+	      getProblemsNum: function(){
+		      console.log('getProblemNum is executed');
+		      return{
+			      'hh': _.filter(inputs, function(item){ return item.problem.game === 'hh'}).length,
+			      'mm': _.filter(inputs, function(item){ return item.problem.game === 'mm'}).length,
+			      'hm': _.filter(inputs, function(item){ return item.problem.game === 'hm'}).length
+		      }
 	      }
 
     }
@@ -765,22 +768,39 @@ angular.module('etc').factory('notify', [function() {
 angular.module('etc').factory('notify2', [ function() {
 	var inputs = [];
 	return {
-		push: function(msg) {
+		push: function (msg) {
 			inputs.push(msg);
 		},
-		get: function(){
+		get: function () {
 			return inputs;
 		},
-		reset: function(){
+		reset: function () {
 			inputs = [];
+		},
+		getProblem: function (index) {
+			return inputs[index];
+		},
+		updateProblem: function (item, index) {
+			//problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}}
+			//{ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}}
+			item.icon = "modules/etc/img/triangle.svg";
+			item.class = 'reCorrectProblem';
+			return inputs[index] = item;
+		},
+		getProblemsNum: function () {
+			console.log('getProblemNum is executed');
+			return {
+				'hm': _.filter(inputs, function (item) {
+					return item.problem.game === 'hm2'
+				}).length
+			}
 		}
-
 	}
 }]);
 angular.module('etc').controller('GridCtrl', GridCtrl);
 angular.module('etc').controller('WatchGameController', WatchGameController);
 
-function GridCtrl($scope, $mdBottomSheet, notify, notify2){
+function GridCtrl($scope, $state, $mdBottomSheet, notify, notify2){
     $scope.items = notify.get();
 		$scope.items2 = notify2.get();
 
@@ -789,31 +809,47 @@ function GridCtrl($scope, $mdBottomSheet, notify, notify2){
 		    console.log($scope.items[$index]);
 		    var clickedItem = $scope.items[$index];
 		    $mdBottomSheet.hide(clickedItem);
-
-
+		    $state.go('watch-game-re',{problemId:$index});
 	    }else{
 		    console.log(2);
 		    console.log($scope.items2[$index]);
 		    var clickedItem = $scope.items2[$index];
 		    $mdBottomSheet.hide(clickedItem);
+		    $state.go('watch-game2-re',{problemId:$index});
 
 	    }
     };
 
     //console.log($scope.items);
 }
-GridCtrl.$inject = ["$scope", "$mdBottomSheet", "notify", "notify2"];
-function WatchGameController($scope, $timeout, $mdDialog, $state,
-                             $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout) {
+function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
+                             $mdToast, $mdBottomSheet, $interval, notify, $mdGridLayout, gameStatus) {
+
+	$scope.reTrial = false;
+	$scope.mmWorking = true;
+	$scope.hhWorking = true;
+	$scope.mmhhWorking = true;
+	$scope.crntTry = 3;
+	var status = gameStatus.getInfo('game1');
+	console.log(status);
+
+	if(status.isDone === true){
+		$scope.mmWorking = false;
+		$scope.hhWorking = false;
+		$scope.mmhhWorking = false;
+	}
 
 	//notify.reset();
 	var stop;
-	var numTotalGame = 3;
+	var numTotalGame = 4;
+
 	var wrong = 'modules/core/img/svg/android-close.svg';
 	var correct = 'modules/core/img/svg/android-radio-button-off.svg';
 	var notYet = 'modules/core/img/svg/android-checkbox-outline-blank.svg';
+	var reCorrect = "modules/etc/img/triangle.svg";
 	var correctStyle = 'correctProblem';
 	var wrongStyle = 'wrongProblem';
+
 	var clock = document.querySelector('#utility-clock');
 	var grid = document.querySelector('md-grid-list');
 	var hourArmDrag;
@@ -842,7 +878,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			problems:[]
 		}
 	];
-
 	$scope.updateProblemBtn = function(targetName, crntNumber, totalTargetProb){
 		if(crntNumber == totalTargetProb){
 			var index = _.findIndex($scope.problemSet, function(chr) {
@@ -852,18 +887,20 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		};
 	};
 
-	$scope.mmWorking = true;
-	$scope.hhWorking = true;
-	$scope.mmhhWorking = true;
-	$scope.crntTry = 3;
 
-	$scope.crntProbWorking = false;
-	$scope.crntProbCorrect = false;
 	$scope.crntNumProbMM = 0;
-	$scope.probMMDone =false;
 	$scope.crntNumProbHH = 0;
 	$scope.crntNumProbMMHH = 0;
 	$scope.totalProbb = 0;
+
+
+	$scope.crntProbWorking = false;
+	$scope.crntProbCorrect = false;
+
+	$scope.probMMDone =false;
+
+
+
 	$scope.availProbbHH = 3;
   $scope.availProbbMM = 3;
   $scope.availProbbMMHH = 4;
@@ -878,160 +915,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		hour: 0,
 		min: 0
 	}
-
 	$scope.hourQ = 0;
 	$scope.minQ = 0;
-
-	$scope.startQuiz = function(quizCase) {
-		minArmDrag[0].enable();
-		hourArmDrag[0].enable();
-		$scope.crntTargetName = quizCase;
-		var problem = {hh:0, mm:0};
-		var index = _.findIndex($scope.problemSet, function(chr) {
-			return chr.name == quizCase;
-		});
-
-		var probProp = $scope.problemSet[index];
-		problem.hh = Math.floor((Math.random() * 12) + 1);
-		problem.mm = Math.floor((Math.random() * 60) + 1);
-		probProp.problems.push(problem);
-
-		//console.log(problem);
-		//console.log(probProp);
-
-		var randHour = Math.floor((Math.random() * 12) + 1);
-		var randMin = Math.floor((Math.random() * 60) + 1);
-		var clock = document.querySelector('#utility-clock');
-		var hourElement = clock.querySelector('.hour');
-		var minuteElement = clock.querySelector('.minute');
-
-		var rotate = function(element, second) {
-			//console.log(second*6);
-			TweenLite.to(element, 2.5, {rotation:second * 6});
-		}
-
-		if(quizCase == 'mm'){
-			$scope.crntNumProbMM++;
-			$scope.totalProbb++;
-			var time = randHour * 3600 + randMin * 60;
-			TweenLite.to('#minC', 1, {rotation:0});
-			rotate(hourElement, time / 60 / 12);
-		}
-		else if(quizCase == 'hh'){
-			$scope.crntNumProbHH++;
-			$scope.totalProbb++;
-			randMin = 0;
-			TweenLite.to('#minC', 1, {rotation:0})
-		}
-		else if(quizCase == 'hm'){
-			var h=10, m=10;
-			var time = h * 3600 + m * 60;
-			$scope.crntNumProbMMHH++;
-			$scope.totalProbb++;
-			rotate(hourElement, time / 60 / 12);
-			rotate(minuteElement, time / 60)
-
-		}
-
-		$scope.hourQ = randHour;
-		$scope.minQ = randMin;
-		var quizContent = randHour+'시 '+randMin+'분에 맞춰주세요.';
-		$scope.quiz = randHour+'시 '+randMin+'분';
-
-		var confirm = $mdDialog.confirm()
-			.title('퀴즈를 시작합니다.')
-			.content(quizContent)
-			.ok('시작하기')
-
-		$mdDialog.show(confirm).then(function() {
-			//$scope.time = randHour * 3600 + randMin * 60;
-			//rotate(hourElement, $scope.time / 60 / 12);
-			if(quizCase == 'mm'){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;}
-			else if(quizCase == 'hh'){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;}
-			else if(quizCase == 'hm'){
-				$scope.mmWorking = false;
-				$scope.hhWorking = false;
-				$scope.mmhhWorking = false;
-			}
-
-			startTimer();
-			$scope.removeTiles();
-			$scope.crntProbWorking=true;
-		}, function() {
-			$scope.alert = 'You decided to keep your debt.';
-		});
-	};
-
-
-	$scope.submitAnswer = function(ev){
-
-		$scope.getCurrentHour();
-		if($scope.crntTry > 1){
-			$scope.crntTry--;
-			var quizContent = ''
-			if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
-				minArmDrag[0].disable();
-				hourArmDrag[0].disable();
-				quizContent = '정답입니다.';
-				$scope.crntTry = 3;
-				$scope.crntProbCorrect = true;
-				$scope.mmWorking = true;
-				$scope.hhWorking = true;
-				$scope.mmhhWorking = true;
-				notify.push({ name: '문제', icon: correct, class: correctStyle});
-				$scope.crntProbWorking=false;
-				$scope.removeTiles();
-				$interval.cancel(stop);
-				stop = undefined;
-				// End Game 1
-				if($scope.totalProbb==numTotalGame){
-					$scope.goNextGame();
-				}
-			}
-			else{
-				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.('+$scope.crntTry+'기회가 남았습니다.)';
-			}
-			$scope.showSimpleToast(quizContent);
-		}
-		else{
-			minArmDrag[0].disable();
-			hourArmDrag[0].disable();
-			$scope.crntProbWorking=false;
-			$scope.removeTiles();
-			notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game:$scope.crntTargetName, hh:$scope.hourQ, mm:$scope.minQ}});
-			$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
-			$scope.mmWorking = true;
-			$scope.hhWorking = true;
-			$scope.mmhhWorking = true;
-			$scope.crntTry = 3;
-			// End Game 1
-			$interval.cancel(stop);
-			stop = undefined;
-			if($scope.totalProbb==numTotalGame){
-				$scope.goNextGame();
-			}
-		}
-	};
-
-	$scope.goNextGame = function(){
-		var quizResult = '몇 시 몇 분! 퀴즈를 시작합니다.';
-		var confirm = $mdDialog.confirm()
-			.title('시침이와 분침이를 돌려라가 끝났습니다.')
-			.content(quizResult)
-			.ok('계속하기');
-
-		$mdDialog.show(confirm).then(function() {
-			$state.go('watch-game2');
-		}, function() {
-			$scope.alert = 'You decided to keep your debt.';
-		});
-	};
 
 	$timeout(function() {
 		utilityClock(clock);
@@ -1056,8 +941,199 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		});
 		minArmDrag[0].disable();
 		hourArmDrag[0].disable();
-		TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
+		TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"});
+		updateNumProblems();
+		reSolve();
+
 	}, 500);
+
+	$scope.startQuiz = function(quizCase, problemRe) {
+		minArmDrag[0].enable();
+		hourArmDrag[0].enable();
+		$scope.crntTargetName = quizCase;
+		var problem = {hh:0, mm:0};
+		var index = _.findIndex($scope.problemSet, function(chr) {
+			return chr.name == quizCase;
+		});
+
+		var probProp = $scope.problemSet[index];
+		problem.hh = Math.floor((Math.random() * 12) + 1);
+		problem.mm = Math.floor((Math.random() * 60) + 1);
+		probProp.problems.push(problem);
+
+		//console.log(problem);
+		//console.log(probProp);
+
+		if(problemRe !== undefined){
+			$scope.reTrial = true;
+			var randHour = problemRe.problem.hh;
+			var randMin = problemRe.problem.hh;
+			quizCase = problemRe.problem.game;
+		}
+		else{
+			var randHour = Math.floor((Math.random() * 12) + 1);
+			var randMin = Math.floor((Math.random() * 60) + 1);
+		}
+
+		var clock = document.querySelector('#utility-clock');
+		var hourElement = clock.querySelector('.hour');
+		var minuteElement = clock.querySelector('.minute');
+
+		var rotate = function(element, second) {
+			//console.log(second*6);
+			TweenLite.to(element, 2.5, {rotation:second * 6});
+		}
+
+		if(quizCase == 'mm'){
+			//$scope.crntNumProbMM++;
+			//$scope.totalProbb++;
+			var time = randHour * 3600 + randMin * 60;
+			TweenLite.to('#minC', 1, {rotation:0});
+			rotate(hourElement, time / 60 / 12);
+		}
+		else if(quizCase == 'hh'){
+			//$scope.crntNumProbHH++;
+			//$scope.totalProbb++;
+			randMin = 0;
+			TweenLite.to('#minC', 1, {rotation:0})
+		}
+		else if(quizCase == 'hm'){
+			var h=10, m=10;
+			var time = h * 3600 + m * 60;
+			//$scope.crntNumProbMMHH++;
+			//$scope.totalProbb++;
+			rotate(hourElement, time / 60 / 12);
+			rotate(minuteElement, time / 60)
+		}
+
+		$scope.hourQ = randHour;
+		$scope.minQ = randMin;
+		var quizContent = randHour+'시 '+randMin+'분에 맞춰주세요.';
+		$scope.quiz = randHour+'시 '+randMin+'분';
+
+		var confirm = $mdDialog.confirm()
+			.title('퀴즈를 시작합니다.')
+			.content(quizContent)
+			.ok('시작하기')
+
+		$mdDialog.show(confirm).then(function() {
+			if(quizCase == 'mm'){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;}
+			else if(quizCase == 'hh'){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;}
+			else if(quizCase == 'hm'){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;
+			}
+			startTimer();
+			$scope.removeTiles();
+			$scope.crntProbWorking=true;
+		}, function() {
+			$scope.alert = 'You decided to keep your debt.';
+		});
+	};
+
+
+	$scope.submitAnswer = function(ev){
+
+		$scope.getCurrentHour();
+		if($scope.crntTry > 1){
+			$scope.crntTry--;
+			var quizContent = ''
+			if($scope.hh == $scope.hourQ && $scope.mm == $scope.minQ){
+				minArmDrag[0].disable();
+				hourArmDrag[0].disable();
+				quizContent = '정답입니다.';
+				$scope.crntTry = 3;
+				$scope.crntProbCorrect = true;
+				$scope.mmWorking = true;
+				$scope.hhWorking = true;
+				$scope.mmhhWorking = true;
+
+				if(!$scope.reTrial){
+					notify.push({ name: '문제'+$scope.totalProbb, icon: correct, class: correctStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+					updateNumProblems();
+				}
+				else{
+					notify.updateProblem($scope.reProblem, $scope.reProblemIndex);
+					$state.go('watch-game');
+				}
+
+				$scope.crntProbWorking=false;
+				$scope.removeTiles();
+				$interval.cancel(stop);
+				stop = undefined;
+				// End Game 1
+				if($scope.totalProbb==numTotalGame){
+					$scope.mmWorking = false;
+					$scope.hhWorking = false;
+					$scope.mmhhWorking = false;
+					gameStatus.changeStatus('game1');
+					var remainGame = gameStatus.getGamesNotDone();
+					if(remainGame.length > 0)
+						console.log(remainGame);
+						//$scope.goNextGame();
+				}
+			}
+			else{
+				quizContent = '틀렸습니다.'+$scope.hh +'시'+ $scope.mm + '분은 오답입니다.('+$scope.crntTry+'기회가 남았습니다.)';
+			}
+			$scope.showSimpleToast(quizContent);
+		}
+		else{
+			minArmDrag[0].disable();
+			hourArmDrag[0].disable();
+			$scope.crntProbWorking=false;
+			$scope.removeTiles();
+			if(!$scope.reTrial){
+				notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+				updateNumProblems();
+
+			}
+			else{
+				$state.go('watch-game');
+			}
+			$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
+			//$scope.mmWorking = true;
+			//$scope.hhWorking = true;
+			//$scope.mmhhWorking = true;
+			$scope.crntTry = 3;
+			// End Game 1
+			$interval.cancel(stop);
+			stop = undefined;
+			if($scope.totalProbb==numTotalGame){
+				$scope.mmWorking = false;
+				$scope.hhWorking = false;
+				$scope.mmhhWorking = false;
+				gameStatus.changeStatus('game1');
+				var remainGame = gameStatus.getGamesNotDone();
+				if(remainGame.length > 0)
+					console.log(remainGame);
+					//$scope.goNextGame();
+			}
+		}
+	};
+
+	$scope.goNextGame = function(){
+		var quizResult = '몇 시 몇 분! 퀴즈를 시작합니다.';
+		var confirm = $mdDialog.confirm()
+			.title('시침이와 분침이를 돌려라가 끝났습니다.')
+			.content(quizResult)
+			.ok('계속하기');
+
+		$mdDialog.show(confirm).then(function() {
+			$state.go('watch-game2');
+		}, function() {
+			$scope.alert = 'You decided to keep your debt.';
+		});
+	};
+
+
 
 	function utilityClock(container) {
 
@@ -1153,8 +1229,8 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 	function autoResize(element, nativeSize) {
 		//console.log("update size");
 		var update = function() {
-			var parent = element.offsetParent
-			var scale = Math.min(parent.offsetWidth, parent.offsetHeight) / nativeSize;
+			var parent = $('.fill');
+			var scale = Math.min(parent.outerWidth(), parent.outerHeight()) / nativeSize;
 			element.style.transform = element.style.webkitTransform = 'scale(' + scale.toFixed(3) + ')'
 
 		}
@@ -1249,12 +1325,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 			st.getPropertyValue("transform") ||
 			"FAIL";
 
-		// With rotate(30deg)...
-		// matrix(0.866025, 0.5, -0.5, 0.866025, 0px, 0px)
-		//		console.log('Matrix: ' + tr);
-
-		// rotation matrix - http://en.wikipedia.org/wiki/Rotation_matrix
-
 		var values = tr.split('(')[1].split(')')[0].split(',');
 		var a = values[0];
 		var b = values[1];
@@ -1262,13 +1332,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		var d = values[3];
 
 		var scale = Math.sqrt(a*a + b*b);
-
-//			console.log('Scale: ' + scale);
-
-		// arc sin, convert from radians to degrees, round
 		var sin = b/scale;
-		// next line works for 30deg but not 130deg (returns 50);
-		// var angle = Math.round(Math.asin(sin) * (180/Math.PI));
 		var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
 
 		return angle;
@@ -1321,17 +1385,35 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 					hourArmDrag[0].disable();
 					$scope.crntProbWorking=false;
 					$scope.removeTiles();
-					notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game:$scope.crntTargetName, hh:$scope.hourQ, mm:$scope.minQ}});
+
+					if(!$scope.reTrial){
+						notify.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, num:$scope.totalProbb, hh:$scope.hourQ, mm:$scope.minQ}});
+						updateNumProblems();
+					}
+					else{
+						$state.go('watch-game');
+					}
+
 					$scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
 					$scope.mmWorking = true;
 					$scope.hhWorking = true;
 					$scope.mmhhWorking = true;
-					// End Game 1
+
+					if($scope.totalProbb==numTotalGame){
+						$scope.mmWorking = false;
+						$scope.hhWorking = false;
+						$scope.mmhhWorking = false;
+						gameStatus.changeStatus('game1');
+						var remainGame = gameStatus.getGamesNotDone();
+						if(remainGame.length > 0){
+							console.log(remainGame);
+						}
+						else{
+							console.log('done');
+						}
+					}
 					$interval.cancel(stop);
 					stop = undefined;
-					if($scope.totalProbb==numTotalGame){
-						$scope.goNextGame();
-					}
 				}
 			}
 		}, 300);
@@ -1354,20 +1436,17 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		var audio = document.getElementsByTagName("audio")[0];
 		audio.play();
 	};
-
 	$scope.toastPosition = {
 		bottom: false,
 		top: true,
 		left: true,
 		right: false
 	};
-
 	$scope.getToastPosition = function() {
 		return Object.keys($scope.toastPosition)
 			.filter(function(pos) { return $scope.toastPosition[pos]; })
 			.join(' ');
 	};
-
 	$scope.showSimpleToast = function(msg) {
 		$mdToast.show(
 			$mdToast.simple()
@@ -1376,7 +1455,6 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 				.hideDelay(3000)
 		);
 	};
-
 	$scope.tiles=[1];
 	$scope.removeTiles=function(){
 		$scope.tiles.pop();
@@ -1385,15 +1463,74 @@ function WatchGameController($scope, $timeout, $mdDialog, $state,
 		}, 100);
 
 	}
+	var reSolve = function(){
+		var currentState = $state.current.name;
+		if(currentState === 'watch-game-re'){
+			var problemReIndex = $stateParams.problemId;
+			console.log('!!!!!!!');
+			console.log(problemReIndex);
+			var targetProblem = notify.getProblem(problemReIndex);
+			$scope.reProblemIndex = problemReIndex;
+			$scope.reProblem = targetProblem;
 
+			$scope.startQuiz(targetProblem.problem.game,targetProblem);
+		};
+	}
+	var updateNumProblems = function(){
+		var numProblems = notify.getProblemsNum();
+		$scope.crntNumProbMM = numProblems.mm;
+		$scope.crntNumProbHH = numProblems.hh;
+		$scope.crntNumProbMMHH = numProblems.hm;
+		$scope.totalProbb = numProblems.mm + numProblems.hh + numProblems.hm;
+
+		$scope.availProbbHH = 3;
+		$scope.availProbbMM = 3;
+		$scope.availProbbMMHH = 4;
+
+		if($scope.totalProbb < numTotalGame){
+			$scope.mmWorking = true;
+			$scope.hhWorking = true;
+			$scope.mmhhWorking = true;
+			if($scope.crntNumProbHH === $scope.availProbbMM){
+				$scope.hhWorking = false;
+			}
+			else if($scope.crntNumProbMM === $scope.availProbbMM){
+				$scope.mmWorking = false;
+			}
+			else if($scope.crntNumProbMMHH === $scope.availProbbMM){
+				$scope.mmhhWorking = false;
+			}
+		}
+		else{ // all done
+			$scope.mmWorking = false;
+			$scope.hhWorking = false;
+			$scope.mmhhWorking = false;
+			$scope.goNextGame();
+		}
+	}
 }
-WatchGameController.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval", "notify", "$mdGridLayout"];
 
 'use strict';
 
 angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
-    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $mdToast, $mdBottomSheet, $interval, notify2) {
+    function WatchGame2Controller ($scope, $timeout, $mdDialog, $state, $stateParams, $mdToast, $mdBottomSheet, $interval, notify2, notify, gameStatus) {
+
+        var game1Total = 4;
+
+
+
+
+        $scope.reTrial = false;
+
+        $scope.mmhhWorking = true;
+        var status = gameStatus.getInfo('game2');
+        console.log(status);
+        if(status.isDone === true){
+            $scope.mmhhWorking = false;
+        }
+
+
         //notify.reset();
         var numTotalGame = 3;
         var wrong = 'modules/core/img/svg/android-close.svg';
@@ -1406,7 +1543,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         var stop;
         $scope.crntTargetName = ""; //mm, hh, mh
         $scope.crntTry = 3;
-        $scope.mmhhWorking = true;
         $scope.crntProbWorking = false;
 
         $scope.crntNumProb = 0;
@@ -1470,10 +1606,25 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                         var quizContent = '시간초과 입니다.('+$scope.crntTry+'기회가 남았습니다.)';
                         $scope.showSimpleToast(quizContent);
                         $scope.determinateValue = 0;
-
                     }else{
                         $scope.crntTry=3;
-                        notify2.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, hh:$scope.hourQ, mm:$scope.minQ}});
+                        if(!$scope.reTrial) {
+                            notify2.push({
+                                name: '문제' + $scope.totalProbb,
+                                icon: wrong,
+                                class: wrongStyle,
+                                problem: {
+                                    game: $scope.crntTargetName,
+                                    num: $scope.totalProbb,
+                                    hh: $scope.hourQ,
+                                    mm: $scope.minQ
+                                }
+                            });
+                        }
+                        else{
+                            notify2.updateProblem($scope.reProblem, $scope.reProblemIndex);
+                            $state.go('watch-game2');
+                        }
                         $scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
                         $scope.determinateValue = 100;
                         $scope.crntProbCorrect = true;
@@ -1482,6 +1633,19 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                         $scope.removeTiles();
                         $interval.cancel(stop);
                         stop = undefined;
+                        if($scope.totalProbb==numTotalGame){
+                            gameStatus.changeStatus('game2');
+                            $scope.mmhhWorking = false;
+                            var remainGame = gameStatus.getGamesNotDone();
+                            if(remainGame.length > 0){
+                                console.log(remainGame);
+                            }
+                            else{
+                                console.log('done');
+                            }
+
+                        }
+
                     }
                 }
             }, 1000);
@@ -1512,7 +1676,27 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             audio.play();
         };
 
-        $scope.startQuiz = function(quizCase) {
+        $timeout(function() {
+            utilityClock(clock);
+            autoResize(clock, 420);
+            choose(clock, [
+                //['hour', ['text', 'text-quarters', 'pill']],
+                ['hour', ['text', 'text-quarters', 'pill']],
+                ['hour-text', ['large', 'small']],
+                ['hour-display', ['all', 'quarters', 'none']],
+                ['minute', ['line', 'dot']],
+                ['minute-display', ['fine', 'fine-2', 'coarse', 'major', 'none']],
+                ['minute-text', ['inside', 'outside', 'none']],
+                ['hand', ['normal', 'hollow']]
+            ]);
+
+
+            TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"});
+            updateNumProblems();
+            reSolve();
+        }, 500);
+
+        $scope.startQuiz = function(quizCase, problemRe) {
             $scope.mm=0;
             $scope.hh=1;
             $scope.determinateValue = 100;
@@ -1523,15 +1707,16 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             });
 
             var probProp = $scope.problemSet[index];
-            //problem.hh = Math.floor((Math.random() * 12) + 1);
-            //problem.mm = Math.floor((Math.random() * 60) + 1);
-            //probProp.problems.push(problem);
-
-            //console.log(problem);
-            //console.log(probProp);
-
-            var randHour = Math.floor((Math.random() * 12) + 1);
-            var randMin = Math.floor((Math.random() * 60) + 1);
+            if(problemRe !== undefined){
+                $scope.reTrial = true;
+                var randHour = problemRe.problem.hh;
+                var randMin = problemRe.problem.hh;
+                quizCase = problemRe.problem.game;
+            }
+            else{
+                var randHour = Math.floor((Math.random() * 12) + 1);
+                var randMin = Math.floor((Math.random() * 60) + 1);
+            }
             var clock = document.querySelector('#utility-clock');
             var hourElement = clock.querySelector('.hour');
             var minuteElement = clock.querySelector('.minute');
@@ -1543,8 +1728,6 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             if(quizCase == 'hm2'){
                 var time = randHour * 3600 + randMin * 60;
-                $scope.crntNumProb++;
-                $scope.totalProbb++;
                 rotate(hourElement, time / 60 / 12);
                 rotate(minuteElement, time / 60)
             }
@@ -1574,25 +1757,43 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             if($scope.crntTry > 1){
                 $scope.crntTry--;
                 var quizContent = ''
-                //console.log('dd');
-                //console.log($scope.hh, $scope.mm, $scope.hourQ, $scope.minQ);
                 if($scope.hh === $scope.hourQ && $scope.mm === $scope.minQ){
                     quizContent = '정답입니다.';
                     $scope.crntTry = 3;
                     $scope.crntProbCorrect = true;
-                    //$scope.mmWorking = true;
-                    //$scope.hhWorking = true;
                     $scope.mmhhWorking = true;
-                    notify2.push({ name: '문제', icon: correct, class: correctStyle});
+
+                    if(!$scope.reTrial) {
+                        notify2.push({ name: '문제' + $scope.totalProbb, icon: correct, class: correctStyle,
+                            problem: {
+                                game: $scope.crntTargetName,
+                                num: $scope.totalProbb,
+                                hh: $scope.hourQ,
+                                mm: $scope.minQ
+                            }
+                        });
+                        updateNumProblems();
+                    }
+                    else{
+                        notify2.updateProblem($scope.reProblem, $scope.reProblemIndex);
+                        $state.go('watch-game2');
+                    }
+
                     $scope.crntProbWorking=false;
                     $scope.removeTiles();
-
                     $interval.cancel(stop);
                     stop = undefined;
-
                     // End Game 1
                     if($scope.totalProbb==numTotalGame){
-                        $scope.goNextGame();
+                        gameStatus.changeStatus('game2');
+                        $scope.mmhhWorking = false;
+                        var remainGame = gameStatus.getGamesNotDone();
+                        if(remainGame.length > 0)
+                            console.log(remainGame);
+                        else{
+                            console.log('done');
+                        }
+                        //$scope.goNextGame();
                     }
                 }
                 else{
@@ -1603,19 +1804,42 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
             else{
                 $scope.crntProbWorking=false;
                 $scope.removeTiles();
-                notify2.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle, problem:{game: $scope.crntTargetName, hh:$scope.hourQ, mm:$scope.minQ}});
+
+                if(!$scope.reTrial) {
+                    notify2.push({
+                        name: '문제' + $scope.totalProbb,
+                        icon: wrong,
+                        class: wrongStyle,
+                        problem: {
+                            game: $scope.crntTargetName,
+                            num: $scope.totalProbb,
+                            hh: $scope.hourQ,
+                            mm: $scope.minQ
+                        }
+                    });
+                    updateNumProblems();
+                }
+                else{
+                    $state.go('watch-game2');
+                }
+
                 $scope.items.push({ name: '문제'+$scope.totalProbb, icon: wrong, class: wrongStyle});
-                //$scope.mmWorking = true;
-                //$scope.hhWorking = true;
                 $scope.mmhhWorking = true;
                 $scope.crntTry = 3;
 
                 $interval.cancel(stop);
                 stop = undefined;
 
-                // End Game 1
                 if($scope.totalProbb==numTotalGame){
-                    $scope.goNextGame();
+                    $scope.mmhhWorking = false;
+                    gameStatus.changeStatus('game2');
+                    var remainGame = gameStatus.getGamesNotDone();
+                    if(remainGame.length > 0){
+                        console.log(remainGame);
+                    }
+                    else{
+                        console.log('done');
+                    }
                 }
             }
 
@@ -1638,28 +1862,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         };
 
         var clock = document.querySelector('#utility-clock');
-        $timeout(function() {
-            utilityClock(clock);
-            autoResize(clock, 420);
-            choose(clock, [
-                //['hour', ['text', 'text-quarters', 'pill']],
-                ['hour', ['text', 'text-quarters', 'pill']],
-                ['hour-text', ['large', 'small']],
-                ['hour-display', ['all', 'quarters', 'none']],
-                ['minute', ['line', 'dot']],
-                ['minute-display', ['fine', 'fine-2', 'coarse', 'major', 'none']],
-                ['minute-text', ['inside', 'outside', 'none']],
-                ['hand', ['normal', 'hollow']]
-            ]);
 
-            //Draggable.create("#minC", {
-            //    type: "rotation", throwProps: true
-            //});
-            //Draggable.create("#hourC", {
-            //    type: "rotation", throwProps: true
-            //});
-            TweenLite.to('.element.minute-line.whole', 1, {backgroundColor:"yellow"})
-        }, 500);
 
         function utilityClock(container) {
             var dynamic = container.querySelector('.dynamic')
@@ -1754,8 +1957,8 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
         function autoResize(element, nativeSize) {
             //console.log("update size");
             var update = function() {
-                var parent = element.offsetParent
-                var scale = Math.min(parent.offsetWidth, parent.offsetHeight) / nativeSize;
+                var parent = $('.fill');
+                var scale = Math.min(parent.outerWidth(), parent.outerHeight()) / nativeSize;
                 element.style.transform = element.style.webkitTransform = 'scale(' + scale.toFixed(3) + ')'
 
             }
@@ -1896,29 +2099,74 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
                 .hideDelay(3000)
             );
         };
-    }
-    WatchGame2Controller.$inject = ["$scope", "$timeout", "$mdDialog", "$state", "$mdToast", "$mdBottomSheet", "$interval", "notify2"];
 
-'use strict';
+        var reSolve = function(){
+            var currentState = $state.current.name;
+            if(currentState === 'watch-game2-re'){
+                var problemReIndex = $stateParams.problemId;
+                console.log('!!!!!!!');
+                console.log(problemReIndex);
+                var targetProblem = notify2.getProblem(problemReIndex);
+                $scope.reProblemIndex = problemReIndex;
+                $scope.reProblem = targetProblem;
 
-angular.module('etc').controller('WigsController', ['$scope',
-	function($scope) {
-        $scope.degree = 0;
-        $scope.flipCard = function(targetId){
-            var target = $('#'+targetId);
-            $scope.degree += 180;
-            TweenMax.to(target, 0.4 , {rotationY: $scope.degree});
-            console.log($scope.degree);
+                $scope.startQuiz(targetProblem.problem.game,targetProblem);
+            };
         }
-		// Wigs controller logic
-		// ...
-	}
-]);
+
+        var updateNumProblems = function(){
+            var numProblems = notify2.getProblemsNum();
+
+            $scope.crntNumProb = 0;
+            $scope.crntNumProb = numProblems.hm;
+            $scope.totalProbb = numProblems.hm;
+
+            if($scope.totalProbb < numTotalGame){
+
+            }else
+            {
+                $scope.goNextGame();
+            }
+        }
+
+        $scope.goNextGame = function(){
+
+            var game1Length = notify.get().length;
+            var game2Length = notify2.get().length;
+
+            var quizResult = '';
+            var btnName = '';
+            if(game1Total > game1Length){
+                quizResult = '시침이와 분침이를 돌려라를 시작 합니다.';
+                btnName = '계속하기';
+            }
+            else if(numTotalGame === game2Length && game1Total === game1Length){
+                quizResult = '모든 퀴즈가 끝났습니다.';
+                btnName = '확인';
+            }
+            var confirm = $mdDialog.confirm()
+              .title('몇 시 몇 분! 퀴즈가 끝났습니다.')
+              .content(quizResult)
+              .ok(btnName);
+
+            $mdDialog.show(confirm).then(function() {
+                if(game1Total > game1Length){
+                    $state.go('watch-game');
+                }else if(numTotalGame === game2Length && game1Total === game1Length){
+                    $scope.showGridBottomSheet();
+                }
+
+            }, function() {
+                $scope.alert = 'You decided to keep your debt.';
+            });
+        };
+
+    }
+
 'use strict';
 
 angular.module('etc').directive('colorPicker', [
 	function() {
-		ColorPickerCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/color-picker.html',
 			restrict: 'E',
@@ -2014,7 +2262,6 @@ angular.module('etc').directive('colorPicker', [
 
 angular.module('etc').directive('gallery', [
 	function() {
-        galleryCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/gallery.html',
 			restrict: 'E',
@@ -2059,7 +2306,6 @@ angular.module('etc').directive('gallery', [
 
 angular.module('etc').directive('productDetail', [
 	function() {
-		ProductDetailCtrl.$inject = ["$scope"];
 		return {
 			templateUrl: 'modules/etc/directives/template/product-detail.html',
 			restrict: 'E',
@@ -2172,7 +2418,6 @@ angular.module('mean-tutorials')
 function MeanLoginCtrl($scope, $mdDialog){
 	//$scope.authentication = Authentication;
 }
-MeanLoginCtrl.$inject = ["$scope", "$mdDialog"];
 
 function MeanHomeController($scope, $state, $mdDialog, $mdSidenav, $log) {
 
@@ -2302,7 +2547,6 @@ function MeanHomeController($scope, $state, $mdDialog, $mdSidenav, $log) {
 		};
 	}
 }
-MeanHomeController.$inject = ["$scope", "$state", "$mdDialog", "$mdSidenav", "$log"];
 
 'use strict';
 
@@ -2396,22 +2640,22 @@ angular.module('mean-tutorials')
             }
 
         }
-]).controller('LeftCtrl12', ["$scope", "$timeout", "$mdSidenav", "$log", function($scope, $timeout, $mdSidenav, $log) {
+]).controller('LeftCtrl12', function($scope, $timeout, $mdSidenav, $log) {
         $scope.close = function() {
             $mdSidenav('left').close()
                 .then(function(){
                     $log.debug("close LEFT is done");
                 });
         };
-    }])
-    .controller('RightCtrl11', ["$scope", "$timeout", "$mdSidenav", "$log", function($scope, $timeout, $mdSidenav, $log) {
+    })
+    .controller('RightCtrl11', function($scope, $timeout, $mdSidenav, $log) {
         $scope.close = function() {
             $mdSidenav('right').close()
                 .then(function(){
                     $log.debug("close RIGHT is done");
                 });
         };
-    }]);;
+    });;
 
 'use strict';
 
@@ -2799,7 +3043,7 @@ angular.module('mean-tutorials').controller('ProjectviewdashboardController', ['
     }
 ])
 
-	.controller('gDriveDashCtrl', ["$scope", "Googledrive", function($scope, Googledrive){
+	.controller('gDriveDashCtrl', function($scope, Googledrive){
 		$scope.googleDrive={info:'gDriveCtrl'};
 
 		$scope.listingFolderInfo = function(){
@@ -2825,9 +3069,9 @@ angular.module('mean-tutorials').controller('ProjectviewdashboardController', ['
 				}
 			});
 		}
-	}])
+	})
 
-    .controller('BottomSheetListCtrl', ["$scope", "$mdBottomSheet", function($scope, $mdBottomSheet) {
+    .controller('BottomSheetListCtrl', function($scope, $mdBottomSheet) {
         $scope.items = [
             { name: 'Upload New Image (Google Drive)', icon: 'share' },
             { name: 'Select Existing Image (Google Drive)', icon: 'upload' },
@@ -2839,8 +3083,8 @@ angular.module('mean-tutorials').controller('ProjectviewdashboardController', ['
             var clickedItem = $scope.items[$index];
             $mdBottomSheet.hide(clickedItem);
         }
-    }])
-    .controller('BottomSheetGridCtrl', ["$scope", "$mdBottomSheet", function($scope, $mdBottomSheet) {
+    })
+    .controller('BottomSheetGridCtrl', function($scope, $mdBottomSheet) {
         $scope.items = [
             { name: 'Hangout', icon: 'hangout' },
             { name: 'Mail', icon: 'mail' },
@@ -2851,7 +3095,7 @@ angular.module('mean-tutorials').controller('ProjectviewdashboardController', ['
             var clickedItem = $scope.items[$index];
             $mdBottomSheet.hide(clickedItem);
         };
-    }]);
+    });
 
 var CalendarException = function CalendarException(message) {
     this.message = message;
