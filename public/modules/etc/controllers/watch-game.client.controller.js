@@ -796,11 +796,15 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 				$scope.mmhhWorking = false;
 			}
 		}
-		else{ // all done
+		else{ // game1 done
 			$scope.mmWorking = false;
 			$scope.hhWorking = false;
 			$scope.mmhhWorking = false;
-			$scope.goNextGame();
+			$scope.isDone = true;
+			$scope.removeTiles();
+
+			if(gameStatus.getGamesNotDone().length !== 0)
+				$scope.goNextGame();
 		}
 	}
 }

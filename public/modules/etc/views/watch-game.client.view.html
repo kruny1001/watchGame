@@ -71,7 +71,7 @@
                                 <span class="small-font md-caption">({{crntNumProbMMHH}}/{{availProbbMMHH}})</span>
                             </p>
                         </md-grid-tile>
-                        <md-grid-tile ng-if="!crntProbWorking" id="t123" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">
+                        <md-grid-tile ng-if="!crntProbWorking" md-rowspan="1" md-colspan="2" class="lightPurple" ng-click="showGridBottomSheet($event)">
                             <p class="side-nav-menu">
                                 <span class="big-font">정답 확인 하기</span><br/>
                                 <span class="small-font md-caption">({{totalProbb}}/{{availProbb}})</span>
@@ -82,6 +82,15 @@
                                 <span style="font-size:15px; color:black; font-weight: 900;">정답 제출</span>
                             </p>
                             <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
+                        </md-grid-tile>
+                        <md-grid-tile ng-if="isDone" md-rowspan="1" md-colspan="2" class="yellow">
+                            <p class="side-nav-menu">
+                                <span style="color: purple; font-size:15px; font-weight: 900;">
+                                시침이와 분침이
+                                </span>
+                                <br/>
+                                <span style="font-size:25px; color:#000066; font-weight: 900">끝</span>
+                            </p>
                         </md-grid-tile>
                     </md-grid-list>
             </div>

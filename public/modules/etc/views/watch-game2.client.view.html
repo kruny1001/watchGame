@@ -57,6 +57,15 @@
                         </p>
                         <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
                     </md-grid-tile>
+                    <md-grid-tile ng-if="isDone" md-rowspan="1" md-colspan="2" class="yellow">
+                        <p class="side-nav-menu">
+                                <span style="color: purple; font-size:15px; font-weight: 900;">
+                                몇 시 몇 분
+                                </span>
+                            <br/>
+                            <span style="font-size:25px; color:#000066; font-weight: 900">끝</span>
+                        </p>
+                    </md-grid-tile>
                 </md-grid-list>
             </div>
         </md-sidenav>

@@ -613,6 +613,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             }else
             {
+                $scope.isDone = true;
                 $scope.goNextGame();
             }
         }
@@ -637,16 +638,18 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
               .content(quizResult)
               .ok(btnName);
 
-            $mdDialog.show(confirm).then(function() {
-                if(game1Total > game1Length){
-                    $state.go('watch-game');
-                }else if(numTotalGame === game2Length && game1Total === game1Length){
-                    $scope.showGridBottomSheet();
-                }
+            if(gameStatus.getGamesNotDone().length !== 0)
+                $mdDialog.show(confirm).then(function() {
+                    if(game1Total > game1Length){
+                        if(gameStatus.getGamesNotDone().length !== 0)
+                            $state.go('watch-game');
+                    }else if(numTotalGame === game2Length && game1Total === game1Length){
+                        $scope.showGridBottomSheet();
+                    }
 
-            }, function() {
-                $scope.alert = 'You decided to keep your debt.';
-            });
+                }, function() {
+                    $scope.alert = 'You decided to keep your debt.';
+                });
         };
 
     }
