@@ -645,7 +645,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 					stop = undefined;
 				}
 			}
-		}, 20);
+		}, 300);
 	};
 
 	$scope.rotationArm = function(target, op){

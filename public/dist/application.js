@@ -73,7 +73,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$compile
             .dark();
 
 		// disable dubug data Information
-		$compileProvider.debugInfoEnabled(true);
+		$compileProvider.debugInfoEnabled(false);
 
 		// Redirect to home view when route not found
 		$urlRouterProvider.otherwise('/');
@@ -1365,7 +1365,7 @@ function WatchGameController($scope, $timeout, $mdDialog, $state, $stateParams,
 					stop = undefined;
 				}
 			}
-		}, 20);
+		}, 300);
 	};
 
 	$scope.rotationArm = function(target, op){
@@ -1542,7 +1542,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             $scope.determinateValue = 0;
             stop = $interval(function() {
-                $scope.determinateValue += 5;
+                $scope.determinateValue += 1;
 
                 if ($scope.determinateValue >= 100) {
                     if($scope.crntTry > 1){
@@ -1587,7 +1587,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
                     }
                 }
-            }, 1000);
+            }, 300);
         };
 
         $scope.menu = function(name){

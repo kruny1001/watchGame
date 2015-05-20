@@ -76,7 +76,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
             $scope.determinateValue = 0;
             stop = $interval(function() {
-                $scope.determinateValue += 5;
+                $scope.determinateValue += 1;
 
                 if ($scope.determinateValue >= 100) {
                     if($scope.crntTry > 1){
@@ -121,7 +121,7 @@ angular.module('etc').controller('WatchGame2Controller',  WatchGame2Controller);
 
                     }
                 }
-            }, 1000);
+            }, 300);
         };
 
         $scope.menu = function(name){
